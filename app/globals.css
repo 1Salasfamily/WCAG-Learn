@@ -336,8 +336,8 @@ a {
 .caption-card {
   border: 1.5px solid #3a4354;
   border-radius: 0.75rem;
-  background: #fff;
-  color: #0f1115;
+  background: var(--panel-soft);
+  color: var(--text);
   padding: 0.9rem;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
 }
