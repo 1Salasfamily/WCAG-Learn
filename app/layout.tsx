@@ -25,9 +25,6 @@ export default function RootLayout({
               <li>
                 <Link href="/">Home</Link>
               </li>
-              <li>
-                <Link href="/criteria">Criteria</Link>
-              </li>
             </ul>
           </nav>
         </header>
