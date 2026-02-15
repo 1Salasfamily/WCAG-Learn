@@ -1,11 +1,13 @@
 :root {
-  --bg: #0b0f14;
-  --panel: #121926;
-  --text: #f5f7fa;
-  --muted: #c5ccd8;
-  --border: #2f3849;
+  --bg: #0f1115;
+  --panel: #151a22;
+  --panel-soft: #1b2230;
+  --text: #f3f5f9;
+  --muted: #b8c0cf;
+  --border: #2b3241;
   --focus: #22c55e;
-  --link: #8cc8ff;
+  --active: #2b3b55;
+  --link: #90cbff;
 }
 
 * {
@@ -16,7 +18,7 @@ html,
 body {
   margin: 0;
   padding: 0;
-  background: radial-gradient(circle at 10% -20%, #1f2a3e, var(--bg) 55%);
+  background: radial-gradient(circle at 12% -14%, #1e2635 0%, var(--bg) 56%);
   color: var(--text);
   font-family: "Trebuchet MS", Trebuchet, Verdana, sans-serif;
 }
@@ -28,6 +30,18 @@ a {
 :focus-visible {
   outline: 3px solid var(--focus);
   outline-offset: 2px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 .skip-link {
@@ -46,13 +60,14 @@ a {
 }
 
 .site-header {
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1.5px solid var(--border);
   padding: 1rem 1.25rem;
 }
 
 .site-title {
   margin: 0;
   font-size: 1.5rem;
+  font-weight: 700;
 }
 
 .site-nav {
@@ -68,9 +83,272 @@ a {
 }
 
 .main-content {
-  max-width: 960px;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+
+.learn-layout {
+  min-height: calc(100vh - 82px);
+  display: grid;
+  grid-template-columns: minmax(260px, 20vw) 1fr;
+}
+
+.learn-sidebar {
+  border-right: 1.5px solid var(--border);
+  background: linear-gradient(180deg, #141a24 0%, #0f141c 100%);
+  padding: 1rem 0.75rem;
+  overflow-y: auto;
+}
+
+.sidebar-title {
+  margin: 0 0 0.9rem;
+  font-size: 1rem;
+  color: var(--muted);
+}
+
+.sidebar-group {
+  margin-bottom: 0.6rem;
+}
+
+.group-toggle {
+  width: 100%;
+  background: transparent;
+  color: var(--text);
+  border: 0;
+  text-align: left;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  cursor: pointer;
+}
+
+.group-arrow {
+  display: inline-block;
+  width: 1rem;
+  transition: transform 160ms ease;
+}
+
+.group-arrow.open {
+  transform: rotate(90deg);
+}
+
+.criteria-wrap {
+  margin-top: 0.35rem;
+  display: grid;
+  gap: 12px;
+}
+
+.criteria-row {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  text-align: left;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1.25;
+}
+
+.criteria-row.active {
+  background: var(--active);
+  color: var(--text);
+}
+
+.criteria-id {
+  margin-right: 0.35rem;
+  font-weight: 700;
+}
+
+.learn-main {
+  padding: 1.2rem;
+}
+
+.status-text {
+  min-height: 1.3rem;
+  margin: 0 0 1rem;
+  color: var(--muted);
+}
+
+.deck {
+  width: min(640px, 100%);
+  min-height: 280px;
   margin: 0 auto;
-  padding: 1.25rem;
+  border: 1.5px solid var(--border);
+  border-radius: 1rem;
+  background: var(--panel);
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.3);
+}
+
+.deck-title {
+  margin: 0;
+  font-size: 2.2rem;
+  font-weight: 700;
+}
+
+.deck-sub {
+  margin: 0.8rem 0 0;
+  color: var(--muted);
+  font-size: 1rem;
+}
+
+.start-row {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  gap: 0.8rem;
+}
+
+.start-button {
+  border: 1.5px solid var(--border);
+  border-radius: 999px;
+  background: var(--panel);
+  color: var(--text);
+  padding: 0.75rem 1.1rem;
+  cursor: pointer;
+}
+
+.study-shell {
+  display: grid;
+  grid-template-columns: auto minmax(340px, 620px) minmax(230px, 300px) auto;
+  align-items: center;
+  justify-content: center;
+  gap: 0.9rem;
+}
+
+.arrow-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.arrow-button {
+  width: 58px;
+  height: 58px;
+  border-radius: 999px;
+  border: 1.5px solid var(--border);
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.arrow-button:hover {
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.2);
+}
+
+.arrow-label {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.card-stack {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.principle-label {
+  margin: 0;
+  text-align: center;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+}
+
+.card-trigger {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+}
+
+.flashcard {
+  width: 100%;
+  min-height: 360px;
+  border: 1.5px solid var(--border);
+  border-radius: 1rem;
+  background: var(--panel);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.28);
+  animation: cardIn 300ms linear;
+}
+
+@keyframes cardIn {
+  from {
+    transform: rotateY(-8deg);
+    opacity: 0.8;
+  }
+  to {
+    transform: rotateY(0);
+    opacity: 1;
+  }
+}
+
+.card-front,
+.card-back {
+  height: 100%;
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  text-align: center;
+  padding: 32px;
+}
+
+.sc-number {
+  margin: 0;
+  font-size: 2.2rem;
+  font-weight: 700;
+}
+
+.sc-title {
+  margin: 0.8rem 0 0;
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.sc-description {
+  margin: 1rem auto 0;
+  max-width: 600px;
+  font-size: 18px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+.example-image {
+  width: min(520px, 100%);
+  aspect-ratio: 16 / 9;
+  border: 2px solid var(--focus);
+  border-radius: 0.65rem;
+  background: linear-gradient(120deg, #273245 0%, #1b2230 100%);
+  display: grid;
+  place-items: center;
+  color: var(--muted);
+}
+
+.caption-card {
+  border: 1.5px solid #3a4354;
+  border-radius: 0.75rem;
+  background: #fff;
+  color: #0f1115;
+  padding: 0.9rem;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+}
+
+.caption-card h4 {
+  margin: 0;
+}
+
+.caption-card p {
+  margin: 0.6rem 0 0;
+  font-size: 0.95rem;
 }
 
 .card {
@@ -97,4 +375,34 @@ a {
   font-size: 0.8rem;
   margin-left: 0.5rem;
   color: var(--muted);
+}
+
+.hidden {
+  display: none !important;
+}
+
+@media (max-width: 1024px) {
+  .learn-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .learn-sidebar {
+    border-right: 0;
+    border-bottom: 1.5px solid var(--border);
+    max-height: 280px;
+  }
+
+  .study-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .arrow-block {
+    flex-direction: row;
+    justify-content: center;
+  }
+
+  .caption-card {
+    max-width: 620px;
+    margin: 0 auto;
+  }
 }
