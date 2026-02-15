@@ -1,0 +1,23 @@
+[
+  {
+    "id": "1.1.1",
+    "title": "Non-text Content",
+    "level": "A",
+    "principle": "Perceivable",
+    "shortExplanation": "Provide text alternatives for meaningful images, icons, and controls."
+  },
+  {
+    "id": "2.1.1",
+    "title": "Keyboard",
+    "level": "A",
+    "principle": "Operable",
+    "shortExplanation": "All functionality should be operable by keyboard."
+  },
+  {
+    "id": "1.4.3",
+    "title": "Contrast (Minimum)",
+    "level": "AA",
+    "principle": "Perceivable",
+    "shortExplanation": "Text should have sufficient contrast with its background."
+  }
+]

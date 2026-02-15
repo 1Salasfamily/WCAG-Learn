@@ -1,0 +1,100 @@
+:root {
+  --bg: #0b0f14;
+  --panel: #121926;
+  --text: #f5f7fa;
+  --muted: #c5ccd8;
+  --border: #2f3849;
+  --focus: #22c55e;
+  --link: #8cc8ff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: radial-gradient(circle at 10% -20%, #1f2a3e, var(--bg) 55%);
+  color: var(--text);
+  font-family: "Trebuchet MS", Trebuchet, Verdana, sans-serif;
+}
+
+a {
+  color: var(--link);
+}
+
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -3rem;
+  background: #fff;
+  color: #111;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  z-index: 1000;
+}
+
+.skip-link:focus {
+  top: 1rem;
+}
+
+.site-header {
+  border-bottom: 1px solid var(--border);
+  padding: 1rem 1.25rem;
+}
+
+.site-title {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.site-nav {
+  margin-top: 0.5rem;
+}
+
+.nav-list {
+  display: flex;
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.main-content {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 1.25rem;
+}
+
+.card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  padding: 1rem;
+}
+
+.criteria-list {
+  margin: 0;
+  padding-left: 1.25rem;
+}
+
+.criteria-list li {
+  margin: 0.5rem 0;
+}
+
+.badge {
+  display: inline-block;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0.15rem 0.5rem;
+  font-size: 0.8rem;
+  margin-left: 0.5rem;
+  color: var(--muted);
+}
