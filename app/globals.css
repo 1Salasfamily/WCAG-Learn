@@ -269,6 +269,7 @@ a {
   background: transparent;
   padding: 0;
   cursor: pointer;
+  color: var(--text);
 }
 
 .flashcard {
@@ -277,6 +278,7 @@ a {
   border: 1.5px solid var(--border);
   border-radius: 1rem;
   background: var(--panel);
+  color: var(--text);
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.28);
   animation: cardIn 300ms linear;
 }
@@ -306,12 +308,14 @@ a {
   margin: 0;
   font-size: 2.2rem;
   font-weight: 700;
+  color: var(--text);
 }
 
 .sc-title {
   margin: 0.8rem 0 0;
   font-size: 1.4rem;
   font-weight: 700;
+  color: var(--text);
 }
 
 .sc-description {
