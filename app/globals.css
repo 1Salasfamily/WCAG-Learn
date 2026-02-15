@@ -18,9 +18,13 @@ html,
 body {
   margin: 0;
   padding: 0;
+  min-height: 100dvh;
   background: radial-gradient(circle at 12% -14%, #1e2635 0%, var(--bg) 56%);
   color: var(--text);
   font-family: "Trebuchet MS", Trebuchet, Verdana, sans-serif;
+  -webkit-text-size-adjust: 100%;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
 }
 
 a {
@@ -61,7 +65,8 @@ a {
 
 .site-header {
   border-bottom: 1.5px solid var(--border);
-  padding: 1rem 1.25rem;
+  padding: calc(1rem + env(safe-area-inset-top)) calc(1rem + env(safe-area-inset-right))
+    1rem calc(1rem + env(safe-area-inset-left));
 }
 
 .site-title {
@@ -86,11 +91,11 @@ a {
   width: 100%;
   max-width: none;
   margin: 0;
-  padding: 0;
+  padding: 0 env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
 }
 
 .learn-layout {
-  min-height: calc(100vh - 82px);
+  min-height: calc(100dvh - 82px);
   display: grid;
   grid-template-columns: minmax(260px, 20vw) 1fr;
 }
@@ -126,6 +131,8 @@ a {
   align-items: center;
   gap: 0.45rem;
   cursor: pointer;
+  min-height: 44px;
+  touch-action: manipulation;
 }
 
 .group-arrow {
@@ -155,6 +162,8 @@ a {
   cursor: pointer;
   font-size: 16px;
   line-height: 1.25;
+  min-height: 44px;
+  touch-action: manipulation;
 }
 
 .criteria-row.active {
@@ -216,6 +225,9 @@ a {
   color: var(--text);
   padding: 0.75rem 1.1rem;
   cursor: pointer;
+  min-height: 44px;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .study-shell {
@@ -241,6 +253,8 @@ a {
   background: transparent;
   color: var(--text);
   cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .arrow-button:hover {
@@ -270,6 +284,8 @@ a {
   padding: 0;
   cursor: pointer;
   color: var(--text);
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .flashcard {
@@ -408,5 +424,54 @@ a {
   .caption-card {
     max-width: 620px;
     margin: 0 auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .site-title {
+    font-size: 2rem;
+  }
+
+  .learn-main {
+    padding: 0.9rem;
+  }
+
+  .deck {
+    min-height: 220px;
+  }
+
+  .deck-title {
+    font-size: 1.8rem;
+  }
+
+  .start-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .start-button {
+    width: 100%;
+    font-size: 1rem;
+  }
+
+  .flashcard {
+    min-height: 300px;
+  }
+
+  .card-front,
+  .card-back {
+    padding: 20px;
+  }
+
+  .sc-number {
+    font-size: 1.9rem;
+  }
+
+  .sc-title {
+    font-size: 1.25rem;
+  }
+
+  .sc-description {
+    font-size: 1.1rem;
   }
 }
