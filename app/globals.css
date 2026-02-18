@@ -113,6 +113,8 @@ a {
   background: linear-gradient(180deg, #141a24 0%, #0f141c 100%);
   padding: 1rem 0.75rem;
   overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(111, 138, 184, 0.45) rgba(21, 26, 34, 0.2);
 }
 
 .sidebar-title {
@@ -191,6 +193,31 @@ a {
   height: 100%;
   padding: 1.2rem;
   overflow: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(111, 138, 184, 0.45) rgba(21, 26, 34, 0.2);
+}
+
+.learn-sidebar::-webkit-scrollbar,
+.learn-main::-webkit-scrollbar {
+  width: 9px;
+  height: 9px;
+}
+
+.learn-sidebar::-webkit-scrollbar-track,
+.learn-main::-webkit-scrollbar-track {
+  background: rgba(21, 26, 34, 0.18);
+}
+
+.learn-sidebar::-webkit-scrollbar-thumb,
+.learn-main::-webkit-scrollbar-thumb {
+  background: rgba(111, 138, 184, 0.45);
+  border-radius: 999px;
+  border: 2px solid rgba(21, 26, 34, 0.2);
+}
+
+.learn-sidebar::-webkit-scrollbar-thumb:hover,
+.learn-main::-webkit-scrollbar-thumb:hover {
+  background: rgba(132, 160, 211, 0.58);
 }
 
 .status-text {
