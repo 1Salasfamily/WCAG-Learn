@@ -148,27 +148,30 @@ a {
 .criteria-wrap {
   margin-top: 0.35rem;
   display: grid;
-  gap: 12px;
+  gap: 8px;
 }
 
 .criteria-row {
   width: 100%;
-  border: 0;
-  background: transparent;
+  border: 1px solid rgba(43, 50, 65, 0.75);
+  background: rgba(21, 26, 34, 0.28);
   color: var(--muted);
   text-align: left;
-  padding: 0.5rem;
+  padding: 0.55rem 0.6rem;
   border-radius: 0.5rem;
   cursor: pointer;
   font-size: 16px;
   line-height: 1.25;
   min-height: 44px;
   touch-action: manipulation;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.22);
 }
 
 .criteria-row.active {
   background: var(--active);
+  border-color: rgba(111, 138, 184, 0.65);
   color: var(--text);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.28);
 }
 
 .criteria-id {
