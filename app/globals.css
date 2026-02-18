@@ -180,13 +180,22 @@ a {
 }
 
 .learn-main {
+  position: relative;
+  min-height: calc(100dvh - 82px);
+  display: grid;
+  place-items: center;
   padding: 1.2rem;
+  overflow: auto;
 }
 
 .status-text {
-  min-height: 1.3rem;
-  margin: 0 0 1rem;
+  position: absolute;
+  top: 1.2rem;
+  left: 1.2rem;
+  right: 1.2rem;
+  margin: 0;
   color: var(--muted);
+  text-align: left;
 }
 
 .deck {
@@ -243,6 +252,7 @@ a {
   align-items: center;
   justify-content: center;
   gap: 0.9rem;
+  margin: 0 auto;
 }
 
 .arrow-block {
@@ -425,6 +435,7 @@ a {
 
   .study-shell {
     grid-template-columns: 1fr;
+    width: min(700px, 100%);
   }
 
   .arrow-block {
@@ -445,6 +456,12 @@ a {
 
   .learn-main {
     padding: 0.9rem;
+  }
+
+  .status-text {
+    top: 0.9rem;
+    left: 0.9rem;
+    right: 0.9rem;
   }
 
   .deck {
