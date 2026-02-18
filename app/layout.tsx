@@ -34,7 +34,11 @@ export default function RootLayout({
           <nav className="site-nav" aria-label="Primary">
             <ul className="nav-list">
               <li>
-                <a href="/">Reset</a>
+                <form action="/" method="get">
+                  <button type="submit" className="start-button nav-reset">
+                    Reset
+                  </button>
+                </form>
               </li>
             </ul>
           </nav>
