@@ -276,10 +276,15 @@ a {
 
 .study-shell {
   display: grid;
-  grid-template-columns: auto minmax(340px, 620px) minmax(230px, 300px) auto;
+  grid-template-columns: auto minmax(340px, 620px) auto;
   align-items: center;
   justify-content: center;
   gap: 0.9rem;
+}
+
+.study-shell.is-flipped {
+  grid-template-columns: auto minmax(340px, 620px) minmax(230px, 300px) auto;
+  transform: translateX(-110px);
 }
 
 .arrow-block {
@@ -462,6 +467,11 @@ a {
 
   .study-shell {
     grid-template-columns: 1fr;
+  }
+
+  .study-shell.is-flipped {
+    grid-template-columns: 1fr;
+    transform: none;
   }
 
   .arrow-block {

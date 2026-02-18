@@ -211,7 +211,10 @@ export default function HomePage() {
             </div>
           </>
         ) : (
-          <section className="study-shell" aria-label="Flashcard study interface">
+          <section
+            className={`study-shell ${flipped ? "is-flipped" : ""}`}
+            aria-label="Flashcard study interface"
+          >
             <div className="arrow-block left">
               <button className="arrow-button" onClick={goBack} aria-label="Back">
                 ◀
