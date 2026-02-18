@@ -97,7 +97,7 @@ a {
 .learn-layout {
   min-height: calc(100dvh - 82px);
   display: grid;
-  grid-template-columns: minmax(260px, 20vw) 1fr;
+  grid-template-columns: minmax(286px, 22vw) 1fr;
 }
 
 .learn-sidebar {
