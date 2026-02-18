@@ -236,17 +236,15 @@ a {
 }
 
 .deck {
-  width: min(640px, 88vw);
-  aspect-ratio: 1 / 1;
+  width: min(640px, 100%);
+  min-height: 280px;
   margin: 0 auto;
   border: 1.5px solid var(--border);
-  border-radius: 50%;
+  border-radius: 1rem;
   background: var(--panel);
   display: grid;
   align-content: center;
   justify-items: center;
-  text-align: center;
-  padding: 2rem;
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.3);
 }
 
@@ -510,7 +508,7 @@ a {
   }
 
   .deck {
-    width: min(520px, 92vw);
+    min-height: 220px;
   }
 
   .deck-title {
