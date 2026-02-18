@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import ResetButton from "./reset-button";
 
 export const metadata: Metadata = {
   title: "WCAG Learn",
@@ -34,11 +35,7 @@ export default function RootLayout({
           <nav className="site-nav" aria-label="Primary">
             <ul className="nav-list">
               <li>
-                <form action="/" method="get">
-                  <button type="submit" className="start-button nav-reset">
-                    Reset
-                  </button>
-                </form>
+                <ResetButton />
               </li>
             </ul>
           </nav>

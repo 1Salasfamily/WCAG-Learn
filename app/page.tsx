@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import wcagData from "@/data/wcag.json";
 
 type Principle = "Perceivable" | "Operable" | "Understandable" | "Robust";
@@ -85,6 +85,13 @@ export default function HomePage() {
     ? `Viewing ${activeIndex + 1} of ${cards.length}: ${current.id} ${current.title}`
     : "Ready. Choose Start in Order or Start Random Order.";
 
+  function resetToStart() {
+    setCards(ordered);
+    setActiveIndex(0);
+    setFlipped(false);
+    setStarted(false);
+  }
+
   function startOrder() {
     setCards(ordered);
     setActiveIndex(0);
@@ -127,6 +134,15 @@ export default function HomePage() {
   function toggleSection(principle: Principle) {
     setExpanded((prev) => ({ ...prev, [principle]: !prev[principle] }));
   }
+
+  useEffect(() => {
+    function onReset() {
+      resetToStart();
+    }
+
+    window.addEventListener("wcag-learn:reset", onReset);
+    return () => window.removeEventListener("wcag-learn:reset", onReset);
+  }, [ordered]);
 
   return (
     <section className="learn-layout" aria-labelledby="learn-heading">
