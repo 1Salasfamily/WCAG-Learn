@@ -230,6 +230,10 @@ a {
   -webkit-tap-highlight-color: transparent;
 }
 
+.nav-reset {
+  margin: 0;
+}
+
 .study-shell {
   display: grid;
   grid-template-columns: auto minmax(340px, 620px) minmax(230px, 300px) auto;
@@ -255,10 +259,6 @@ a {
   cursor: pointer;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
-}
-
-.arrow-button:hover {
-  box-shadow: 0 0 12px rgba(255, 255, 255, 0.2);
 }
 
 .arrow-label {
@@ -399,6 +399,14 @@ a {
 
 .hidden {
   display: none !important;
+}
+
+.start-button:hover,
+.arrow-button:hover,
+.group-toggle:hover,
+.criteria-row:hover,
+.card-trigger:hover .flashcard {
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.2);
 }
 
 @media (max-width: 1024px) {
