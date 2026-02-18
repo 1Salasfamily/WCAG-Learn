@@ -191,6 +191,8 @@ a {
 
 .learn-main {
   height: 100%;
+  display: grid;
+  grid-template-rows: auto 1fr;
   padding: 1.2rem;
   overflow: auto;
   scrollbar-width: thin;
@@ -224,6 +226,13 @@ a {
   min-height: 1.3rem;
   margin: 0 0 1rem;
   color: var(--muted);
+}
+
+.main-stage {
+  min-height: 0;
+  display: grid;
+  align-content: center;
+  justify-content: center;
 }
 
 .deck {
@@ -492,6 +501,10 @@ a {
 
   .learn-main {
     padding: 0.9rem;
+  }
+
+  .main-stage {
+    align-content: start;
   }
 
   .deck {
