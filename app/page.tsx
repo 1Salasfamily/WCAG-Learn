@@ -194,8 +194,9 @@ export default function HomePage() {
           {statusText}
         </p>
 
-        {!started ? (
-          <>
+        <div className="main-stage">
+          {!started ? (
+            <>
             <section className="deck" aria-label="Flashcard deck">
               <p className="deck-title">WCAG Learn</p>
               <p className="deck-sub">Practice WCAG 2.2 Level A + AA</p>
@@ -209,66 +210,67 @@ export default function HomePage() {
                 Start Random Order
               </button>
             </div>
-          </>
-        ) : (
-          <section
-            className={`study-shell ${flipped ? "is-flipped" : ""}`}
-            aria-label="Flashcard study interface"
-          >
-            <div className="arrow-block left">
-              <button className="arrow-button" onClick={goBack} aria-label="Back">
-                ◀
-              </button>
-              <span className="arrow-label">Back</span>
-            </div>
+            </>
+          ) : (
+            <section
+              className={`study-shell ${flipped ? "is-flipped" : ""}`}
+              aria-label="Flashcard study interface"
+            >
+              <div className="arrow-block left">
+                <button className="arrow-button" onClick={goBack} aria-label="Back">
+                  ◀
+                </button>
+                <span className="arrow-label">Back</span>
+              </div>
 
-            <div className="card-stack">
-              <p className="principle-label">{current.principle.toUpperCase()}</p>
+              <div className="card-stack">
+                <p className="principle-label">{current.principle.toUpperCase()}</p>
 
-              <button
-                className="card-trigger"
-                onClick={() => setFlipped((prev) => !prev)}
-                aria-label="Flip flashcard"
-              >
-                <article className="flashcard" aria-live="polite">
-                  {!flipped ? (
-                    <div className="card-front">
-                      <p className="sc-number">{current.id}</p>
-                      <h3 className="sc-title">{current.title}</h3>
-                      <p className="sc-description">{current.shortExplanation}</p>
-                    </div>
-                  ) : (
-                    <div className="card-back">
-                      <div
-                        className="example-image"
-                        role="img"
-                        aria-label={`Example visual placeholder for ${current.id} ${current.title}`}
-                      >
-                        Example image area
+                <button
+                  className="card-trigger"
+                  onClick={() => setFlipped((prev) => !prev)}
+                  aria-label="Flip flashcard"
+                >
+                  <article className="flashcard" aria-live="polite">
+                    {!flipped ? (
+                      <div className="card-front">
+                        <p className="sc-number">{current.id}</p>
+                        <h3 className="sc-title">{current.title}</h3>
+                        <p className="sc-description">{current.shortExplanation}</p>
                       </div>
-                      <p className="sc-description">
-                        Highlighted example region for criterion review.
-                      </p>
-                    </div>
-                  )}
-                </article>
-              </button>
-            </div>
+                    ) : (
+                      <div className="card-back">
+                        <div
+                          className="example-image"
+                          role="img"
+                          aria-label={`Example visual placeholder for ${current.id} ${current.title}`}
+                        >
+                          Example image area
+                        </div>
+                        <p className="sc-description">
+                          Highlighted example region for criterion review.
+                        </p>
+                      </div>
+                    )}
+                  </article>
+                </button>
+              </div>
 
-            <aside className={`caption-card ${flipped ? "" : "hidden"}`} aria-live="polite">
-              <h4>{current.id}</h4>
-              <p>{current.title}</p>
-              <p>{current.shortExplanation}</p>
-            </aside>
+              <aside className={`caption-card ${flipped ? "" : "hidden"}`} aria-live="polite">
+                <h4>{current.id}</h4>
+                <p>{current.title}</p>
+                <p>{current.shortExplanation}</p>
+              </aside>
 
-            <div className="arrow-block right">
-              <button className="arrow-button" onClick={goNext} aria-label="Next">
-                ▶
-              </button>
-              <span className="arrow-label">Next</span>
-            </div>
-          </section>
-        )}
+              <div className="arrow-block right">
+                <button className="arrow-button" onClick={goNext} aria-label="Next">
+                  ▶
+                </button>
+                <span className="arrow-label">Next</span>
+              </div>
+            </section>
+          )}
+        </div>
       </div>
     </section>
   );
