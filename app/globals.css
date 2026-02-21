@@ -374,6 +374,16 @@ a {
   padding: 32px;
 }
 
+.sc-front-line {
+  margin: 0;
+  max-width: 90%;
+  text-align: center;
+  font-size: clamp(1.8rem, 3.2vw, 3rem);
+  line-height: 1.15;
+  font-weight: 700;
+  color: var(--text);
+}
+
 .sc-number {
   margin: 0;
   font-size: 2.2rem;

@@ -234,9 +234,7 @@ export default function HomePage() {
                   <article className="flashcard" aria-live="polite">
                     {!flipped ? (
                       <div className="card-front">
-                        <p className="sc-number">{current.id}</p>
-                        <h3 className="sc-title">{current.title}</h3>
-                        <p className="sc-description">{current.shortExplanation}</p>
+                        <p className="sc-front-line">{`${current.id} ${current.title}.`}</p>
                       </div>
                     ) : (
                       <div className="card-back">
