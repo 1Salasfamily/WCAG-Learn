@@ -4,7 +4,7 @@
     "title": "Non-text Content",
     "level": "A",
     "principle": "Perceivable",
-    "shortExplanation": "Provide text alternatives for meaningful images, icons, and controls."
+    "shortExplanation": "Any content on a website that is not written text, including images, icons, charts, audio, CAPTCHAs, or interactive controls, must include text that clearly explains its meaning or purpose. If the content is decorative and does not convey information, it should be hidden from assistive technologies, such as by using an empty alt attribute.\n\nWCAG 1.1.1 requires that non-text elements have a text alternative. Non-text content includes anything other than written words, such as images, video, audio, and other visual or auditory material.\n\nPeople with visual, hearing, or cognitive disabilities may not be able to access information that is presented only through non-text formats. Providing text alternatives ensures that the information remains accessible and understandable."
   },
   {
     "id": "1.2.1",
