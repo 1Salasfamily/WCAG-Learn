@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-hidden="true">
+<rect width="640" height="360" rx="14" fill="#10151e"/>
+<g font-family="Verdana, sans-serif">
+<text x="22" y="36" font-size="17" font-weight="bold" fill="#f3f5f9">1.2.5 Audio Description (Prerecorded)</text>
+<rect x="22" y="56" width="292" height="284" rx="10" fill="#1b2230" stroke="#3a4354" stroke-width="2"/>
+<circle cx="48" cy="84" r="13" fill="#3fca72"/>
+<path d="M42 84l4 4 8-8" stroke="#10151e" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="70" y="89" font-size="13" fill="#3fca72">Accessible</text>
+<rect x="326" y="56" width="292" height="284" rx="10" fill="#1b2230" stroke="#3a4354" stroke-width="2"/>
+<circle cx="352" cy="84" r="13" fill="#e9607d"/>
+<path d="M347 79l10 10M357 79l-10 10" stroke="#10151e" stroke-width="3" stroke-linecap="round"/>
+<text x="374" y="89" font-size="13" fill="#e9607d">Violation</text>
+<rect x="44" y="100" width="248" height="130" rx="8" fill="#151a22" stroke="#3a4354" stroke-width="2"/>
+<polygon points="156,146 156,176 182,161" fill="#7aa0e1"/>
+<rect x="56" y="194" width="44" height="24" rx="4" fill="#3fca72"/>
+<text x="78" y="211" font-size="13" font-weight="bold" fill="#10151e" text-anchor="middle">AD</text>
+<text x="110" y="211" font-size="13" fill="#3fca72">On</text>
+<polygon points="70,242 64,252 78,252" fill="#7aa0e1"/>
+<rect x="44" y="252" width="232" height="44" rx="8" fill="#151a22" stroke="#7aa0e1" stroke-width="2"/>
+<text x="58" y="279" font-size="13" fill="#90cbff">&#8220;She opens Settings&#8230;&#8221;</text>
+<rect x="348" y="100" width="248" height="130" rx="8" fill="#151a22" stroke="#3a4354" stroke-width="2"/>
+<polygon points="460,146 460,176 486,161" fill="#7aa0e1"/>
+<rect x="360" y="194" width="44" height="24" rx="4" fill="#151a22" stroke="#3a4354" stroke-width="2"/>
+<text x="382" y="211" font-size="13" font-weight="bold" fill="#b8c0cf" text-anchor="middle">AD</text>
+<text x="414" y="211" font-size="13" fill="#b8c0cf">Off</text>
+<line x1="354" y1="226" x2="410" y2="188" stroke="#e9607d" stroke-width="3" stroke-linecap="round"/>
+<text x="348" y="279" font-size="13" fill="#e9607d">No audio description track</text>
+</g>
+</svg>

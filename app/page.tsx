@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import wcagData from "@/data/wcag.json";
 
@@ -13,6 +12,10 @@ type Criterion = {
   principle: Principle;
   shortExplanation: string;
   assistiveTech?: string[];
+  example?: {
+    pass: string;
+    fail: string;
+  };
 };
 type ViewMode = "reference" | "quiz";
 type QuizState = "idle" | "correct" | "wrong";
@@ -112,6 +115,9 @@ export default function HomePage() {
   });
 
   const current = cards[activeIndex];
+  const currentImageSrc = current
+    ? `/images/${current.id.split(".").join("-")}.svg`
+    : "";
   const detailParagraphs = current?.shortExplanation.split("\n\n") ?? [];
   const detailSections = [
     { heading: "What this means", text: detailParagraphs[0] ?? "" },
@@ -188,6 +194,11 @@ export default function HomePage() {
 
   function closeExampleExpanded() {
     setExampleExpanded(false);
+    requestAnimationFrame(() => {
+      document
+        .querySelector<HTMLButtonElement>(".reference-image-trigger")
+        ?.focus();
+    });
   }
 
   function setMode(mode: ViewMode) {
@@ -241,7 +252,16 @@ export default function HomePage() {
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape") {
-        setExampleExpanded(false);
+        setExampleExpanded((wasOpen) => {
+          if (wasOpen) {
+            requestAnimationFrame(() => {
+              document
+                .querySelector<HTMLButtonElement>(".reference-image-trigger")
+                ?.focus();
+            });
+          }
+          return false;
+        });
         setIsSidebarOpen(false);
       }
     }
@@ -340,36 +360,37 @@ export default function HomePage() {
 
         <div className="main-stage">
           {!started ? (
-            <>
             <section className="deck" aria-label="Flashcard deck">
+              <p className="deck-eyebrow">Study deck</p>
               <p className="deck-title">WCAG Learn</p>
-              <p className="deck-sub">Practice WCAG 2.2 Level A + AA</p>
+              <p className="deck-sub">
+                Flashcards and a quick-reference guide for every WCAG 2.2
+                success criterion.
+              </p>
+              <ul className="deck-stats" aria-label="Deck contents">
+                <li className="deck-stat">{ordered.length} criteria</li>
+                <li className="deck-stat">Levels A &amp; AA</li>
+                <li className="deck-stat">POUR principles</li>
+              </ul>
+              <div className="start-row" role="group" aria-label="Start modes">
+                <button className="start-button start-button-primary" onClick={startOrder}>
+                  Start in Order
+                </button>
+                <button className="start-button" onClick={startRandom}>
+                  Start Random Order
+                </button>
+              </div>
             </section>
-
-            <div className="start-row" role="group" aria-label="Start modes">
-              <button className="start-button" onClick={startOrder}>
-                Start in Order
-              </button>
-              <button className="start-button" onClick={startRandom}>
-                Start Random Order
-              </button>
-            </div>
-            </>
           ) : (
             <section className="study-shell" aria-label="Flashcard study interface">
               <div className="card-stack">
                 {viewMode === "quiz" ? (
-                  <button
-                    className="card-trigger"
-                    aria-label="Quiz prompt card"
-                    disabled
-                  >
-                    <article className="flashcard" aria-live="polite">
-                      <div className="card-front">
-                        <p className="sc-quiz-id">{current.id}</p>
-                      </div>
-                    </article>
-                  </button>
+                  <article className="flashcard quiz-card" aria-live="polite">
+                    <div className="card-front">
+                      <p className="sc-quiz-kicker">Success criterion</p>
+                      <p className="sc-quiz-id">{current.id}</p>
+                    </div>
+                  </article>
                 ) : (
                   <article className="flashcard" aria-live="polite">
                     <div className="card-back reference-back">
@@ -381,13 +402,10 @@ export default function HomePage() {
                         >
                           <div className="example-image-frame">
                           <div className="example-image-shell">
-                              <Image
+                              <img
                                 className="example-image"
-                                src="/images/1-1-1-non-text-content.png"
+                                src={currentImageSrc}
                                 alt={`Example visual for ${current.id} ${current.title}`}
-                                fill
-                                sizes="(max-width: 768px) 100vw, 620px"
-                                quality={100}
                               />
                             </div>
                             <span className="reference-expand-hint">Click image to expand</span>
@@ -419,6 +437,22 @@ export default function HomePage() {
                           </section>
                         ))}
                       </div>
+                      {current.example ? (
+                        <div className="reference-examples" aria-label="Pass and fail examples">
+                          <section className="reference-example example-pass">
+                            <h4>
+                              <span aria-hidden="true">✓</span> Pass example
+                            </h4>
+                            <p>{current.example.pass}</p>
+                          </section>
+                          <section className="reference-example example-fail">
+                            <h4>
+                              <span aria-hidden="true">✕</span> Fail example
+                            </h4>
+                            <p>{current.example.fail}</p>
+                          </section>
+                        </div>
+                      ) : null}
                     </div>
                   </article>
                 )}
@@ -489,17 +523,17 @@ export default function HomePage() {
           onClick={closeExampleExpanded}
         >
           <div className="example-overlay-image-wrap" onClick={(event) => event.stopPropagation()}>
-            <Image
+            <img
               className="example-overlay-image"
-              src="/images/1-1-1-non-text-content.png"
+              src={currentImageSrc}
               alt={`Expanded example visual for ${current.id} ${current.title}`}
-              fill
-              sizes="100vw"
-              quality={100}
-              priority
             />
           </div>
-          <button className="start-button overlay-close" onClick={closeExampleExpanded}>
+          <button
+            className="start-button overlay-close"
+            onClick={closeExampleExpanded}
+            autoFocus
+          >
             Close
           </button>
         </div>

@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-hidden="true">
+<rect width="640" height="360" rx="14" fill="#10151e"/>
+<text x="22" y="36" font-family="Verdana, sans-serif" font-size="17" font-weight="bold" fill="#f3f5f9">1.4.11 Non-text Contrast</text>
+<rect x="22" y="58" width="290" height="282" rx="10" fill="#1b2230" stroke="#3a4354" stroke-width="2"/>
+<rect x="328" y="58" width="290" height="282" rx="10" fill="#1b2230" stroke="#3a4354" stroke-width="2"/>
+<circle cx="48" cy="84" r="13" fill="#3fca72"/>
+<path d="M42 84l4 4 8-8" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="70" y="89" font-family="Verdana, sans-serif" font-size="13" font-weight="bold" fill="#3fca72">Accessible</text>
+<circle cx="354" cy="84" r="13" fill="#e9607d"/>
+<path d="M349 79l10 10M359 79l-10 10" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"/>
+<text x="376" y="89" font-family="Verdana, sans-serif" font-size="13" font-weight="bold" fill="#e9607d">Violation</text>
+<rect x="44" y="118" width="246" height="152" rx="8" fill="#ffffff"/>
+<text x="64" y="150" font-family="Verdana, sans-serif" font-size="13" fill="#2b2b2b">Full name</text>
+<rect x="58" y="158" width="218" height="48" rx="8" fill="none" stroke="#7aa0e1" stroke-width="3"/>
+<rect x="64" y="164" width="206" height="36" rx="5" fill="#ffffff" stroke="#767676" stroke-width="2"/>
+<line x1="78" y1="172" x2="78" y2="192" stroke="#2b2b2b" stroke-width="2"/>
+<text x="64" y="244" font-family="Verdana, sans-serif" font-size="13" fill="#2b2b2b">Border is easy to find</text>
+<text x="44" y="322" font-family="Verdana, sans-serif" font-size="13" fill="#3fca72">Border meets 3:1 + focus ring</text>
+<rect x="350" y="118" width="246" height="152" rx="8" fill="#ffffff"/>
+<text x="370" y="150" font-family="Verdana, sans-serif" font-size="13" fill="#aab2bf">Full name</text>
+<rect x="370" y="164" width="206" height="36" rx="5" fill="#ffffff" stroke="#dfe3e8" stroke-width="2"/>
+<text x="370" y="244" font-family="Verdana, sans-serif" font-size="13" fill="#aab2bf">Where is the field?</text>
+<text x="350" y="322" font-family="Verdana, sans-serif" font-size="13" fill="#e9607d">Border fails 3:1, no focus ring</text>
+</svg>

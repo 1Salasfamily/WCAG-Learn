@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-hidden="true">
+  <rect width="640" height="360" rx="14" fill="#10151e"/>
+  <text x="22" y="36" font-family="Verdana, sans-serif" font-size="17" font-weight="bold" fill="#f3f5f9">4.1.2 Name, Role, Value</text>
+  <rect x="22" y="56" width="290" height="288" rx="10" fill="#1b2230" stroke="#3a4354" stroke-width="2"/>
+  <rect x="328" y="56" width="290" height="288" rx="10" fill="#1b2230" stroke="#3a4354" stroke-width="2"/>
+  <circle cx="48" cy="84" r="13" fill="none" stroke="#3fca72" stroke-width="2"/>
+  <path d="M42 84 l4 4 l9 -9" stroke="#3fca72" stroke-width="2" fill="none"/>
+  <text x="70" y="89" font-family="Verdana, sans-serif" font-size="13" fill="#3fca72">Accessible</text>
+  <circle cx="354" cy="84" r="13" fill="none" stroke="#e9607d" stroke-width="2"/>
+  <path d="M349 79 l10 10 M359 79 l-10 10" stroke="#e9607d" stroke-width="2"/>
+  <text x="376" y="89" font-family="Verdana, sans-serif" font-size="13" fill="#e9607d">Violation</text>
+
+  <text x="54" y="131" font-family="Verdana, sans-serif" font-size="13" fill="#f3f5f9">Dark mode</text>
+  <rect x="150" y="113" width="52" height="26" rx="13" fill="#3fca72"/>
+  <circle cx="189" cy="126" r="9" fill="#f3f5f9"/>
+  <rect x="54" y="158" width="108" height="26" rx="6" fill="#151a22" stroke="#7aa0e1" stroke-width="2"/>
+  <text x="64" y="176" font-family="Verdana, sans-serif" font-size="13" fill="#90cbff">role=switch</text>
+  <rect x="54" y="194" width="160" height="26" rx="6" fill="#151a22" stroke="#7aa0e1" stroke-width="2"/>
+  <text x="64" y="212" font-family="Verdana, sans-serif" font-size="13" fill="#90cbff">aria-checked=true</text>
+  <rect x="54" y="240" width="226" height="46" rx="8" fill="#151a22" stroke="#3fca72" stroke-width="2"/>
+  <polygon points="84,286 100,286 92,298" fill="#151a22" stroke="#3fca72" stroke-width="2"/>
+  <text x="68" y="268" font-family="Verdana, sans-serif" font-size="13" fill="#f3f5f9">Dark mode, switch, on</text>
+  <text x="38" y="328" font-family="Verdana, sans-serif" font-size="13" fill="#b8c0cf">Screen reader announces it all</text>
+
+  <rect x="360" y="110" width="120" height="32" rx="6" fill="#1b2230" stroke="#3a4354" stroke-width="2"/>
+  <text x="374" y="131" font-family="Verdana, sans-serif" font-size="13" fill="#b8c0cf">Click me</text>
+  <text x="498" y="131" font-family="Verdana, sans-serif" font-size="13" fill="#b8c0cf">&#60;div&#62;</text>
+  <rect x="360" y="158" width="80" height="26" rx="6" fill="#151a22" stroke="#e9607d" stroke-width="2"/>
+  <text x="370" y="176" font-family="Verdana, sans-serif" font-size="13" fill="#e9607d">role=?</text>
+  <rect x="452" y="158" width="88" height="26" rx="6" fill="#151a22" stroke="#e9607d" stroke-width="2"/>
+  <text x="462" y="176" font-family="Verdana, sans-serif" font-size="13" fill="#e9607d">name=?</text>
+  <rect x="360" y="194" width="84" height="26" rx="6" fill="#151a22" stroke="#e9607d" stroke-width="2"/>
+  <text x="370" y="212" font-family="Verdana, sans-serif" font-size="13" fill="#e9607d">state=?</text>
+  <rect x="360" y="240" width="226" height="46" rx="8" fill="#151a22" stroke="#e9607d" stroke-width="2"/>
+  <polygon points="390,286 406,286 398,298" fill="#151a22" stroke="#e9607d" stroke-width="2"/>
+  <text x="473" y="269" font-family="Verdana, sans-serif" font-size="15" font-weight="bold" fill="#e9607d" text-anchor="middle">?</text>
+  <text x="344" y="328" font-family="Verdana, sans-serif" font-size="13" fill="#e9607d">Screen reader has nothing to say</text>
+</svg>

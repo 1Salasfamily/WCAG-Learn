@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-hidden="true">
+<rect width="640" height="360" rx="14" fill="#10151e"/>
+<g font-family="Verdana, sans-serif">
+<text x="22" y="36" font-size="17" font-weight="bold" fill="#f3f5f9">1.2.1 Audio-only and Video-only (Prerecorded)</text>
+<rect x="22" y="56" width="292" height="284" rx="10" fill="#1b2230" stroke="#3a4354" stroke-width="2"/>
+<circle cx="48" cy="84" r="13" fill="#3fca72"/>
+<path d="M42 84l4 4 8-8" stroke="#10151e" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="70" y="89" font-size="13" fill="#3fca72">Accessible</text>
+<rect x="326" y="56" width="292" height="284" rx="10" fill="#1b2230" stroke="#3a4354" stroke-width="2"/>
+<circle cx="352" cy="84" r="13" fill="#e9607d"/>
+<path d="M347 79l10 10M357 79l-10 10" stroke="#10151e" stroke-width="3" stroke-linecap="round"/>
+<text x="374" y="89" font-size="13" fill="#e9607d">Violation</text>
+<rect x="44" y="100" width="248" height="56" rx="8" fill="#151a22" stroke="#3a4354" stroke-width="2"/>
+<circle cx="70" cy="128" r="14" fill="#7aa0e1"/>
+<polygon points="66,121 66,135 78,128" fill="#10151e"/>
+<line x1="94" y1="128" x2="238" y2="128" stroke="#3a4354" stroke-width="4" stroke-linecap="round"/>
+<line x1="94" y1="128" x2="150" y2="128" stroke="#7aa0e1" stroke-width="4" stroke-linecap="round"/>
+<circle cx="150" cy="128" r="5" fill="#90cbff"/>
+<text x="246" y="133" font-size="13" fill="#b8c0cf">24:10</text>
+<rect x="44" y="172" width="248" height="146" rx="8" fill="#151a22" stroke="#3fca72" stroke-width="2"/>
+<text x="58" y="196" font-size="13" font-weight="bold" fill="#f3f5f9">Transcript</text>
+<text x="58" y="222" font-size="13" fill="#b8c0cf">Host: Welcome to episode 12.</text>
+<text x="58" y="244" font-size="13" fill="#b8c0cf">Guest: Thanks for having me.</text>
+<rect x="58" y="258" width="200" height="6" rx="3" fill="#3a4354"/>
+<rect x="58" y="272" width="160" height="6" rx="3" fill="#3a4354"/>
+<rect x="58" y="286" width="180" height="6" rx="3" fill="#3a4354"/>
+<rect x="348" y="100" width="248" height="56" rx="8" fill="#151a22" stroke="#3a4354" stroke-width="2"/>
+<circle cx="374" cy="128" r="14" fill="#7aa0e1"/>
+<polygon points="370,121 370,135 382,128" fill="#10151e"/>
+<line x1="398" y1="128" x2="542" y2="128" stroke="#3a4354" stroke-width="4" stroke-linecap="round"/>
+<line x1="398" y1="128" x2="454" y2="128" stroke="#7aa0e1" stroke-width="4" stroke-linecap="round"/>
+<circle cx="454" cy="128" r="5" fill="#90cbff"/>
+<text x="550" y="133" font-size="13" fill="#b8c0cf">24:10</text>
+<rect x="440" y="180" width="64" height="80" rx="6" fill="#151a22" stroke="#3a4354" stroke-width="2"/>
+<rect x="450" y="194" width="44" height="6" rx="3" fill="#3a4354"/>
+<rect x="450" y="208" width="36" height="6" rx="3" fill="#3a4354"/>
+<rect x="450" y="222" width="44" height="6" rx="3" fill="#3a4354"/>
+<rect x="450" y="236" width="30" height="6" rx="3" fill="#3a4354"/>
+<line x1="430" y1="268" x2="514" y2="172" stroke="#e9607d" stroke-width="3" stroke-linecap="round"/>
+<text x="472" y="296" font-size="13" fill="#e9607d" text-anchor="middle">No transcript provided</text>
+</g>
+</svg>

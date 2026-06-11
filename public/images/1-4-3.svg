@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-hidden="true">
+<rect width="640" height="360" rx="14" fill="#10151e"/>
+<text x="22" y="36" font-family="Verdana, sans-serif" font-size="17" font-weight="bold" fill="#f3f5f9">1.4.3 Contrast (Minimum)</text>
+<rect x="22" y="58" width="290" height="282" rx="10" fill="#1b2230" stroke="#3a4354" stroke-width="2"/>
+<rect x="328" y="58" width="290" height="282" rx="10" fill="#1b2230" stroke="#3a4354" stroke-width="2"/>
+<circle cx="48" cy="84" r="13" fill="#3fca72"/>
+<path d="M42 84l4 4 8-8" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="70" y="89" font-family="Verdana, sans-serif" font-size="13" font-weight="bold" fill="#3fca72">Accessible</text>
+<circle cx="354" cy="84" r="13" fill="#e9607d"/>
+<path d="M349 79l10 10M359 79l-10 10" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"/>
+<text x="376" y="89" font-family="Verdana, sans-serif" font-size="13" font-weight="bold" fill="#e9607d">Violation</text>
+<rect x="44" y="118" width="246" height="142" rx="8" fill="#ffffff"/>
+<text x="62" y="154" font-family="Verdana, sans-serif" font-size="16" font-weight="bold" fill="#2b2b2b">Account settings</text>
+<text x="62" y="184" font-family="Verdana, sans-serif" font-size="13" fill="#2b2b2b">Manage your profile,</text>
+<text x="62" y="206" font-family="Verdana, sans-serif" font-size="13" fill="#2b2b2b">password and privacy.</text>
+<text x="44" y="294" font-family="Verdana, sans-serif" font-size="15" font-weight="bold" fill="#3fca72">7:1 ✓</text>
+<text x="110" y="294" font-family="Verdana, sans-serif" font-size="13" fill="#b8c0cf">Passes AA and AAA</text>
+<text x="44" y="322" font-family="Verdana, sans-serif" font-size="13" fill="#3fca72">Dark text on white reads easily</text>
+<rect x="350" y="118" width="246" height="142" rx="8" fill="#ffffff"/>
+<text x="368" y="154" font-family="Verdana, sans-serif" font-size="16" font-weight="bold" fill="#aab2bf">Account settings</text>
+<text x="368" y="184" font-family="Verdana, sans-serif" font-size="13" fill="#aab2bf">Manage your profile,</text>
+<text x="368" y="206" font-family="Verdana, sans-serif" font-size="13" fill="#aab2bf">password and privacy.</text>
+<text x="350" y="294" font-family="Verdana, sans-serif" font-size="15" font-weight="bold" fill="#e9607d">2.3:1 ✕</text>
+<text x="436" y="294" font-family="Verdana, sans-serif" font-size="13" fill="#b8c0cf">Fails 4.5:1 minimum</text>
+<text x="350" y="322" font-family="Verdana, sans-serif" font-size="13" fill="#e9607d">Pale gray text washes out</text>
+</svg>

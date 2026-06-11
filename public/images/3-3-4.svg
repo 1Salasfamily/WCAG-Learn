@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-hidden="true">
+<rect width="640" height="360" rx="14" fill="#10151e"/>
+<text x="22" y="36" font-family="Verdana, sans-serif" font-size="17" font-weight="bold" fill="#f3f5f9">3.3.4 Error Prevention (Legal, Financial, Data)</text>
+<rect x="22" y="56" width="294" height="284" rx="10" fill="#1b2230" stroke="#3a4354" stroke-width="2"/>
+<rect x="324" y="56" width="294" height="284" rx="10" fill="#1b2230" stroke="#3a4354" stroke-width="2"/>
+<circle cx="48" cy="86" r="13" fill="#3fca72"/>
+<path d="M42 86l4 5 9-10" stroke="#10151e" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="350" cy="86" r="13" fill="#e9607d"/>
+<path d="M345 81l10 10m0-10l-10 10" stroke="#10151e" stroke-width="3" stroke-linecap="round"/>
+<g font-family="Verdana, sans-serif">
+<text x="70" y="91" font-size="13" fill="#b8c0cf">Review step first</text>
+<text x="372" y="91" font-size="13" fill="#b8c0cf">No review step</text>
+<text x="38" y="124" font-size="14" font-weight="bold" fill="#f3f5f9">Review your order</text>
+<text x="38" y="152" font-size="13" fill="#b8c0cf">Item — Headphones</text>
+<text x="254" y="152" font-size="13" fill="#90cbff" text-decoration="underline">Edit</text>
+<text x="38" y="180" font-size="13" fill="#b8c0cf">Ship to — 12 Oak St</text>
+<text x="254" y="180" font-size="13" fill="#90cbff" text-decoration="underline">Edit</text>
+<text x="38" y="208" font-size="13" fill="#b8c0cf">Card — •••• 4242</text>
+<text x="254" y="208" font-size="13" fill="#90cbff" text-decoration="underline">Edit</text>
+<rect x="38" y="230" width="130" height="34" rx="6" fill="#3fca72"/>
+<text x="51" y="252" font-size="13" font-weight="bold" fill="#10151e">Place Order</text>
+<text x="38" y="306" font-size="13" fill="#b8c0cf">Mistakes caught in time</text>
+<rect x="340" y="128" width="120" height="36" rx="6" fill="#7aa0e1"/>
+<text x="356" y="151" font-size="13" font-weight="bold" fill="#10151e">Buy now</text>
+<path d="M448 150v22l5-5 4 9 6-3-4-9h8z" fill="#f3f5f9"/>
+<path d="M400 184v26m-7-8l7 8 7-8" stroke="#b8c0cf" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="340" y="248" font-size="16" font-weight="bold" fill="#e9607d">Order placed!</text>
+<text x="340" y="274" font-size="13" fill="#b8c0cf">Charged instantly — no check</text>
+<text x="340" y="306" font-size="13" fill="#b8c0cf">One slip becomes a sale</text>
+</g>
+</svg>

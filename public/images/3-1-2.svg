@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-hidden="true">
+<rect width="640" height="360" rx="14" fill="#10151e"/>
+<text x="22" y="36" font-family="Verdana, sans-serif" font-size="17" font-weight="bold" fill="#f3f5f9">3.1.2 Language of Parts</text>
+<rect x="22" y="56" width="294" height="284" rx="10" fill="#1b2230" stroke="#3a4354" stroke-width="2"/>
+<rect x="324" y="56" width="294" height="284" rx="10" fill="#1b2230" stroke="#3a4354" stroke-width="2"/>
+<circle cx="48" cy="86" r="13" fill="#3fca72"/>
+<path d="M42 86l4 5 9-10" stroke="#10151e" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="350" cy="86" r="13" fill="#e9607d"/>
+<path d="M345 81l10 10m0-10l-10 10" stroke="#10151e" stroke-width="3" stroke-linecap="round"/>
+<g font-family="Verdana, sans-serif">
+<text x="70" y="91" font-size="13" fill="#b8c0cf">Quote tagged</text>
+<text x="372" y="91" font-size="13" fill="#b8c0cf">Quote unmarked</text>
+<text x="38" y="122" font-size="13" fill="#b8c0cf">She greeted us with</text>
+<rect x="38" y="134" width="128" height="28" rx="6" fill="#151a22" stroke="#7aa0e1" stroke-width="2"/>
+<text x="48" y="153" font-size="14" fill="#90cbff">« Bonjour »</text>
+<text x="176" y="153" font-size="13" fill="#7aa0e1">lang="fr"</text>
+<rect x="38" y="176" width="240" height="6" rx="3" fill="#3a4354"/>
+<rect x="38" y="190" width="190" height="6" rx="3" fill="#3a4354"/>
+<path d="M50 222h12l14-11v36l-14-11H50z" fill="#7aa0e1"/>
+<path d="M84 228c5 4 5 8 0 12M91 222c9 7 9 17 0 24" stroke="#7aa0e1" stroke-width="2" fill="none" stroke-linecap="round"/>
+<path d="M122 228l-12 7 12 7z" fill="#151a22" stroke="#3fca72" stroke-width="2"/>
+<rect x="118" y="212" width="170" height="44" rx="8" fill="#151a22" stroke="#3fca72" stroke-width="2"/>
+<text x="138" y="240" font-size="14" fill="#3fca72">bon-ZHOOR</text>
+<text x="38" y="302" font-size="13" fill="#b8c0cf">French voice pronounces it</text>
+<text x="340" y="122" font-size="13" fill="#b8c0cf">She greeted us with</text>
+<text x="340" y="153" font-size="14" fill="#b8c0cf">« Bonjour »</text>
+<text x="442" y="153" font-size="13" fill="#e9607d">no lang</text>
+<rect x="340" y="176" width="240" height="6" rx="3" fill="#3a4354"/>
+<rect x="340" y="190" width="190" height="6" rx="3" fill="#3a4354"/>
+<path d="M352 222h12l14-11v36l-14-11h-12z" fill="#7aa0e1"/>
+<path d="M386 228c5 4 5 8 0 12M393 222c9 7 9 17 0 24" stroke="#7aa0e1" stroke-width="2" fill="none" stroke-linecap="round"/>
+<path d="M424 228l-12 7 12 7z" fill="#151a22" stroke="#e9607d" stroke-width="2"/>
+<rect x="420" y="212" width="170" height="44" rx="8" fill="#151a22" stroke="#e9607d" stroke-width="2"/>
+<text x="440" y="240" font-size="14" fill="#e9607d">bon-jower?</text>
+<text x="340" y="302" font-size="13" fill="#b8c0cf">English voice mangles it</text>
+</g>
+</svg>

@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-hidden="true">
+<rect width="640" height="360" rx="14" fill="#10151e"/>
+<text x="22" y="36" font-family="Verdana, sans-serif" font-size="17" font-weight="bold" fill="#f3f5f9">1.4.13 Content on Hover or Focus</text>
+<rect x="22" y="58" width="290" height="282" rx="10" fill="#1b2230" stroke="#3a4354" stroke-width="2"/>
+<rect x="328" y="58" width="290" height="282" rx="10" fill="#1b2230" stroke="#3a4354" stroke-width="2"/>
+<circle cx="48" cy="84" r="13" fill="#3fca72"/>
+<path d="M42 84l4 4 8-8" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="70" y="89" font-family="Verdana, sans-serif" font-size="13" font-weight="bold" fill="#3fca72">Accessible</text>
+<circle cx="354" cy="84" r="13" fill="#e9607d"/>
+<path d="M349 79l10 10M359 79l-10 10" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"/>
+<text x="376" y="89" font-family="Verdana, sans-serif" font-size="13" font-weight="bold" fill="#e9607d">Violation</text>
+<rect x="50" y="120" width="232" height="74" rx="6" fill="#151a22" stroke="#7aa0e1" stroke-width="2"/>
+<text x="64" y="148" font-family="Verdana, sans-serif" font-size="13" fill="#f3f5f9">Use format MM/DD/YYYY</text>
+<text x="64" y="174" font-family="Verdana, sans-serif" font-size="13" fill="#90cbff">Esc to dismiss</text>
+<path d="M96 195l10 16 10-16z" fill="#151a22" stroke="#7aa0e1" stroke-width="2"/>
+<circle cx="106" cy="240" r="13" fill="#1b2230" stroke="#7aa0e1" stroke-width="2"/>
+<text x="106" y="245" text-anchor="middle" font-family="Verdana, sans-serif" font-size="13" font-weight="bold" fill="#90cbff">?</text>
+<path d="M126 246q60 10 78-52" fill="none" stroke="#3fca72" stroke-width="2"/>
+<path d="M204 180l0 17 4.5-4.5 3 7 4-1.8-3-7 6.5 0z" fill="#f3f5f9"/>
+<text x="44" y="322" font-family="Verdana, sans-serif" font-size="13" fill="#3fca72">Pointer can reach the tooltip</text>
+<text x="350" y="138" font-family="Verdana, sans-serif" font-size="13" fill="#b8c0cf">Card number</text>
+<rect x="360" y="224" width="200" height="36" rx="5" fill="#151a22" stroke="#3a4354" stroke-width="2"/>
+<rect x="380" y="150" width="190" height="90" rx="6" fill="none" stroke="#e9607d" stroke-width="2" stroke-dasharray="6 5"/>
+<text x="396" y="180" font-family="Verdana, sans-serif" font-size="13" fill="#b8c0cf">(tooltip vanished)</text>
+<path d="M572 148l8-8M578 160h12M566 142l-2-12" fill="none" stroke="#e9607d" stroke-width="2" stroke-linecap="round"/>
+<path d="M370 296q80 0 106-66" fill="none" stroke="#e9607d" stroke-width="2" stroke-dasharray="5 5"/>
+<path d="M476 218l0 17 4.5-4.5 3 7 4-1.8-3-7 6.5 0z" fill="#f3f5f9"/>
+<text x="350" y="322" font-family="Verdana, sans-serif" font-size="13" fill="#e9607d">Gone before pointer arrives</text>
+</svg>

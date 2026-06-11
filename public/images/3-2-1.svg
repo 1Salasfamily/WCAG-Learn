@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-hidden="true">
+<rect width="640" height="360" rx="14" fill="#10151e"/>
+<text x="22" y="36" font-family="Verdana, sans-serif" font-size="17" font-weight="bold" fill="#f3f5f9">3.2.1 On Focus</text>
+<rect x="22" y="56" width="294" height="284" rx="10" fill="#1b2230" stroke="#3a4354" stroke-width="2"/>
+<rect x="324" y="56" width="294" height="284" rx="10" fill="#1b2230" stroke="#3a4354" stroke-width="2"/>
+<circle cx="48" cy="86" r="13" fill="#3fca72"/>
+<path d="M42 86l4 5 9-10" stroke="#10151e" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="350" cy="86" r="13" fill="#e9607d"/>
+<path d="M345 81l10 10m0-10l-10 10" stroke="#10151e" stroke-width="3" stroke-linecap="round"/>
+<g font-family="Verdana, sans-serif">
+<text x="70" y="91" font-size="13" fill="#b8c0cf">Predictable focus</text>
+<text x="372" y="91" font-size="13" fill="#b8c0cf">Surprise on focus</text>
+<rect x="38" y="110" width="190" height="124" rx="6" fill="#151a22" stroke="#3a4354" stroke-width="2"/>
+<text x="56" y="142" font-size="13" fill="#b8c0cf">Home</text>
+<rect x="46" y="154" width="174" height="28" rx="4" fill="none" stroke="#90cbff" stroke-width="2"/>
+<text x="56" y="173" font-size="13" fill="#f3f5f9">Products</text>
+<text x="56" y="206" font-size="13" fill="#b8c0cf">Pricing</text>
+<rect x="38" y="256" width="54" height="28" rx="4" fill="#151a22" stroke="#3a4354" stroke-width="2"/>
+<text x="50" y="275" font-size="13" fill="#f3f5f9">Tab</text>
+<text x="38" y="314" font-size="13" fill="#b8c0cf">Focus moves, view stays put</text>
+<rect x="340" y="112" width="150" height="32" rx="6" fill="#151a22" stroke="#90cbff" stroke-width="2"/>
+<text x="354" y="133" font-size="13" fill="#f3f5f9">Newsletter</text>
+<path d="M392 154l-8-8M410 150l-3-10M380 166l-10-3" stroke="#ffba60" stroke-width="2" stroke-linecap="round"/>
+<rect x="400" y="170" width="196" height="118" rx="8" fill="#1b2230" stroke="#e9607d" stroke-width="2"/>
+<text x="414" y="191" font-size="13" fill="#f3f5f9">Special offer!</text>
+<text x="574" y="191" font-size="13" fill="#e9607d">✕</text>
+<line x1="400" y1="200" x2="596" y2="200" stroke="#3a4354" stroke-width="2"/>
+<rect x="414" y="214" width="150" height="6" rx="3" fill="#3a4354"/>
+<rect x="414" y="228" width="120" height="6" rx="3" fill="#3a4354"/>
+<rect x="414" y="246" width="92" height="28" rx="4" fill="#7aa0e1"/>
+<text x="429" y="265" font-size="13" font-weight="bold" fill="#10151e">Sign up</text>
+<text x="340" y="314" font-size="13" fill="#b8c0cf">Popup bursts open on focus</text>
+</g>
+</svg>

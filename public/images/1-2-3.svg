@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-hidden="true">
+<rect width="640" height="360" rx="14" fill="#10151e"/>
+<g font-family="Verdana, sans-serif">
+<text x="22" y="36" font-size="17" font-weight="bold" fill="#f3f5f9">1.2.3 Audio Description or Media Alternative</text>
+<rect x="30" y="64" width="280" height="170" rx="10" fill="#1b2230" stroke="#3a4354" stroke-width="2"/>
+<circle cx="100" cy="124" r="12" fill="#b8c0cf"/>
+<path d="M100 136v36M100 148l36 10M100 148l-26 16M100 172l-18 26M100 172l20 26" stroke="#b8c0cf" stroke-width="3" fill="none" stroke-linecap="round"/>
+<circle cx="166" cy="156" r="16" stroke="#90cbff" stroke-width="2" fill="none"/>
+<circle cx="166" cy="156" r="5" fill="#90cbff"/>
+<path d="M166 134v6M166 172v6M144 156h6M182 156h6M150 140l4 4M178 168l4 4M182 140l-4 4M154 168l-4 4" stroke="#90cbff" stroke-width="2" stroke-linecap="round"/>
+<rect x="44" y="206" width="252" height="10" rx="5" fill="#151a22"/>
+<rect x="44" y="206" width="92" height="10" rx="5" fill="#7aa0e1"/>
+<text x="30" y="262" font-size="13" fill="#b8c0cf">Video shows action with no dialogue</text>
+<line x1="316" y1="148" x2="340" y2="148" stroke="#7aa0e1" stroke-width="2"/>
+<polygon points="340,142 350,148 340,154" fill="#7aa0e1"/>
+<rect x="352" y="64" width="266" height="240" rx="10" fill="#1b2230" stroke="#3fca72" stroke-width="2"/>
+<circle cx="376" cy="90" r="12" fill="#3fca72"/>
+<path d="M370 90l4 4 8-8" stroke="#10151e" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="396" y="95" font-size="13" font-weight="bold" fill="#f3f5f9">Descriptive transcript</text>
+<text x="368" y="130" font-size="13" fill="#90cbff">0:04</text>
+<text x="410" y="130" font-size="13" fill="#b8c0cf">She opens the Settings</text>
+<text x="410" y="150" font-size="13" fill="#b8c0cf">menu on her phone.</text>
+<text x="368" y="184" font-size="13" fill="#90cbff">0:09</text>
+<text x="410" y="184" font-size="13" fill="#b8c0cf">She turns on the audio</text>
+<text x="410" y="204" font-size="13" fill="#b8c0cf">description switch.</text>
+<rect x="368" y="226" width="210" height="6" rx="3" fill="#3a4354"/>
+<rect x="368" y="242" width="170" height="6" rx="3" fill="#3a4354"/>
+<rect x="368" y="258" width="190" height="6" rx="3" fill="#3a4354"/>
+<text x="352" y="330" font-size="13" fill="#3fca72">Narrates the on-screen action in text</text>
+</g>
+</svg>

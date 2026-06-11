@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-hidden="true">
+<rect width="640" height="360" rx="14" fill="#10151e"/>
+<text x="22" y="36" font-family="Verdana, sans-serif" font-size="17" font-weight="bold" fill="#f3f5f9">3.1.1 Language of Page</text>
+<rect x="22" y="56" width="294" height="284" rx="10" fill="#1b2230" stroke="#3a4354" stroke-width="2"/>
+<rect x="324" y="56" width="294" height="284" rx="10" fill="#1b2230" stroke="#3a4354" stroke-width="2"/>
+<circle cx="48" cy="86" r="13" fill="#3fca72"/>
+<path d="M42 86l4 5 9-10" stroke="#10151e" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="350" cy="86" r="13" fill="#e9607d"/>
+<path d="M345 81l10 10m0-10l-10 10" stroke="#10151e" stroke-width="3" stroke-linecap="round"/>
+<g font-family="Verdana, sans-serif">
+<text x="70" y="91" font-size="13" fill="#b8c0cf">Page language set</text>
+<text x="372" y="91" font-size="13" fill="#b8c0cf">No page language</text>
+<rect x="38" y="110" width="258" height="38" rx="6" fill="#151a22" stroke="#3a4354" stroke-width="2"/>
+<text x="50" y="134" font-size="14" fill="#90cbff">&lt;html lang="es"&gt;</text>
+<path d="M50 192h12l14-11v36l-14-11H50z" fill="#7aa0e1"/>
+<path d="M84 198c5 4 5 8 0 12M91 192c9 7 9 17 0 24" stroke="#7aa0e1" stroke-width="2" fill="none" stroke-linecap="round"/>
+<path d="M122 198l-12 7 12 7z" fill="#151a22" stroke="#3fca72" stroke-width="2"/>
+<rect x="118" y="182" width="160" height="44" rx="8" fill="#151a22" stroke="#3fca72" stroke-width="2"/>
+<text x="170" y="211" font-size="16" fill="#3fca72">Hola</text>
+<text x="38" y="300" font-size="13" fill="#b8c0cf">Spanish voice reads it right</text>
+<rect x="340" y="110" width="258" height="38" rx="6" fill="#151a22" stroke="#3a4354" stroke-width="2"/>
+<text x="352" y="134" font-size="14" fill="#b8c0cf">&lt;html&gt;</text>
+<text x="436" y="134" font-size="13" fill="#ffba60">lang missing</text>
+<path d="M352 192h12l14-11v36l-14-11h-12z" fill="#7aa0e1"/>
+<path d="M386 198c5 4 5 8 0 12M393 192c9 7 9 17 0 24" stroke="#7aa0e1" stroke-width="2" fill="none" stroke-linecap="round"/>
+<path d="M424 198l-12 7 12 7z" fill="#151a22" stroke="#e9607d" stroke-width="2"/>
+<rect x="420" y="182" width="160" height="44" rx="8" fill="#151a22" stroke="#e9607d" stroke-width="2"/>
+<text x="488" y="212" font-size="18" font-weight="bold" fill="#e9607d">??</text>
+<text x="340" y="300" font-size="13" fill="#b8c0cf">Wrong voice, garbled speech</text>
+</g>
+</svg>

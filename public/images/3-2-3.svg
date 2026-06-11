@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-hidden="true">
+<rect width="640" height="360" rx="14" fill="#10151e"/>
+<text x="22" y="36" font-family="Verdana, sans-serif" font-size="17" font-weight="bold" fill="#f3f5f9">3.2.3 Consistent Navigation</text>
+<rect x="22" y="56" width="294" height="284" rx="10" fill="#1b2230" stroke="#3a4354" stroke-width="2"/>
+<rect x="324" y="56" width="294" height="284" rx="10" fill="#1b2230" stroke="#3a4354" stroke-width="2"/>
+<circle cx="48" cy="86" r="13" fill="#3fca72"/>
+<path d="M42 86l4 5 9-10" stroke="#10151e" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="350" cy="86" r="13" fill="#e9607d"/>
+<path d="M345 81l10 10m0-10l-10 10" stroke="#10151e" stroke-width="3" stroke-linecap="round"/>
+<g font-family="Verdana, sans-serif">
+<text x="70" y="91" font-size="13" fill="#b8c0cf">Same order everywhere</text>
+<text x="372" y="91" font-size="13" fill="#b8c0cf">Order shuffled</text>
+<text x="38" y="116" font-size="13" fill="#b8c0cf">Page 1</text>
+<rect x="38" y="122" width="258" height="82" rx="6" fill="#151a22" stroke="#3a4354" stroke-width="2"/>
+<text x="50" y="146" font-size="13" fill="#f3f5f9">Home Products Pricing Support</text>
+<line x1="50" y1="156" x2="284" y2="156" stroke="#3a4354" stroke-width="2"/>
+<rect x="50" y="170" width="200" height="6" rx="3" fill="#3a4354"/>
+<rect x="50" y="184" width="150" height="6" rx="3" fill="#3a4354"/>
+<text x="38" y="226" font-size="13" fill="#b8c0cf">Page 2</text>
+<rect x="38" y="232" width="258" height="82" rx="6" fill="#151a22" stroke="#3a4354" stroke-width="2"/>
+<text x="50" y="256" font-size="13" fill="#f3f5f9">Home Products Pricing Support</text>
+<line x1="50" y1="266" x2="284" y2="266" stroke="#3a4354" stroke-width="2"/>
+<rect x="50" y="280" width="180" height="6" rx="3" fill="#3a4354"/>
+<rect x="50" y="294" width="130" height="6" rx="3" fill="#3a4354"/>
+<text x="340" y="116" font-size="13" fill="#b8c0cf">Page 1</text>
+<rect x="340" y="122" width="258" height="82" rx="6" fill="#151a22" stroke="#3a4354" stroke-width="2"/>
+<text x="352" y="146" font-size="13" fill="#f3f5f9">Home Products Pricing Support</text>
+<line x1="352" y1="156" x2="586" y2="156" stroke="#3a4354" stroke-width="2"/>
+<rect x="352" y="170" width="200" height="6" rx="3" fill="#3a4354"/>
+<rect x="352" y="184" width="150" height="6" rx="3" fill="#3a4354"/>
+<text x="340" y="226" font-size="13" fill="#b8c0cf">Page 2</text>
+<rect x="340" y="232" width="258" height="82" rx="6" fill="#151a22" stroke="#e9607d" stroke-width="2"/>
+<text x="352" y="256" font-size="13" fill="#e9607d">Pricing Support Home Products</text>
+<line x1="352" y1="266" x2="586" y2="266" stroke="#3a4354" stroke-width="2"/>
+<rect x="352" y="280" width="180" height="6" rx="3" fill="#3a4354"/>
+<rect x="352" y="294" width="130" height="6" rx="3" fill="#3a4354"/>
+</g>
+</svg>

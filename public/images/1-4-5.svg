@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-hidden="true">
+<rect width="640" height="360" rx="14" fill="#10151e"/>
+<text x="22" y="36" font-family="Verdana, sans-serif" font-size="17" font-weight="bold" fill="#f3f5f9">1.4.5 Images of Text</text>
+<rect x="22" y="58" width="290" height="282" rx="10" fill="#1b2230" stroke="#3a4354" stroke-width="2"/>
+<rect x="328" y="58" width="290" height="282" rx="10" fill="#1b2230" stroke="#3a4354" stroke-width="2"/>
+<circle cx="48" cy="84" r="13" fill="#3fca72"/>
+<path d="M42 84l4 4 8-8" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="70" y="89" font-family="Verdana, sans-serif" font-size="13" font-weight="bold" fill="#3fca72">Accessible</text>
+<circle cx="354" cy="84" r="13" fill="#e9607d"/>
+<path d="M349 79l10 10M359 79l-10 10" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"/>
+<text x="376" y="89" font-family="Verdana, sans-serif" font-size="13" font-weight="bold" fill="#e9607d">Violation</text>
+<text x="44" y="122" font-family="Verdana, sans-serif" font-size="13" fill="#b8c0cf">Real text heading:</text>
+<text x="44" y="172" font-family="Verdana, sans-serif" font-size="26" font-weight="bold" fill="#f3f5f9">Summer Sale</text>
+<text x="44" y="206" font-family="Verdana, sans-serif" font-size="13" fill="#f3f5f9">Crisp at any zoom level,</text>
+<text x="44" y="228" font-family="Verdana, sans-serif" font-size="13" fill="#f3f5f9">restyles and translates.</text>
+<text x="44" y="322" font-family="Verdana, sans-serif" font-size="13" fill="#3fca72">Selectable, sharp, scalable</text>
+<text x="350" y="122" font-family="Verdana, sans-serif" font-size="13" fill="#b8c0cf">Bitmap image of text:</text>
+<rect x="350" y="134" width="200" height="86" rx="6" fill="#151a22" stroke="#3a4354" stroke-width="2"/>
+<rect x="500" y="140" width="40" height="20" rx="4" fill="#3a4354"/>
+<text x="520" y="155" text-anchor="middle" font-family="Verdana, sans-serif" font-size="13" font-weight="bold" fill="#f3f5f9">JPG</text>
+<path fill="#b8c0cf" d="M370 148h24v8h-24zM370 156h8v8h-8zM370 164h24v8h-24zM386 172h8v8h-8zM370 180h24v8h-24zM414 148h8v8h-8zM406 156h8v8h-8zM422 156h8v8h-8zM406 164h24v8h-24zM406 172h8v16h-8zM422 172h8v16h-8zM442 148h8v40h-8zM450 180h16v8h-16zM478 148h24v8h-24zM478 156h8v8h-8zM478 164h16v8h-16zM478 172h8v8h-8zM478 180h24v8h-24z"/>
+<text x="350" y="244" font-family="Verdana, sans-serif" font-size="13" fill="#b8c0cf">sale-banner.jpg</text>
+<text x="350" y="268" font-family="Verdana, sans-serif" font-size="13" fill="#b8c0cf">Jagged edges when zoomed</text>
+<text x="350" y="322" font-family="Verdana, sans-serif" font-size="13" fill="#e9607d">Pixelates, can't be restyled</text>
+</svg>

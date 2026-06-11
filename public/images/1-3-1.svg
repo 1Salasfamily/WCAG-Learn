@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-hidden="true">
+<rect width="640" height="360" rx="14" fill="#10151e"/>
+<g font-family="Verdana, sans-serif">
+<text x="22" y="36" font-size="17" font-weight="bold" fill="#f3f5f9">1.3.1 Info and Relationships</text>
+<rect x="22" y="56" width="292" height="284" rx="10" fill="#1b2230" stroke="#3a4354" stroke-width="2"/>
+<circle cx="48" cy="84" r="13" fill="#3fca72"/>
+<path d="M42 84l4 4 8-8" stroke="#10151e" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="70" y="89" font-size="13" fill="#3fca72">Accessible</text>
+<rect x="326" y="56" width="292" height="284" rx="10" fill="#1b2230" stroke="#3a4354" stroke-width="2"/>
+<circle cx="352" cy="84" r="13" fill="#e9607d"/>
+<path d="M347 79l10 10M357 79l-10 10" stroke="#10151e" stroke-width="3" stroke-linecap="round"/>
+<text x="374" y="89" font-size="13" fill="#e9607d">Violation</text>
+<text x="44" y="120" font-size="13" fill="#7aa0e1">&lt;h1&gt;</text>
+<text x="92" y="120" font-size="15" font-weight="bold" fill="#f3f5f9">Pricing</text>
+<line x1="50" y1="128" x2="50" y2="212" stroke="#3a4354" stroke-width="2"/>
+<line x1="50" y1="148" x2="66" y2="148" stroke="#3a4354" stroke-width="2"/>
+<text x="72" y="152" font-size="13" fill="#7aa0e1">&lt;h2&gt;</text>
+<text x="120" y="152" font-size="13" font-weight="bold" fill="#f3f5f9">Plans</text>
+<line x1="50" y1="180" x2="66" y2="180" stroke="#3a4354" stroke-width="2"/>
+<text x="72" y="184" font-size="13" fill="#7aa0e1">&lt;h2&gt;</text>
+<text x="120" y="184" font-size="13" font-weight="bold" fill="#f3f5f9">Features</text>
+<line x1="50" y1="212" x2="66" y2="212" stroke="#3a4354" stroke-width="2"/>
+<text x="72" y="216" font-size="13" fill="#7aa0e1">&lt;label&gt;</text>
+<text x="142" y="216" font-size="13" fill="#f3f5f9">Email</text>
+<rect x="72" y="228" width="130" height="24" rx="4" fill="#151a22" stroke="#3a4354" stroke-width="2"/>
+<text x="44" y="296" font-size="13" fill="#3fca72">Structure conveyed in code</text>
+<text x="348" y="120" font-size="15" font-weight="bold" fill="#f3f5f9">Pricing</text>
+<text x="348" y="152" font-size="15" font-weight="bold" fill="#f3f5f9">Plans</text>
+<text x="348" y="184" font-size="15" font-weight="bold" fill="#f3f5f9">Features</text>
+<text x="348" y="216" font-size="15" font-weight="bold" fill="#f3f5f9">Email</text>
+<rect x="348" y="228" width="130" height="24" rx="4" fill="#151a22" stroke="#3a4354" stroke-width="2"/>
+<text x="348" y="296" font-size="13" fill="#e9607d">Just bold text &#8212; no structure</text>
+</g>
+</svg>
