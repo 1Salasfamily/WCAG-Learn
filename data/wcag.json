@@ -4,391 +4,615 @@
     "title": "Non-text Content",
     "level": "A",
     "principle": "Perceivable",
-    "shortExplanation": "Any content on a website that is not written text, including images, icons, charts, audio, CAPTCHAs, or interactive controls, must include text that clearly explains its meaning or purpose. If the content is decorative and does not convey information, it should be hidden from assistive technologies, such as by using an empty alt attribute.\n\nWCAG 1.1.1 requires that non-text elements have a text alternative. Non-text content includes anything other than written words, such as images, video, audio, and other visual or auditory material.\n\nPeople with visual, hearing, or cognitive disabilities may not be able to access information that is presented only through non-text formats. Providing text alternatives ensures that the information remains accessible and understandable."
+    "shortExplanation": "All non-text content — images, icons, charts, audio, CAPTCHAs, and interactive controls — must have a text alternative that serves the same purpose. Purely decorative content should instead be hidden from assistive technologies, for example with an empty alt attribute.\n\nInformation locked inside an image or sound is invisible to anyone who cannot see or hear it. A text alternative lets that same information be spoken aloud, rendered as braille, enlarged, or searched.\n\nThis helps blind and low-vision screen reader users, braille display users, people on slow connections with images disabled, and voice assistants navigating on a user's behalf.",
+    "example": {
+      "pass": "A product photo includes alt=\"Red canvas high-top sneaker with white rubber sole\", and a decorative divider graphic uses alt=\"\" so screen readers skip it.",
+      "fail": "A \"Buy now\" image button has alt=\"button1\", so a screen reader user has no idea what pressing it will do."
+    }
   },
   {
     "id": "1.2.1",
     "title": "Audio-only and Video-only (Prerecorded)",
     "level": "A",
     "principle": "Perceivable",
-    "shortExplanation": "Provide an alternative for prerecorded audio-only or video-only media."
+    "shortExplanation": "Prerecorded audio-only content (like a podcast) needs a text transcript, and prerecorded video-only content (like a silent animation) needs a transcript or an audio track that describes what happens on screen.\n\nA recording that exists in only one sensory channel is completely unusable by someone who cannot use that channel. The alternative carries the same information through a different sense.\n\nThis helps deaf and hard-of-hearing users for audio-only content, blind and low-vision users for video-only content, and anyone in a loud or sound-restricted environment.",
+    "example": {
+      "pass": "A podcast episode page includes a complete text transcript directly below the audio player.",
+      "fail": "A silent screen-recording demo of a new feature is published with no transcript and no descriptive audio track."
+    }
   },
   {
     "id": "1.2.2",
     "title": "Captions (Prerecorded)",
     "level": "A",
     "principle": "Perceivable",
-    "shortExplanation": "Provide captions for prerecorded video with audio."
+    "shortExplanation": "Prerecorded videos that contain audio must have synchronized captions that include all dialogue plus meaningful sounds, such as speaker identification, music, and sound effects.\n\nWithout captions, every spoken word in a video is lost on someone who cannot hear it — and auto-generated captions full of errors can be just as bad as none.\n\nThis helps deaf and hard-of-hearing users, people watching with the sound off, and viewers processing content in a non-native language.",
+    "example": {
+      "pass": "A training video ships with accurate, human-reviewed closed captions that identify each speaker and note sounds like [phone rings].",
+      "fail": "A product launch video relies on unedited auto-captions that garble technical terms, with no way to follow the actual script."
+    }
   },
   {
     "id": "1.2.3",
     "title": "Audio Description or Media Alternative (Prerecorded)",
     "level": "A",
     "principle": "Perceivable",
-    "shortExplanation": "Provide audio description or a full alternative for prerecorded video."
+    "shortExplanation": "Prerecorded videos must offer either an audio description of important visual information or a full text alternative (a descriptive transcript) that covers both what is said and what is shown.\n\nCritical information often appears only on screen — on-screen text, demonstrations, charts, who is doing what. A user who cannot see the video needs that information narrated or written down.\n\nThis helps blind and low-vision users, and the descriptive transcript also serves deafblind users reading by braille.",
+    "example": {
+      "pass": "A tutorial video links to a descriptive transcript that narrates each on-screen step, like \"The presenter opens Settings and selects Display.\"",
+      "fail": "A how-to video where the presenter says \"just click here, then this one\" while pointing at the screen, with no description of what was clicked."
+    }
   },
   {
     "id": "1.3.1",
     "title": "Info and Relationships",
     "level": "A",
     "principle": "Perceivable",
-    "shortExplanation": "Use semantic structure so relationships are programmatically determinable."
+    "shortExplanation": "Structure and relationships that are conveyed visually — headings, lists, data tables, form labels, grouped fields — must also be expressed in code, using real semantic elements like h1–h6, ul, table with header cells, and label.\n\nScreen readers navigate by structure: jumping between headings, announcing table headers for each cell, speaking the label when a field gets focus. If structure exists only as visual styling, none of that works.\n\nThis helps screen reader and braille users, people who apply their own stylesheets or reader modes, and anyone relying on software to interpret the page.",
+    "example": {
+      "pass": "A checkout form associates every input with a visible label element, and section titles use real heading tags.",
+      "fail": "Section \"headings\" are just bold, enlarged paragraph text, so a screen reader user can't jump between sections or perceive the page outline."
+    }
   },
   {
     "id": "1.3.2",
     "title": "Meaningful Sequence",
     "level": "A",
     "principle": "Perceivable",
-    "shortExplanation": "Ensure reading and interaction order matches the intended meaning."
+    "shortExplanation": "When the order of content affects its meaning, the reading order in the code must match that intended order — no matter how CSS visually arranges things on screen.\n\nScreen readers and keyboard navigation follow the code order, not the visual layout. If CSS rearranges content, assistive technology users can receive instructions, steps, or answers in a scrambled sequence.\n\nThis helps screen reader users, keyboard users, and people using reader modes or text-only views.",
+    "example": {
+      "pass": "A three-step signup flow keeps steps 1, 2, and 3 in code order, even though the design displays them side by side in columns.",
+      "fail": "A CSS grid visually pairs questions with answers, but in code order a screen reader hears all the answers before any of the questions."
+    }
   },
   {
     "id": "1.3.3",
     "title": "Sensory Characteristics",
     "level": "A",
     "principle": "Perceivable",
-    "shortExplanation": "Do not rely only on shape, size, location, or sound to give instructions."
+    "shortExplanation": "Instructions must not depend only on sensory characteristics like shape, color, size, screen position, orientation, or sound. Always pair them with names or text labels.\n\n\"Click the button on the right\" is meaningless to someone who can't see the layout — and may become wrong when the page reflows on a small screen or at high zoom.\n\nThis helps blind and low-vision users, deafblind users, people listening to a page rather than viewing it, and anyone on a different screen size.",
+    "example": {
+      "pass": "\"Select Submit (the green button below the form)\" — the button is identified by name first, with sensory hints as a bonus.",
+      "fail": "\"To continue, click the round icon in the corner\" — there is no name, so a screen reader user cannot find the control."
+    }
   },
   {
     "id": "1.4.1",
     "title": "Use of Color",
     "level": "A",
     "principle": "Perceivable",
-    "shortExplanation": "Do not use color alone to convey information or status."
+    "shortExplanation": "Color must never be the only way information is conveyed — status, errors, required fields, chart categories, or links need a second indicator like text, icons, underlines, or patterns.\n\nRoughly 1 in 12 men has a color vision deficiency, and screen readers do not announce color at all. Information carried by color alone simply vanishes for these users.\n\nThis helps people with color blindness, low vision users, screen reader users, and anyone viewing a screen in bright sunlight or grayscale mode.",
+    "example": {
+      "pass": "Invalid form fields get a red border plus an error icon and the message \"Phone number must contain 10 digits.\"",
+      "fail": "A form says \"fields marked in red are required\" with no asterisk, label, or other non-color indicator."
+    }
   },
   {
     "id": "1.4.2",
     "title": "Audio Control",
     "level": "A",
     "principle": "Perceivable",
-    "shortExplanation": "Let users pause or stop audio that plays automatically longer than 3 seconds."
+    "shortExplanation": "If audio plays automatically for more than 3 seconds, users must be able to pause it, stop it, or control its volume independently from the system volume.\n\nScreen readers speak through the same speakers — auto-playing audio literally talks over the only channel a blind user has for operating the page, including their ability to find the stop button.\n\nThis helps screen reader users above all, plus people with attention or processing difficulties and anyone in a quiet environment.",
+    "example": {
+      "pass": "A site with ambient background music places a visible Pause button at the very top of the page, reachable as the first tab stop.",
+      "fail": "A homepage hero video auto-plays with sound and the mute control only appears on mouse hover, unreachable by keyboard."
+    }
   },
   {
     "id": "1.2.4",
     "title": "Captions (Live)",
     "level": "AA",
     "principle": "Perceivable",
-    "shortExplanation": "Provide captions for live video with audio."
+    "shortExplanation": "Live video that includes audio — webinars, livestreams, virtual events — must provide real-time captions of the spoken content and meaningful sounds.\n\nA live event can't be paused or replayed; without live captions, deaf and hard-of-hearing participants are excluded from the conversation as it happens.\n\nThis helps deaf and hard-of-hearing users, people in noisy spaces, and attendees following along in a non-native language.",
+    "example": {
+      "pass": "A company all-hands livestream includes professional real-time captioning (CART) displayed in the player.",
+      "fail": "A live product webinar offers no captions, with a promise that \"a captioned recording will be posted later.\""
+    }
   },
   {
     "id": "1.2.5",
     "title": "Audio Description (Prerecorded)",
     "level": "AA",
     "principle": "Perceivable",
-    "shortExplanation": "Provide audio description for important visuals in prerecorded video."
+    "shortExplanation": "Prerecorded videos must provide audio description: narration added during pauses in dialogue that describes important visual details like on-screen text, actions, and scene changes. At Level AA, a transcript alone is no longer sufficient — this strengthens 1.2.3.\n\nIf information is shown but never spoken, a person who can't see the screen misses it even while hearing everything perfectly.\n\nThis helps blind and low-vision users following video content in real time.",
+    "example": {
+      "pass": "A demo video offers an alternate audio-described track: \"She selects the Reports tab and a bar chart of monthly sales appears.\"",
+      "fail": "An instructional video shows each step silently while music plays, and the spoken narration never says what is happening on screen."
+    }
   },
   {
     "id": "1.3.4",
     "title": "Orientation",
     "level": "AA",
     "principle": "Perceivable",
-    "shortExplanation": "Support both portrait and landscape unless a specific orientation is essential."
+    "shortExplanation": "Content must work in both portrait and landscape orientation. Locking to a single orientation is only allowed when it is essential, like a piano-playing app or a check-deposit camera view.\n\nMany people mount their device in a fixed position — on a wheelchair, an arm mount, or a stand — and physically cannot rotate it to satisfy an app's preferred orientation.\n\nThis helps wheelchair users with mounted tablets, people with motor disabilities who can't easily rotate a device, and anyone whose device rotation is locked.",
+    "example": {
+      "pass": "A learning app reflows its layout cleanly whether the tablet is held in portrait or landscape.",
+      "fail": "A banking app displays \"Please rotate your device\" and refuses to function in landscape, blocking a user whose tablet is mounted sideways."
+    }
   },
   {
     "id": "1.3.5",
     "title": "Identify Input Purpose",
     "level": "AA",
     "principle": "Perceivable",
-    "shortExplanation": "Use correct autocomplete purposes for common user info fields."
+    "shortExplanation": "Form fields that collect common personal information — name, email, phone, address, credit card — must declare their purpose in code, typically with the HTML autocomplete attribute.\n\nDeclared purposes let browsers and assistive tools auto-fill the field or display familiar icons, sparing users from retyping data they struggle to remember or enter.\n\nThis helps people with cognitive and memory disabilities, people with motor disabilities for whom typing is slow or painful, and everyone who uses autofill.",
+    "example": {
+      "pass": "The email field is coded as input type=\"email\" autocomplete=\"email\", so the browser offers to fill it instantly.",
+      "fail": "A checkout form disables autocomplete on every field, forcing a user with a tremor to hand-type their full name, address, and card number."
+    }
   },
   {
     "id": "1.4.3",
     "title": "Contrast (Minimum)",
     "level": "AA",
     "principle": "Perceivable",
-    "shortExplanation": "Text must have sufficient contrast against its background."
+    "shortExplanation": "Regular text needs a contrast ratio of at least 4.5:1 against its background; large text (roughly 24px, or 18.5px bold) needs at least 3:1. Logos, disabled controls, and purely decorative text are exempt.\n\nLow-contrast text becomes unreadable long before it becomes invisible — for aging eyes, in bright sunlight, or on a dim screen, pale gray on white simply isn't there.\n\nThis helps people with low vision and color vision deficiency, older users, and everyone reading a screen in poor lighting.",
+    "example": {
+      "pass": "Body text uses dark gray #595959 on white — a 7:1 ratio, comfortably above the 4.5:1 minimum.",
+      "fail": "Help text is light gray #AAAAAA on white — about 2.3:1, well below the minimum and illegible to many readers."
+    }
   },
   {
     "id": "1.4.4",
     "title": "Resize Text",
     "level": "AA",
     "principle": "Perceivable",
-    "shortExplanation": "Text must be resizable to 200% without loss of content or function."
+    "shortExplanation": "Users must be able to enlarge text up to 200% — via browser zoom or text-size settings — without losing any content or functionality: no clipped labels, overlapping lines, or disabled zoom.\n\nMany people with low vision don't use a screen reader; they read by making text bigger. A layout that breaks at 200% takes the content away from exactly the people who need it most.\n\nThis helps people with low vision, older users, and anyone who bumps up text size for comfort.",
+    "example": {
+      "pass": "At 200% browser zoom, the page reflows: all text remains visible and every menu and button still works.",
+      "fail": "A mobile page sets maximum-scale=1 to block pinch zoom, and at 200% desktop zoom the fixed-height navigation cuts menu labels in half."
+    }
   },
   {
     "id": "1.4.5",
     "title": "Images of Text",
     "level": "AA",
     "principle": "Perceivable",
-    "shortExplanation": "Avoid images of text when the same presentation can be done with real text."
+    "shortExplanation": "Use real text rather than pictures of text whenever the same visual presentation is possible with fonts and CSS. Exceptions: logos, and cases where the text presentation is essential or user-customizable.\n\nImages of text blur when magnified, ignore user font and spacing preferences, can't be translated or searched, and their contrast can't be adjusted.\n\nThis helps people with low vision who zoom, people with dyslexia who apply custom fonts and spacing, and users of translation tools.",
+    "example": {
+      "pass": "A promotional banner is built with web fonts and CSS styling, so it stays sharp at any zoom level and can be read aloud.",
+      "fail": "A restaurant publishes its entire menu as a JPEG — blurry at zoom, invisible to screen readers, and untranslatable."
+    }
   },
   {
     "id": "1.4.10",
     "title": "Reflow",
     "level": "AA",
     "principle": "Perceivable",
-    "shortExplanation": "At 400% zoom, content should not require two-dimensional scrolling."
+    "shortExplanation": "Content must reflow into a single column at a width of 320 CSS pixels — equivalent to 400% zoom on a typical desktop — without requiring scrolling in two directions. Exceptions exist for content that genuinely needs 2D layout, like data tables and maps.\n\nWhen zoomed content forces horizontal scrolling, reading means dragging back and forth for every single line — exhausting enough that people give up.\n\nThis helps people with low vision who rely on high zoom, and benefits every mobile user as a side effect.",
+    "example": {
+      "pass": "At 400% zoom an article reflows into one readable column; only vertical scrolling is needed.",
+      "fail": "At 400% zoom the page keeps its desktop layout, so reading each sentence requires scrolling right and then back left."
+    }
   },
   {
     "id": "1.4.11",
     "title": "Non-text Contrast",
     "level": "AA",
     "principle": "Perceivable",
-    "shortExplanation": "UI components and graphical objects need sufficient contrast."
+    "shortExplanation": "Visual information needed to identify UI components and their states — input borders, button boundaries, focus indicators, checkbox states — and meaningful graphics like chart lines and icons must have at least 3:1 contrast against adjacent colors.\n\nIf a text field's border is a whisper-pale gray on white, many users can't tell where the field is, whether a checkbox is checked, or which step of a progress bar is active.\n\nThis helps people with low vision and color vision deficiency, and everyone using a low-quality or glare-struck display.",
+    "example": {
+      "pass": "Form inputs use a #767676 border on white (4.5:1), and the focus ring is a solid high-contrast outline.",
+      "fail": "A toggle switch shows \"on\" and \"off\" as two barely different light grays at about 1.4:1 — its state is indistinguishable."
+    }
   },
   {
     "id": "1.4.12",
     "title": "Text Spacing",
     "level": "AA",
     "principle": "Perceivable",
-    "shortExplanation": "Content must work when users increase line, paragraph, letter, and word spacing."
+    "shortExplanation": "Nothing may break — no clipped, overlapped, or hidden content — when users override text spacing up to: line height 1.5× the font size, paragraph spacing 2×, letter spacing 0.12×, and word spacing 0.16×.\n\nPeople with dyslexia and low vision often apply custom spacing to make text readable. Containers with rigid fixed heights punish them by cutting off the very text they adjusted.\n\nThis helps people with dyslexia, low vision, and other reading-related disabilities who customize how text is displayed.",
+    "example": {
+      "pass": "When a user's spacing stylesheet kicks in, cards and buttons grow to fit the taller text and everything stays visible.",
+      "fail": "A button with a hard-coded fixed height clips its own label in half as soon as line height increases to 1.5."
+    }
   },
   {
     "id": "1.4.13",
     "title": "Content on Hover or Focus",
     "level": "AA",
     "principle": "Perceivable",
-    "shortExplanation": "Hover or focus popups must be dismissible, hoverable, and persistent."
+    "shortExplanation": "Tooltips and popovers that appear on hover or keyboard focus must be: dismissible (e.g., with Escape) without moving the pointer, hoverable (the pointer can move onto the popup without it vanishing), and persistent (it stays until dismissed or no longer relevant).\n\nScreen magnification users see only a small slice of the page — they must physically move the pointer toward a tooltip to read it. If it vanishes en route, or can't be dismissed when it covers something, the page is unusable.\n\nThis helps people using screen magnification, people with low vision, and users with motor disabilities who move the pointer slowly.",
+    "example": {
+      "pass": "An info-icon tooltip stays open while the pointer travels onto it, and pressing Escape dismisses it instantly.",
+      "fail": "A tooltip disappears the moment the pointer leaves the icon, and while open it covers the input field with no way to close it."
+    }
   },
   {
     "id": "2.1.1",
     "title": "Keyboard",
     "level": "A",
     "principle": "Operable",
-    "shortExplanation": "All functionality must be operable via keyboard."
+    "shortExplanation": "Every function of the page must be operable with a keyboard alone — no mouse required, and no dependence on the timing of individual keystrokes. The only exception is input that genuinely depends on the path of movement, like freehand drawing.\n\nThe keyboard is the universal input: screen readers, switch devices, sip-and-puff systems, and voice control all ultimately emulate keystrokes. A mouse-only feature is closed to all of them.\n\nThis helps blind users, people with motor disabilities, switch and voice-control users, and keyboard power users.",
+    "example": {
+      "pass": "A custom dropdown opens with Enter, moves through options with arrow keys, and selects with Enter.",
+      "fail": "An image carousel's next/previous controls respond only to mouse clicks — Tab can never reach them."
+    }
   },
   {
     "id": "2.1.2",
     "title": "No Keyboard Trap",
     "level": "A",
     "principle": "Operable",
-    "shortExplanation": "Keyboard focus must not get trapped in any component."
+    "shortExplanation": "If keyboard focus can move into a component, it must be able to move back out using standard keys — Tab, Shift+Tab, or Escape. If an unusual exit is required, users must be told how.\n\nA keyboard trap turns the rest of the page into unreachable territory: the user can't proceed, can't go back, and often has to reload and start over.\n\nThis helps keyboard-only users, screen reader users, and switch users — anyone who can't simply click somewhere else to escape.",
+    "example": {
+      "pass": "A modal dialog holds focus inside while open, but Escape closes it and returns focus to the button that opened it.",
+      "fail": "An embedded third-party widget accepts Tab focus but never releases it — every subsequent Tab cycles inside the widget forever."
+    }
   },
   {
     "id": "2.1.4",
     "title": "Character Key Shortcuts",
     "level": "A",
     "principle": "Operable",
-    "shortExplanation": "Single-character shortcuts must be off, remappable, or require focus."
+    "shortExplanation": "Keyboard shortcuts made of a single character (letter, number, punctuation, or symbol) must be able to be turned off, remapped to include a modifier like Ctrl, or restricted to when the relevant component has focus.\n\nSpeech-input users dictate words — and every letter they speak can fire a single-key shortcut. A stray \"k\" shouldn't archive an email or delete an item.\n\nThis helps speech-input users most, plus people with motor disabilities prone to accidental keystrokes.",
+    "example": {
+      "pass": "An email app's single-key shortcuts (e to archive) can be disabled or remapped in settings.",
+      "fail": "Pressing \"k\" anywhere on the page permanently deletes the selected item, and there is no way to turn the shortcut off."
+    }
   },
   {
     "id": "2.2.1",
     "title": "Timing Adjustable",
     "level": "A",
     "principle": "Operable",
-    "shortExplanation": "Users must be able to extend, turn off, or adjust time limits (with exceptions)."
+    "shortExplanation": "For every time limit, users must be able to turn it off, adjust it to at least 10 times the default, or extend it — with at least a 20-second warning and a simple action like pressing a key, repeatable at least 10 times. Exceptions: real-time events, limits over 20 hours, and limits that are truly essential.\n\nPeople read, type, and navigate at enormously different speeds. A timeout calibrated for an average user silently discards the work of everyone slower.\n\nThis helps people with cognitive and motor disabilities, screen reader users working through long forms, and anyone who gets interrupted.",
+    "example": {
+      "pass": "Twenty seconds before session timeout, a dialog appears: \"Still there? Press Continue to extend your session.\"",
+      "fail": "A government benefits form silently logs the user out after 10 minutes, erasing 9 minutes of carefully entered answers."
+    }
   },
   {
     "id": "2.2.2",
     "title": "Pause, Stop, Hide",
     "level": "A",
     "principle": "Operable",
-    "shortExplanation": "Users can pause, stop, or hide moving, blinking, scrolling, or auto-updating content."
+    "shortExplanation": "Any moving, blinking, or scrolling content that starts automatically and lasts more than 5 seconds — and any auto-updating content — must come with a way to pause, stop, or hide it.\n\nMotion on screen is magnetic: for people with attention or cognitive disabilities it can make reading the surrounding content literally impossible, and auto-updates can yank a screen reader's position mid-sentence.\n\nThis helps people with ADHD and cognitive disabilities, people with vestibular disorders, low-vision users, and screen reader users.",
+    "example": {
+      "pass": "A stock ticker and a news carousel each include a clearly visible pause button.",
+      "fail": "A hero carousel auto-rotates every 4 seconds indefinitely, with no pause control — users can never finish reading a slide."
+    }
   },
   {
     "id": "2.3.1",
     "title": "Three Flashes or Below Threshold",
     "level": "A",
     "principle": "Operable",
-    "shortExplanation": "Do not include content that flashes more than allowed thresholds."
+    "shortExplanation": "Nothing on the page may flash more than three times in any one-second period, unless the flashing area is small enough and dim enough to fall below the defined general and red flash thresholds.\n\nRapid flashing can trigger seizures in people with photosensitive epilepsy within seconds — this is one of the few WCAG rules where a violation can cause direct physical harm.\n\nThis protects people with photosensitive epilepsy and also helps people with migraine and sensory-processing sensitivities.",
+    "example": {
+      "pass": "An alert animation pulses twice to draw attention, then remains solid.",
+      "fail": "A \"FLASH SALE\" banner strobes white-to-red five times per second across the full width of the page."
+    }
   },
   {
     "id": "2.4.1",
     "title": "Bypass Blocks",
     "level": "A",
     "principle": "Operable",
-    "shortExplanation": "Provide a way to skip repeated blocks of content (like skip links)."
+    "shortExplanation": "Provide a way to skip past content that repeats on every page — most commonly a \"Skip to main content\" link, supported by proper landmarks and headings.\n\nWithout one, a keyboard user must tab through the entire header and navigation — sometimes dozens of stops — on every single page before reaching what they came for.\n\nThis helps keyboard-only users, screen reader users, and switch users for whom each keypress costs real effort.",
+    "example": {
+      "pass": "The first press of Tab reveals a \"Skip to main content\" link that jumps focus straight past the navigation.",
+      "fail": "Every page begins with 40 navigation links and no skip link or landmarks, so reaching the content takes 40+ keypresses each time."
+    }
   },
   {
     "id": "2.4.2",
     "title": "Page Titled",
     "level": "A",
     "principle": "Operable",
-    "shortExplanation": "Pages must have descriptive titles."
+    "shortExplanation": "Every page needs a title that describes its topic or purpose, with the distinctive part first — \"Order History – Acme Store\" rather than \"Acme Store\" on every page.\n\nThe title is the very first thing a screen reader announces when a page loads, and it's what identifies tabs, bookmarks, and search results.\n\nThis helps screen reader users confirming they landed in the right place, people with cognitive disabilities, and anyone juggling many browser tabs.",
+    "example": {
+      "pass": "The search results page is titled \"Search results for 'sneakers' – ShopCo\".",
+      "fail": "Every page on the site is titled simply \"Home\", so all open tabs look identical and screen readers announce nothing useful."
+    }
   },
   {
     "id": "2.4.3",
     "title": "Focus Order",
     "level": "A",
     "principle": "Operable",
-    "shortExplanation": "Focus moves in an order that preserves meaning and operability."
+    "shortExplanation": "When tabbing through a page, focus must move in an order that preserves the page's meaning and operability — usually matching the visual reading order. Dialogs receive focus when opened, and focus returns sensibly when they close.\n\nIf focus leaps unpredictably — from a form field to the footer and back — keyboard users lose their place, skip required fields, and make errors they can't trace.\n\nThis helps keyboard-only users, screen reader users, and low-vision users who need focus to stay where they're looking.",
+    "example": {
+      "pass": "Tabbing through a checkout form moves logically: name, address, payment fields, then the Submit button.",
+      "fail": "Stray positive tabindex values make focus jump from the first field to the newsletter signup in the footer, then back up to field two."
+    }
   },
   {
     "id": "2.4.4",
     "title": "Link Purpose (In Context)",
     "level": "A",
     "principle": "Operable",
-    "shortExplanation": "Link text (or context) must describe its destination or purpose."
+    "shortExplanation": "The purpose of every link must be clear from its link text alone, or from the text combined with its programmatic context — the surrounding sentence, list item, or table row.\n\nScreen reader users often pull up a list of all links on a page and navigate from it. A list reading \"click here, click here, learn more, learn more\" conveys nothing.\n\nThis helps screen reader users navigating by links, people with cognitive disabilities, and anyone scanning a page quickly.",
+    "example": {
+      "pass": "A link reads \"Read our full refund policy\" — its destination is obvious even out of context.",
+      "fail": "Three product cards each end with an identical \"Learn more\" link, indistinguishable in a screen reader's link list."
+    }
   },
   {
     "id": "2.5.1",
     "title": "Pointer Gestures",
     "level": "A",
     "principle": "Operable",
-    "shortExplanation": "Multi-point or path gestures must have a simple alternative."
+    "shortExplanation": "Any function operated by a multipoint gesture (like two-finger pinch) or a path-based gesture (like swiping or dragging along a path) must also work with simple single-pointer actions — taps or clicks — unless the gesture is essential.\n\nPrecise gestures are out of reach for many people using head pointers, mouth sticks, eye-gaze systems, or hands affected by tremor.\n\nThis helps people with motor disabilities and users of alternative pointing devices.",
+    "example": {
+      "pass": "A map can be zoomed by pinching or by tapping dedicated + and − buttons.",
+      "fail": "An image gallery can only be browsed by swiping — there are no next/previous buttons."
+    }
   },
   {
     "id": "2.5.2",
     "title": "Pointer Cancellation",
     "level": "A",
     "principle": "Operable",
-    "shortExplanation": "Actions should not trigger unexpectedly on down-event; allow cancel/undo."
+    "shortExplanation": "Single-pointer actions must be cancellable: trigger on the up-event (release) rather than the down-event (press), or provide a way to abort or undo. Pressing down on a key of an on-screen piano is the classic essential exception.\n\nFiring on release lets a user who pressed the wrong thing slide their finger or pointer off the control and let go safely — a built-in undo for every accidental touch.\n\nThis helps people with tremors and motor disabilities, and everyone who has ever fat-fingered the wrong button.",
+    "example": {
+      "pass": "A Delete button activates on release, so pressing it by mistake can be cancelled by sliding off before letting go.",
+      "fail": "A one-click purchase button fires the instant it's pressed down — an accidental touch completes the order with no escape."
+    }
   },
   {
     "id": "2.5.3",
     "title": "Label in Name",
     "level": "A",
     "principle": "Operable",
-    "shortExplanation": "Visible labels must match accessible names for speech input users."
+    "shortExplanation": "When a control has a visible text label, its accessible name (what assistive technology hears) must contain that visible text — ideally starting with it.\n\nVoice-control users operate the page by saying what they see: \"Click Search.\" If the button visibly says Search but its aria-label says \"Submit query form,\" the spoken command fails and the user is stuck.\n\nThis helps speech-input users primarily, and keeps what screen readers announce consistent with what sighted helpers see.",
+    "example": {
+      "pass": "A button displays \"Search\" and its accessible name is exactly \"Search\" — saying \"Click Search\" works.",
+      "fail": "A button displays \"Send\" but is coded with aria-label=\"Submit message form\", so the voice command \"Click Send\" does nothing."
+    }
   },
   {
     "id": "2.5.4",
     "title": "Motion Actuation",
     "level": "A",
     "principle": "Operable",
-    "shortExplanation": "Functions triggered by device motion must have an alternative and be disableable."
+    "shortExplanation": "Features triggered by moving the device (shake to undo, tilt to scroll) or by user motion sensed by a camera must also be operable through ordinary UI controls, and the motion trigger must be disableable — unless motion is essential to the function.\n\nPeople with tremors trigger shake gestures constantly by accident, while people with limited movement — or devices fixed to a mount — may be unable to perform them at all.\n\nThis helps people with motor disabilities and tremors, and anyone whose device is mounted.",
+    "example": {
+      "pass": "Shake-to-undo exists, but an Undo button is always available and the shake gesture can be turned off in settings.",
+      "fail": "Shaking the phone is the only way to undo typing, with no button alternative and no way to disable the gesture."
+    }
   },
   {
     "id": "2.4.5",
     "title": "Multiple Ways",
     "level": "AA",
     "principle": "Operable",
-    "shortExplanation": "Provide more than one way to locate a page (with limited exceptions)."
+    "shortExplanation": "Offer at least two different ways to find any page on the site — for example navigation menus plus a search box, a site map, or a table of contents. Pages that are steps in a process (like checkout) are exempt.\n\nPeople navigate differently: some browse menus, some search, some scan a site map. A page reachable only through one specific click path is effectively hidden from everyone who navigates another way.\n\nThis helps people with cognitive disabilities, low-vision and screen reader users who find one method easier, and frankly everyone.",
+    "example": {
+      "pass": "A documentation site offers hierarchical navigation, full-text search, and an A–Z index.",
+      "fail": "Support articles can only be reached by drilling down a single specific menu path — there's no search and no index."
+    }
   },
   {
     "id": "2.4.6",
     "title": "Headings and Labels",
     "level": "AA",
     "principle": "Operable",
-    "shortExplanation": "Headings and labels must clearly describe topic or purpose."
+    "shortExplanation": "Headings and labels must actually describe the topic or purpose of what they head or label. (Whether headings exist at all is covered elsewhere — this rule is about their quality.)\n\nScreen reader users navigate by jumping between headings, and all users scan them to find content. Vague labels like \"Details\" or \"Section 2\" turn navigation into guesswork.\n\nThis helps screen reader users navigating by headings, people with cognitive disabilities, and anyone scanning a long page.",
+    "example": {
+      "pass": "A settings page uses headings like \"Email notifications\" and \"Privacy controls\" — each section's purpose is obvious.",
+      "fail": "A multi-part form labels its sections \"Step 1\", \"Step 2\", and \"More info\", revealing nothing about what each step asks for."
+    }
   },
   {
     "id": "2.4.7",
     "title": "Focus Visible",
     "level": "AA",
     "principle": "Operable",
-    "shortExplanation": "Keyboard focus must be clearly visible."
+    "shortExplanation": "Whenever a control has keyboard focus, there must be a visible indicator showing it — typically a focus ring or outline. Removing the browser's default outline without providing a replacement is the classic violation.\n\nA keyboard user without a visible focus indicator is flying blind: they cannot tell which of 50 controls will activate when they press Enter.\n\nThis helps keyboard-only users, people with low vision, people with motor disabilities, and users with attention or memory limitations.",
+    "example": {
+      "pass": "Every interactive element shows a thick, high-contrast focus ring when reached by keyboard.",
+      "fail": "A global CSS rule sets outline: none for aesthetics, leaving keyboard users with no clue where focus is."
+    }
   },
   {
     "id": "2.4.11",
     "title": "Focus Not Obscured (Minimum)",
     "level": "AA",
     "principle": "Operable",
-    "shortExplanation": "Focused components must not be completely hidden by other content."
+    "shortExplanation": "When an element receives keyboard focus, it must not be completely hidden behind author-created content like sticky headers, cookie banners, or chat widgets. (At least part of it must remain visible.)\n\nA visible focus indicator is useless if the focused element itself is buried under a floating overlay — the keyboard user is interacting with something they literally cannot see.\n\nThis helps keyboard-only users and people with low vision, especially on pages with sticky regions.",
+    "example": {
+      "pass": "The page uses scroll-padding so that elements focused near the top scroll into view below the sticky header.",
+      "fail": "Tabbing to footer links leaves them entirely hidden beneath a full-width cookie consent banner."
+    }
   },
   {
     "id": "2.5.7",
     "title": "Dragging Movements",
     "level": "AA",
     "principle": "Operable",
-    "shortExplanation": "If drag is required, provide a non-drag alternative."
+    "shortExplanation": "Anything operated by dragging — reordering lists, sliders, drag-and-drop uploads, kanban cards — must also work through simple single-pointer actions like clicks or taps, unless dragging is essential.\n\nA drag requires pressing, holding, moving precisely, and releasing in one continuous motion — a sequence many people with tremors, limited dexterity, or eye-gaze pointers cannot perform reliably.\n\nThis helps people with motor disabilities and users of alternative input devices like head pointers and eye-gaze systems.",
+    "example": {
+      "pass": "Kanban cards can be dragged between columns, or moved via a \"Move to…\" menu on each card.",
+      "fail": "Reordering a playlist works only by dragging rows — there are no up/down buttons or move commands."
+    }
   },
   {
     "id": "2.5.8",
     "title": "Target Size (Minimum)",
     "level": "AA",
     "principle": "Operable",
-    "shortExplanation": "Clickable targets should be at least 24×24 CSS pixels (with exceptions)."
+    "shortExplanation": "Clickable targets must be at least 24×24 CSS pixels, or have enough empty space around them that a 24px circle centered on each target doesn't overlap a neighbor. Inline links in text, native browser controls, and essential sizes are exempt.\n\nTiny, tightly packed targets cause constant mis-taps for anyone whose pointing is less than surgical — and the consequences range from annoying to destructive (tapping Delete instead of Edit).\n\nThis helps people with tremors and motor disabilities, older users, and every mobile user with average-sized thumbs.",
+    "example": {
+      "pass": "Toolbar icon buttons are 32×32 pixels with comfortable spacing between them.",
+      "fail": "A row of 16×16 pixel edit/delete/share icons sits flush together, making accidental deletes routine."
+    }
   },
   {
     "id": "3.1.1",
     "title": "Language of Page",
     "level": "A",
     "principle": "Understandable",
-    "shortExplanation": "Set the default human language of each page."
+    "shortExplanation": "Every page must declare its default human language in code — in HTML, the lang attribute on the html element, like <html lang=\"en\">.\n\nScreen readers choose pronunciation rules from this attribute. A French page without lang=\"fr\" gets read with English pronunciation — turning fluent French into incomprehensible noise. It also drives translation tools and hyphenation.\n\nThis helps screen reader users above all, plus users of automatic translation and people using browser reading tools.",
+    "example": {
+      "pass": "A Spanish-language page is coded <html lang=\"es\">, so screen readers switch to Spanish pronunciation automatically.",
+      "fail": "A German page omits the lang attribute, so screen readers mangle every word with English pronunciation rules."
+    }
   },
   {
     "id": "3.2.1",
     "title": "On Focus",
     "level": "A",
     "principle": "Understandable",
-    "shortExplanation": "Focus alone must not cause unexpected context changes."
+    "shortExplanation": "Simply moving keyboard focus onto a component must never trigger a change of context — no new windows, no form submission, no jumping focus elsewhere, no navigating to a new page.\n\nKeyboard and screen reader users move focus across everything as their way of exploring the page. If merely landing on a control detonates an action, exploration becomes a minefield.\n\nThis helps screen reader users, keyboard-only users, and people with cognitive disabilities who are disoriented by surprises.",
+    "example": {
+      "pass": "Tabbing across all the controls in a navigation menu only highlights them — nothing activates until Enter is pressed.",
+      "fail": "When focus lands on the \"Help\" link, a popup window opens immediately, hijacking the user mid-navigation."
+    }
   },
   {
     "id": "3.2.2",
     "title": "On Input",
     "level": "A",
     "principle": "Understandable",
-    "shortExplanation": "Changing a value must not cause unexpected context changes without warning."
+    "shortExplanation": "Changing a form control's value — picking a select option, ticking a checkbox, typing in a field — must not automatically cause a change of context unless the user has been told beforehand that it will.\n\nUsers expect to set a value and then act. A dropdown that navigates the instant an option is highlighted breaks keyboard users completely: they can never arrow past the first option.\n\nThis helps keyboard and screen reader users, and people with cognitive disabilities who lose their bearings when pages change unexpectedly.",
+    "example": {
+      "pass": "Choosing a country in a select updates nothing until the user presses the adjacent \"Apply\" button.",
+      "fail": "A \"Sort by\" dropdown reloads the page the moment a value changes, so arrowing through options fires three page loads."
+    }
   },
   {
     "id": "3.2.6",
     "title": "Consistent Help",
     "level": "A",
     "principle": "Understandable",
-    "shortExplanation": "If help is offered, keep it in a consistent location across pages."
+    "shortExplanation": "If help mechanisms — contact details, a human contact method, a self-help option, or a chat widget — appear on multiple pages, they must appear in the same relative place and order on every page.\n\nThe people most likely to need help are the least equipped to hunt for it. Help that moves around the layout from page to page effectively disappears. New in WCAG 2.2.\n\nThis helps people with cognitive and memory disabilities, and anyone who is already stuck and frustrated.",
+    "example": {
+      "pass": "The \"Chat with us\" button sits in the bottom-right corner of every single page.",
+      "fail": "The support link lives in the header on the homepage, the sidebar on product pages, and the footer at checkout."
+    }
   },
   {
     "id": "3.3.1",
     "title": "Error Identification",
     "level": "A",
     "principle": "Understandable",
-    "shortExplanation": "Identify input errors in text."
+    "shortExplanation": "When an input error is automatically detected, the item in error must be identified and the error described to the user in text — not just with color, an icon, or a vague failure state.\n\nA red border is invisible to a blind user and ambiguous to a color-blind one. Users need to know which field failed and what exactly is wrong with it.\n\nThis helps screen reader users, people with color vision deficiency, and people with cognitive disabilities working through forms.",
+    "example": {
+      "pass": "Beside the field: \"Email address must include an @ symbol\" — visible, specific, and announced to screen readers.",
+      "fail": "Submitting the form just turns two fields red, leaving the user to guess which rule each one broke."
+    }
   },
   {
     "id": "3.3.2",
     "title": "Labels or Instructions",
     "level": "A",
     "principle": "Understandable",
-    "shortExplanation": "Provide labels or instructions when user input is required."
+    "shortExplanation": "Wherever the user must enter something, provide labels or instructions: visible field labels, required-field indicators, and format hints like (MM/DD/YYYY) — before the user gets it wrong.\n\nPlaceholder text is not a label: it vanishes the moment typing starts, has poor contrast, and leaves users mid-form staring at filled boxes with no reminder of what they were for.\n\nThis helps people with cognitive and memory disabilities, screen reader users, and people with motor disabilities for whom every error costs effort to fix.",
+    "example": {
+      "pass": "Each field has a permanent visible label, required fields are marked, and the date field's label includes its expected format.",
+      "fail": "A form uses placeholder-only hints that disappear on typing, so reviewing your answers means guessing which box was which."
+    }
   },
   {
     "id": "3.3.7",
     "title": "Redundant Entry",
     "level": "A",
     "principle": "Understandable",
-    "shortExplanation": "Do not require re-entering information already provided in the same process (with exceptions)."
+    "shortExplanation": "Information the user already entered earlier in the same process must be auto-populated or available to select — not demanded again. Exceptions: re-entry that is essential, needed for security (like confirming a password), or when the earlier information is no longer valid. New in WCAG 2.2.\n\nRe-typing taxes memory and motor effort, and every repeated entry is another chance for a mismatch error.\n\nThis helps people with cognitive and memory disabilities, and people with motor disabilities for whom typing is costly.",
+    "example": {
+      "pass": "The payment step offers a \"Billing address same as shipping\" checkbox that copies everything over.",
+      "fail": "After entering their full address at shipping, the user must type the identical address again from scratch at billing."
+    }
   },
   {
     "id": "3.1.2",
     "title": "Language of Parts",
     "level": "AA",
     "principle": "Understandable",
-    "shortExplanation": "Mark language changes for passages or phrases when needed."
+    "shortExplanation": "When a passage or phrase is in a different language than the page, mark it in code with its own lang attribute. Proper names, technical terms, and words that have become part of the surrounding language don't need marking.\n\nScreen readers switch pronunciation per element: a French quotation inside an English page is only intelligible if the quote itself carries lang=\"fr\".\n\nThis helps screen reader users reading multilingual content, and improves automatic translation and dictionary lookup.",
+    "example": {
+      "pass": "An English article wraps a quoted French proverb in <blockquote lang=\"fr\">, so it is pronounced as French.",
+      "fail": "The same proverb without the attribute is read with English pronunciation, producing meaningless sounds."
+    }
   },
   {
     "id": "3.2.3",
     "title": "Consistent Navigation",
     "level": "AA",
     "principle": "Understandable",
-    "shortExplanation": "Keep navigation consistent across pages."
+    "shortExplanation": "Navigation mechanisms that repeat across pages — menus, search boxes, breadcrumbs — must appear in the same relative order on every page. Items can be added or removed, but the ordering of what remains must hold steady.\n\nUsers build muscle memory and mental maps: \"Products is the third item.\" Shuffling navigation forces them to relearn the site on every page.\n\nThis helps people with cognitive and memory disabilities, low-vision users who memorize layouts, and screen reader users who rely on a predictable order.",
+    "example": {
+      "pass": "The header menu reads Home, Products, Pricing, Support in that order on every page of the site.",
+      "fail": "On some pages Support comes first and Products last, so users must re-scan the whole menu every time."
+    }
   },
   {
     "id": "3.2.4",
     "title": "Consistent Identification",
     "level": "AA",
     "principle": "Understandable",
-    "shortExplanation": "Identify components consistently when they have the same function."
+    "shortExplanation": "Components that do the same thing across the site must be identified the same way — same label, same icon, same accessible name. Don't call it \"Search\" on one page and \"Find\" on another.\n\nConsistent naming lets users transfer what they learned on one page to every other page; inconsistency makes one feature look like several different ones.\n\nThis helps people with cognitive disabilities, screen reader users listening for a known label, and everyone's general sanity.",
+    "example": {
+      "pass": "The download action uses the same icon and the label \"Download\" everywhere it appears.",
+      "fail": "The identical save-to-PDF feature is labeled \"Download\" on one page, \"Export\" on another, and \"Save\" on a third."
+    }
   },
   {
     "id": "3.3.3",
     "title": "Error Suggestion",
     "level": "AA",
     "principle": "Understandable",
-    "shortExplanation": "Suggest fixes for input errors when possible."
+    "shortExplanation": "When an input error is detected and possible corrections are known, suggest them to the user — unless doing so would compromise security or the purpose of the content (like a quiz answer).\n\n\"Invalid input\" without guidance strands users at the exact moment they need help; telling them what valid input looks like turns a dead end into a quick fix.\n\nThis helps people with cognitive and learning disabilities, low-vision users, and anyone filling out an unfamiliar form.",
+    "example": {
+      "pass": "\"We couldn't find that state. Did you mean: Washington, West Virginia, Wisconsin?\" with the expected format shown.",
+      "fail": "The date field rejects \"3/4/26\" with only the message \"Invalid date\" — no hint that it wants MM/DD/YYYY."
+    }
   },
   {
     "id": "3.3.4",
     "title": "Error Prevention (Legal, Financial, Data)",
     "level": "AA",
     "principle": "Understandable",
-    "shortExplanation": "For serious submissions, allow review, confirmation, and/or reversal."
+    "shortExplanation": "For pages that create legal commitments, execute financial transactions, or modify/delete stored data, at least one must hold: the action is reversible, the input is checked for errors with a chance to correct, or the user can review and confirm before final submission.\n\nEveryone makes entry mistakes; here a mistake costs money, data, or legal standing. One typo in a transfer amount shouldn't be unrecoverable.\n\nThis helps people with cognitive and motor disabilities who make more accidental inputs, and protects every user from high-stakes slips.",
+    "example": {
+      "pass": "Checkout ends with a review page summarizing the order, with edit links, before the final \"Place order\" button.",
+      "fail": "A single click on \"Delete account\" immediately and permanently erases everything — no confirmation, no undo window."
+    }
   },
   {
     "id": "3.3.8",
     "title": "Accessible Authentication (Minimum)",
     "level": "AA",
     "principle": "Understandable",
-    "shortExplanation": "Login must not rely on cognitive tests like puzzles or memory without an alternative."
+    "shortExplanation": "Logging in must not require a cognitive function test — memorizing a password, solving a puzzle, or transcribing characters — unless there's an alternative method, a mechanism to assist (like allowing paste and password managers), or the test is object recognition or identifying the user's own content. New in WCAG 2.2.\n\nBlocking paste or banning password managers turns login into a memory exam that locks out people who literally cannot memorize strings.\n\nThis helps people with cognitive disabilities, memory impairments, and dyslexia — and makes login easier for everyone.",
+    "example": {
+      "pass": "The login form accepts pasted passwords, works with password managers, and offers an emailed magic-link alternative.",
+      "fail": "Login blocks paste \"for security,\" forces the password to be typed from memory, then demands typing distorted CAPTCHA characters."
+    }
   },
   {
     "id": "4.1.1",
-    "title": "Parsing",
+    "title": "Parsing (Obsolete and removed)",
     "level": "A",
     "principle": "Robust",
-    "shortExplanation": "Use well-formed markup so assistive tech can parse content reliably."
+    "shortExplanation": "This criterion originally required well-formed markup: complete start and end tags, no duplicate IDs, and proper nesting. It was removed in WCAG 2.2 because modern browsers and assistive technologies handle parsing errors automatically.\n\nIt still matters historically: audits against WCAG 2.0/2.1 reference it, and the real-world problems it caught — like duplicate IDs breaking label associations — now fail under other criteria such as 1.3.1 and 4.1.2.\n\nKnowing its status helps auditors and practitioners explain why it appears in older reports but no longer applies in WCAG 2.2.",
+    "example": {
+      "pass": "An auditor notes 4.1.1 as \"not applicable\" in a WCAG 2.2 audit and files duplicate-ID issues under 4.1.2 instead.",
+      "fail": "A 2.2 audit report cites a page as failing 4.1.1 for unclosed tags — a criterion that no longer exists in 2.2."
+    }
   },
   {
     "id": "4.1.2",
     "title": "Name, Role, Value",
     "level": "A",
     "principle": "Robust",
-    "shortExplanation": "UI components expose correct name, role, state, and value to assistive tech."
+    "shortExplanation": "Every UI component must expose its accessible name, its role (button, checkbox, tab…), and its current states and values to assistive technology — and notify it when they change. Native HTML elements do this for free; custom widgets need ARIA to fill the gap.\n\nA \"button\" built from a styled div is, to a screen reader, just silence: no name, no role, no way to know it's pressable. This criterion is where most custom-widget accessibility failures land.\n\nThis helps screen reader users, voice-control users (who target controls by name and role), and switch users.",
+    "example": {
+      "pass": "A custom toggle uses role=\"switch\", aria-checked, and a clear label, so a screen reader announces \"Dark mode, switch, on.\"",
+      "fail": "The menu opener is a clickable div with an icon — no role, no name — so assistive tech presents it as inert text, if at all."
+    }
   },
   {
     "id": "4.1.3",
     "title": "Status Messages",
     "level": "AA",
     "principle": "Robust",
-    "shortExplanation": "Announce status changes to assistive tech without moving focus."
+    "shortExplanation": "Status messages — \"Item added to cart,\" \"3 results found,\" \"Saving…,\" form success banners — must be exposed to assistive technology so they're announced without receiving keyboard focus, typically via role=\"status\" or aria-live regions.\n\nSighted users see these messages appear at a glance; without a live region, a screen reader user hears nothing and has no idea their action did anything.\n\nThis helps screen reader users, who otherwise must hunt around the page after every action to discover what changed.",
+    "example": {
+      "pass": "\"Item added to cart\" renders inside a role=\"status\" region, so screen readers announce it while focus stays put.",
+      "fail": "After clicking Save, a small \"Saved!\" note appears visually but is never announced — the screen reader user clicks Save again and again."
+    }
   }
 ]
