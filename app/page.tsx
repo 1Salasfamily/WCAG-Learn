@@ -68,11 +68,115 @@ function getAssistiveTech(item: Criterion): string[] {
   return principleTechMap[item.principle];
 }
 
-function buildQuizOptions(current: Criterion, pool: Criterion[]): string[] {
-  const distractors = shuffle(pool.filter((item) => item.id !== current.id))
-    .slice(0, 2)
-    .map((item) => item.title);
-  return shuffle([current.title, ...distractors]);
+type QuizQuestionType =
+  | "idToTitle"
+  | "titleToId"
+  | "descToTitle"
+  | "level"
+  | "principle";
+
+type QuizPhase = "question" | "summary";
+
+type QuizQuestion = {
+  criterion: Criterion;
+  type: QuizQuestionType;
+  kicker: string;
+  cardText: string;
+  prompt: string;
+  options: string[];
+  answer: string;
+  firstTryCorrect: boolean | null;
+};
+
+const QUIZ_ROUND_LENGTH = 10;
+
+function firstSentence(text: string): string {
+  const para = text.split("\n\n")[0] ?? "";
+  const idx = para.indexOf(". ");
+  const sentence = idx >= 0 ? para.slice(0, idx + 1) : para;
+  if (sentence.length <= 180) return sentence;
+  return `${sentence.slice(0, 177).replace(/\s+\S*$/, "")}…`;
+}
+
+function pickDistractors(pool: string[], answer: string, count: number): string[] {
+  return shuffle(pool.filter((item) => item !== answer)).slice(0, count);
+}
+
+function buildQuizQuestion(criterion: Criterion, all: Criterion[]): QuizQuestion {
+  const types: QuizQuestionType[] = [
+    "idToTitle",
+    "titleToId",
+    "descToTitle",
+    "level",
+    "principle"
+  ];
+  const type = types[Math.floor(Math.random() * types.length)];
+  const titles = all.map((c) => c.title);
+  const ids = all.map((c) => c.id);
+  const base = { criterion, type, firstTryCorrect: null };
+
+  switch (type) {
+    case "idToTitle":
+      return {
+        ...base,
+        kicker: "Success criterion",
+        cardText: criterion.id,
+        prompt: `Which success criterion is ${criterion.id}?`,
+        options: shuffle([
+          criterion.title,
+          ...pickDistractors(titles, criterion.title, 2)
+        ]),
+        answer: criterion.title
+      };
+    case "titleToId":
+      return {
+        ...base,
+        kicker: "Name the number",
+        cardText: criterion.title,
+        prompt: `Which number is “${criterion.title}”?`,
+        options: shuffle([
+          criterion.id,
+          ...pickDistractors(ids, criterion.id, 2)
+        ]),
+        answer: criterion.id
+      };
+    case "descToTitle":
+      return {
+        ...base,
+        kicker: "Match the description",
+        cardText: `“${firstSentence(criterion.shortExplanation)}”`,
+        prompt: "Which success criterion does this describe?",
+        options: shuffle([
+          criterion.title,
+          ...pickDistractors(titles, criterion.title, 2)
+        ]),
+        answer: criterion.title
+      };
+    case "level":
+      return {
+        ...base,
+        kicker: "Conformance level",
+        cardText: `${criterion.id} ${criterion.title}`,
+        prompt: "What conformance level is this criterion?",
+        options: ["Level A", "Level AA", "Level AAA"],
+        answer: `Level ${criterion.level}`
+      };
+    default:
+      return {
+        ...base,
+        kicker: "POUR principle",
+        cardText: `${criterion.id} ${criterion.title}`,
+        prompt: "Which POUR principle does this criterion belong to?",
+        options: [...POUR],
+        answer: criterion.principle
+      };
+  }
+}
+
+function buildQuizRound(all: Criterion[]): QuizQuestion[] {
+  return shuffle(all)
+    .slice(0, QUIZ_ROUND_LENGTH)
+    .map((criterion) => buildQuizQuestion(criterion, all));
 }
 
 export default function HomePage() {
@@ -103,10 +207,11 @@ export default function HomePage() {
   const [flipped, setFlipped] = useState(false);
   const [exampleExpanded, setExampleExpanded] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [quizOptions, setQuizOptions] = useState<string[]>([]);
+  const [quizRound, setQuizRound] = useState<QuizQuestion[]>([]);
+  const [quizIndex, setQuizIndex] = useState(0);
+  const [quizPhase, setQuizPhase] = useState<QuizPhase>("question");
   const [quizState, setQuizState] = useState<QuizState>("idle");
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
-  const [quizMessage, setQuizMessage] = useState("");
   const [expanded, setExpanded] = useState<Record<Principle, boolean>>({
     Perceivable: true,
     Operable: true,
@@ -125,16 +230,40 @@ export default function HomePage() {
     { heading: "Who it helps", text: detailParagraphs[2] ?? "" }
   ].filter((section) => section.text.trim().length > 0);
 
-  const statusText = started
-    ? `Viewing ${activeIndex + 1} of ${cards.length}: ${current.id} ${current.title}`
-    : "Ready. Choose Start in Order or Start Random Order.";
+  const currentQuestion = quizRound[quizIndex];
+  const quizScore = quizRound.filter((q) => q.firstTryCorrect === true).length;
+
+  const statusText = !started
+    ? "Ready. Choose Start in Order or Start Random Order."
+    : viewMode === "quiz"
+      ? quizPhase === "summary"
+        ? `Round complete: ${quizScore} of ${quizRound.length} correct.`
+        : `Quiz round: question ${quizIndex + 1} of ${quizRound.length}`
+      : `Viewing ${activeIndex + 1} of ${cards.length}: ${current.id} ${current.title}`;
 
   function resetTransientUI() {
     setFlipped(false);
     setExampleExpanded(false);
     setQuizState("idle");
     setSelectedOption(null);
-    setQuizMessage("");
+  }
+
+  function startNewRound() {
+    setQuizRound(buildQuizRound(ordered));
+    setQuizIndex(0);
+    setQuizPhase("question");
+    setQuizState("idle");
+    setSelectedOption(null);
+  }
+
+  function goToNextQuestion() {
+    if (quizIndex + 1 >= quizRound.length) {
+      setQuizPhase("summary");
+      return;
+    }
+    setQuizIndex((prev) => prev + 1);
+    setQuizState("idle");
+    setSelectedOption(null);
   }
 
   function resetToStart() {
@@ -171,6 +300,9 @@ export default function HomePage() {
   }
 
   function jumpToCriterion(id: string) {
+    if (viewMode === "quiz") {
+      setMode("reference");
+    }
     if (!started) {
       setCards(ordered);
       setStarted(true);
@@ -207,21 +339,23 @@ export default function HomePage() {
     setExampleExpanded(false);
     setQuizState("idle");
     setSelectedOption(null);
-    setQuizMessage("");
     if (typeof window !== "undefined") {
       window.localStorage.setItem("wcag-learn:view-mode", mode);
     }
   }
 
   function handleQuizOptionPick(option: string) {
+    if (!currentQuestion || quizState === "correct") return;
     setSelectedOption(option);
-    if (option === current.title) {
-      setQuizState("correct");
-      setQuizMessage("Correct!");
-      return;
-    }
-    setQuizState("wrong");
-    setQuizMessage("Try again.");
+    const isCorrect = option === currentQuestion.answer;
+    setQuizState(isCorrect ? "correct" : "wrong");
+    setQuizRound((prev) =>
+      prev.map((q, i) =>
+        i === quizIndex && q.firstTryCorrect === null
+          ? { ...q, firstTryCorrect: isCorrect }
+          : q
+      )
+    );
   }
 
   useEffect(() => {
@@ -233,12 +367,13 @@ export default function HomePage() {
   }, []);
 
   useEffect(() => {
-    if (!current || viewMode !== "quiz") return;
-    setQuizOptions(buildQuizOptions(current, ordered));
+    if (!started || viewMode !== "quiz") return;
+    setQuizRound(buildQuizRound(ordered));
+    setQuizIndex(0);
+    setQuizPhase("question");
     setQuizState("idle");
     setSelectedOption(null);
-    setQuizMessage("");
-  }, [current, ordered, viewMode]);
+  }, [started, ordered, viewMode]);
 
   useEffect(() => {
     function onReset() {
@@ -336,7 +471,9 @@ export default function HomePage() {
 
             <p className="status-text" aria-live="polite">
               {statusText}
-              {started ? <span className="status-principle-chip">{current.principle.toUpperCase()}</span> : null}
+              {started && viewMode === "reference" ? (
+                <span className="status-principle-chip">{current.principle.toUpperCase()}</span>
+              ) : null}
             </p>
           </div>
 
@@ -385,12 +522,24 @@ export default function HomePage() {
             <section className="study-shell" aria-label="Flashcard study interface">
               <div className="card-stack">
                 {viewMode === "quiz" ? (
-                  <article className="flashcard quiz-card" aria-live="polite">
-                    <div className="card-front">
-                      <p className="sc-quiz-kicker">Success criterion</p>
-                      <p className="sc-quiz-id">{current.id}</p>
-                    </div>
-                  </article>
+                  quizPhase === "summary" || !currentQuestion ? null : (
+                    <article className="flashcard quiz-card" aria-live="polite">
+                      <div className="card-front">
+                        <p className="sc-quiz-kicker">{currentQuestion.kicker}</p>
+                        <p
+                          className={
+                            currentQuestion.type === "idToTitle"
+                              ? "sc-quiz-id"
+                              : currentQuestion.type === "descToTitle"
+                                ? "sc-quiz-quote"
+                                : "sc-quiz-text"
+                          }
+                        >
+                          {currentQuestion.cardText}
+                        </p>
+                      </div>
+                    </article>
+                  )
                 ) : (
                   <article className="flashcard" aria-live="polite">
                     <div className="card-back reference-back">
@@ -457,58 +606,140 @@ export default function HomePage() {
                   </article>
                 )}
                 {viewMode === "quiz" ? (
-                  <div className="quiz-wrap" aria-live="polite">
-                    <p className="quiz-prompt">Which success criterion matches {current.id}?</p>
-                    <div className="quiz-options" role="group" aria-label="Quiz answer choices">
-                      {quizOptions.map((option) => {
-                        const isSelected = selectedOption === option;
-                        const isCorrect = option === current.title;
-                        const stateClass =
-                          quizState === "correct" && isCorrect
-                            ? "correct"
-                            : quizState === "wrong" && isSelected
-                              ? "wrong"
-                              : "";
-
-                        return (
-                          <button
-                            key={`${current.id}-${option}`}
-                            className={`quiz-option ${stateClass}`}
-                            onClick={() => handleQuizOptionPick(option)}
-                          >
-                            {option}
-                          </button>
-                        );
-                      })}
-                    </div>
-                    {quizState === "correct" ? (
-                      <p className="quiz-correct-burst">Correct!</p>
-                    ) : (
-                      <p className={`quiz-message ${quizState === "wrong" ? "wrong" : ""}`}>
-                        {quizMessage || "Choose one option."}
+                  quizPhase === "summary" ? (
+                    <section
+                      className="quiz-summary"
+                      aria-live="polite"
+                      aria-label="Quiz round results"
+                    >
+                      <p className="quiz-summary-kicker">Round complete</p>
+                      <p className="quiz-summary-score">
+                        {quizScore} / {quizRound.length}
                       </p>
-                    )}
-                  </div>
+                      <p className="quiz-summary-message">
+                        {quizScore === quizRound.length
+                          ? "Perfect round!"
+                          : quizScore >= 8
+                            ? "Excellent — almost flawless."
+                            : quizScore >= 6
+                              ? "Solid work. Review the misses below."
+                              : quizScore >= 4
+                                ? "Getting there — keep practicing."
+                                : "Tough round. The reference guide is one click away."}
+                      </p>
+                      <ul className="quiz-summary-list">
+                        {quizRound.map((q) => (
+                          <li
+                            key={`${q.criterion.id}-${q.type}`}
+                            className={`summary-row ${q.firstTryCorrect ? "correct" : "missed"}`}
+                          >
+                            <span className="summary-mark" aria-hidden="true">
+                              {q.firstTryCorrect ? "✓" : "✕"}
+                            </span>
+                            <span className="visually-hidden">
+                              {q.firstTryCorrect ? "Correct:" : "Missed:"}
+                            </span>
+                            <span className="summary-crit">
+                              {q.criterion.id} {q.criterion.title}
+                            </span>
+                            {!q.firstTryCorrect ? (
+                              <span className="summary-answer">Answer: {q.answer}</span>
+                            ) : null}
+                          </li>
+                        ))}
+                      </ul>
+                      <div className="start-row">
+                        <button
+                          className="start-button start-button-primary"
+                          onClick={startNewRound}
+                        >
+                          New round
+                        </button>
+                        <button
+                          className="start-button"
+                          onClick={() => setMode("reference")}
+                        >
+                          Review the guide
+                        </button>
+                      </div>
+                    </section>
+                  ) : currentQuestion ? (
+                    <div className="quiz-wrap" aria-live="polite">
+                      <div className="quiz-progress-row">
+                        <p className="quiz-progress">
+                          Question {quizIndex + 1} of {quizRound.length}
+                        </p>
+                        <span className="quiz-score-chip">Score: {quizScore}</span>
+                      </div>
+                      <p className="quiz-prompt">{currentQuestion.prompt}</p>
+                      <div className="quiz-options" role="group" aria-label="Quiz answer choices">
+                        {currentQuestion.options.map((option) => {
+                          const isSelected = selectedOption === option;
+                          const isCorrect = option === currentQuestion.answer;
+                          const stateClass =
+                            quizState === "correct" && isCorrect
+                              ? "correct"
+                              : quizState === "wrong" && isSelected
+                                ? "wrong"
+                                : "";
+
+                          return (
+                            <button
+                              key={`${currentQuestion.criterion.id}-${option}`}
+                              className={`quiz-option ${stateClass}`}
+                              onClick={() => handleQuizOptionPick(option)}
+                              disabled={quizState === "correct" && !isCorrect}
+                            >
+                              {option}
+                            </button>
+                          );
+                        })}
+                      </div>
+                      {quizState === "correct" ? (
+                        <>
+                          <p className="quiz-correct-burst">Correct!</p>
+                          <div className="quiz-next-row">
+                            <button
+                              className="start-button start-button-primary"
+                              onClick={goToNextQuestion}
+                            >
+                              {quizIndex + 1 >= quizRound.length
+                                ? "See results"
+                                : "Next question"}
+                            </button>
+                          </div>
+                        </>
+                      ) : (
+                        <p className={`quiz-message ${quizState === "wrong" ? "wrong" : ""}`}>
+                          {quizState === "wrong"
+                            ? "Not quite — try again."
+                            : "Choose one option."}
+                        </p>
+                      )}
+                    </div>
+                  ) : null
                 ) : (
                   null
                 )}
               </div>
 
-              <div className="study-nav-row">
-                <div className="arrow-block left">
-                  <button className="arrow-button" onClick={goBack} aria-label="Back">
-                    ◀
-                  </button>
-                  <span className="arrow-label">Back</span>
-                </div>
+              {viewMode === "reference" ? (
+                <div className="study-nav-row">
+                  <div className="arrow-block left">
+                    <button className="arrow-button" onClick={goBack} aria-label="Back">
+                      ◀
+                    </button>
+                    <span className="arrow-label">Back</span>
+                  </div>
 
-                <div className="arrow-block right">
-                  <button className="arrow-button" onClick={goNext} aria-label="Next">
-                    ▶
-                  </button>
-                  <span className="arrow-label">Next</span>
+                  <div className="arrow-block right">
+                    <button className="arrow-button" onClick={goNext} aria-label="Next">
+                      ▶
+                    </button>
+                    <span className="arrow-label">Next</span>
+                  </div>
                 </div>
-              </div>
+              ) : null}
             </section>
           )}
         </div>
