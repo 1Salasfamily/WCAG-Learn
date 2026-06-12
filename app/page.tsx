@@ -246,6 +246,33 @@ export default function HomePage() {
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [quizPrincipleFilter, setQuizPrincipleFilter] = useState<PrincipleFilter>("All");
   const [quizLevelFilter, setQuizLevelFilter] = useState<LevelFilter>("All");
+  const [sidebarQuery, setSidebarQuery] = useState("");
+
+  const searchQuery = sidebarQuery.trim().toLowerCase();
+  const isSearching = searchQuery.length > 0;
+
+  const visibleGrouped = useMemo(() => {
+    if (!isSearching) return grouped;
+    const map: Record<Principle, Criterion[]> = {
+      Perceivable: [],
+      Operable: [],
+      Understandable: [],
+      Robust: []
+    };
+    POUR.forEach((principle) => {
+      map[principle] = grouped[principle].filter(
+        (item) =>
+          item.id.toLowerCase().includes(searchQuery) ||
+          item.title.toLowerCase().includes(searchQuery)
+      );
+    });
+    return map;
+  }, [grouped, searchQuery, isSearching]);
+
+  const searchMatchCount = POUR.reduce(
+    (count, principle) => count + visibleGrouped[principle].length,
+    0
+  );
 
   const quizPool = useMemo(
     () =>
@@ -461,21 +488,80 @@ export default function HomePage() {
     return () => window.removeEventListener("keydown", onKeyDown);
   }, []);
 
+  useEffect(() => {
+    function onShortcut(event: KeyboardEvent) {
+      const target = event.target as HTMLElement | null;
+      const isEditable =
+        target &&
+        (target.tagName === "INPUT" ||
+          target.tagName === "TEXTAREA" ||
+          target.isContentEditable);
+      if (isEditable || exampleExpanded || !started) return;
+      if (event.altKey || event.ctrlKey || event.metaKey) return;
+
+      if (viewMode === "reference") {
+        if (event.key === "ArrowLeft") {
+          event.preventDefault();
+          goBack();
+        } else if (event.key === "ArrowRight") {
+          event.preventDefault();
+          goNext();
+        }
+        return;
+      }
+
+      if (viewMode === "quiz" && quizPhase === "question" && currentQuestion) {
+        if (/^[1-4]$/.test(event.key)) {
+          const optionIndex = Number(event.key) - 1;
+          const option = currentQuestion.options[optionIndex];
+          if (option) {
+            handleQuizOptionPick(option);
+          }
+        }
+      }
+    }
+
+    window.addEventListener("keydown", onShortcut);
+    return () => window.removeEventListener("keydown", onShortcut);
+  });
+
   return (
     <section className="learn-layout" aria-labelledby="learn-heading">
       <h2 id="learn-heading" className="visually-hidden">
         WCAG Learn Study App
       </h2>
 
-      <aside
+      <nav
         id="pour-sidebar"
         className={`learn-sidebar ${isSidebarOpen ? "open" : ""}`}
         aria-label="POUR criteria navigation"
       >
         <h3 className="sidebar-title">POUR Navigation</h3>
 
+        <div className="sidebar-search">
+          <label className="visually-hidden" htmlFor="criteria-search">
+            Search success criteria
+          </label>
+          <input
+            id="criteria-search"
+            className="sidebar-search-input"
+            type="search"
+            placeholder="Search criteria…"
+            value={sidebarQuery}
+            onChange={(event) => setSidebarQuery(event.target.value)}
+          />
+          <p className="sidebar-search-count" aria-live="polite">
+            {isSearching
+              ? `${searchMatchCount} of ${ordered.length} criteria match`
+              : ""}
+          </p>
+        </div>
+
         {POUR.map((principle) => {
-          const open = expanded[principle];
+          const open = isSearching ? true : expanded[principle];
+          if (isSearching && visibleGrouped[principle].length === 0) {
+            return null;
+          }
           return (
             <section className="sidebar-group" key={principle}>
               <button
@@ -491,7 +577,7 @@ export default function HomePage() {
               </button>
 
               <div id={`group-${principle}`} className={`criteria-wrap ${open ? "" : "hidden"}`}>
-                {grouped[principle].map((item) => {
+                {visibleGrouped[principle].map((item) => {
                   const active = started && current?.id === item.id;
                   return (
                     <button
@@ -508,7 +594,7 @@ export default function HomePage() {
             </section>
           );
         })}
-      </aside>
+      </nav>
 
       {isSidebarOpen ? <button className="sidebar-backdrop" onClick={() => setIsSidebarOpen(false)} aria-label="Close navigation menu" /> : null}
 
@@ -679,7 +765,7 @@ export default function HomePage() {
                       <div className="reference-sections">
                         {detailSections.map((section) => (
                           <section key={`${current.id}-${section.heading}`} className="reference-section">
-                            <h4>{section.heading}</h4>
+                            <h3>{section.heading}</h3>
                             <p>{section.text}</p>
                           </section>
                         ))}
@@ -687,15 +773,15 @@ export default function HomePage() {
                       {current.example ? (
                         <div className="reference-examples" aria-label="Pass and fail examples">
                           <section className="reference-example example-pass">
-                            <h4>
+                            <h3>
                               <span aria-hidden="true">✓</span> Pass example
-                            </h4>
+                            </h3>
                             <p>{current.example.pass}</p>
                           </section>
                           <section className="reference-example example-fail">
-                            <h4>
+                            <h3>
                               <span aria-hidden="true">✕</span> Fail example
-                            </h4>
+                            </h3>
                             <p>{current.example.fail}</p>
                           </section>
                         </div>
@@ -725,7 +811,11 @@ export default function HomePage() {
                                 ? "Getting there — keep practicing."
                                 : "Tough round. The reference guide is one click away."}
                       </p>
-                      <ul className="quiz-summary-list">
+                      <ul
+                        className="quiz-summary-list"
+                        tabIndex={0}
+                        aria-label="Question-by-question results"
+                      >
                         {quizRound.map((q) => (
                           <li
                             key={`${q.criterion.id}-${q.type}`}
@@ -779,7 +869,7 @@ export default function HomePage() {
                       </div>
                       <p className="quiz-prompt">{currentQuestion.prompt}</p>
                       <div className="quiz-options" role="group" aria-label="Quiz answer choices">
-                        {currentQuestion.options.map((option) => {
+                        {currentQuestion.options.map((option, optionIndex) => {
                           const isSelected = selectedOption === option;
                           const isCorrect = option === currentQuestion.answer;
                           const stateClass =
@@ -796,7 +886,10 @@ export default function HomePage() {
                               onClick={() => handleQuizOptionPick(option)}
                               disabled={quizState === "correct" && !isCorrect}
                             >
-                              {option}
+                              <kbd className="quiz-key" aria-hidden="true">
+                                {optionIndex + 1}
+                              </kbd>
+                              <span className="quiz-option-text">{option}</span>
                             </button>
                           );
                         })}
@@ -835,14 +928,18 @@ export default function HomePage() {
                     <button className="arrow-button" onClick={goBack} aria-label="Back">
                       ◀
                     </button>
-                    <span className="arrow-label">Back</span>
+                    <span className="arrow-label">
+                      Back <kbd className="nav-key" aria-hidden="true">←</kbd>
+                    </span>
                   </div>
 
                   <div className="arrow-block right">
                     <button className="arrow-button" onClick={goNext} aria-label="Next">
                       ▶
                     </button>
-                    <span className="arrow-label">Next</span>
+                    <span className="arrow-label">
+                      Next <kbd className="nav-key" aria-hidden="true">→</kbd>
+                    </span>
                   </div>
                 </div>
               ) : null}
