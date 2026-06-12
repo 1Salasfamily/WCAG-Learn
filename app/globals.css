@@ -537,6 +537,65 @@ a {
   animation: quizShake 220ms linear;
 }
 
+.quiz-filter-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.1rem;
+  margin-bottom: 0.85rem;
+}
+
+.quiz-filter-group {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  padding: 0.2rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: rgba(18, 26, 39, 0.8);
+}
+
+.quiz-filter-chip {
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 0.32rem 0.7rem;
+  cursor: pointer;
+  min-height: 32px;
+  touch-action: manipulation;
+}
+
+.quiz-filter-chip.active {
+  color: var(--text);
+  background: rgba(56, 78, 116, 0.56);
+  border-color: rgba(133, 167, 227, 0.38);
+}
+
+.details-new-chip {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #ffe7c4;
+  background: rgba(158, 103, 36, 0.24);
+  border: 1px solid rgba(255, 186, 96, 0.55);
+  border-radius: 999px;
+  padding: 0.16rem 0.5rem;
+}
+
+.reference-w3c-link {
+  margin-top: 0.55rem;
+  display: inline-block;
+  align-self: flex-start;
+  color: var(--link);
+  font-size: 0.88rem;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  border-radius: 0.3rem;
+}
+
 .quiz-progress-row {
   display: flex;
   align-items: center;

@@ -68,12 +68,29 @@ function getAssistiveTech(item: Criterion): string[] {
   return principleTechMap[item.principle];
 }
 
+const NEW_IN_22 = new Set(["2.4.11", "2.5.7", "2.5.8", "3.2.6", "3.3.7", "3.3.8"]);
+
+function understandingUrl(criterion: Criterion): string {
+  if (criterion.id === "4.1.1") {
+    return "https://www.w3.org/WAI/WCAG22/Understanding/parsing.html";
+  }
+  const slug = criterion.title
+    .toLowerCase()
+    .replace(/[(),]/g, "")
+    .replace(/\s+/g, "-");
+  return `https://www.w3.org/WAI/WCAG22/Understanding/${slug}.html`;
+}
+
 type QuizQuestionType =
   | "idToTitle"
   | "titleToId"
   | "descToTitle"
   | "level"
-  | "principle";
+  | "principle"
+  | "scenario";
+
+type PrincipleFilter = "All" | Principle;
+type LevelFilter = "All" | "A" | "AA";
 
 type QuizPhase = "question" | "summary";
 
@@ -110,6 +127,9 @@ function buildQuizQuestion(criterion: Criterion, all: Criterion[]): QuizQuestion
     "level",
     "principle"
   ];
+  if (criterion.example?.fail) {
+    types.push("scenario");
+  }
   const type = types[Math.floor(Math.random() * types.length)];
   const titles = all.map((c) => c.title);
   const ids = all.map((c) => c.id);
@@ -161,6 +181,18 @@ function buildQuizQuestion(criterion: Criterion, all: Criterion[]): QuizQuestion
         options: ["Level A", "Level AA", "Level AAA"],
         answer: `Level ${criterion.level}`
       };
+    case "scenario":
+      return {
+        ...base,
+        kicker: "Spot the violation",
+        cardText: `“${criterion.example?.fail ?? ""}”`,
+        prompt: "Which success criterion does this scenario violate?",
+        options: shuffle([
+          criterion.title,
+          ...pickDistractors(titles, criterion.title, 2)
+        ]),
+        answer: criterion.title
+      };
     default:
       return {
         ...base,
@@ -173,8 +205,8 @@ function buildQuizQuestion(criterion: Criterion, all: Criterion[]): QuizQuestion
   }
 }
 
-function buildQuizRound(all: Criterion[]): QuizQuestion[] {
-  return shuffle(all)
+function buildQuizRound(pool: Criterion[], all: Criterion[]): QuizQuestion[] {
+  return shuffle(pool)
     .slice(0, QUIZ_ROUND_LENGTH)
     .map((criterion) => buildQuizQuestion(criterion, all));
 }
@@ -212,6 +244,18 @@ export default function HomePage() {
   const [quizPhase, setQuizPhase] = useState<QuizPhase>("question");
   const [quizState, setQuizState] = useState<QuizState>("idle");
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
+  const [quizPrincipleFilter, setQuizPrincipleFilter] = useState<PrincipleFilter>("All");
+  const [quizLevelFilter, setQuizLevelFilter] = useState<LevelFilter>("All");
+
+  const quizPool = useMemo(
+    () =>
+      ordered.filter(
+        (item) =>
+          (quizPrincipleFilter === "All" || item.principle === quizPrincipleFilter) &&
+          (quizLevelFilter === "All" || item.level === quizLevelFilter)
+      ),
+    [ordered, quizPrincipleFilter, quizLevelFilter]
+  );
   const [expanded, setExpanded] = useState<Record<Principle, boolean>>({
     Perceivable: true,
     Operable: true,
@@ -249,7 +293,19 @@ export default function HomePage() {
   }
 
   function startNewRound() {
-    setQuizRound(buildQuizRound(ordered));
+    setQuizRound(buildQuizRound(quizPool, ordered));
+    setQuizIndex(0);
+    setQuizPhase("question");
+    setQuizState("idle");
+    setSelectedOption(null);
+  }
+
+  function startMissRound() {
+    const missed = quizRound
+      .filter((q) => q.firstTryCorrect !== true)
+      .map((q) => q.criterion);
+    if (missed.length === 0) return;
+    setQuizRound(shuffle(missed).map((criterion) => buildQuizQuestion(criterion, ordered)));
     setQuizIndex(0);
     setQuizPhase("question");
     setQuizState("idle");
@@ -368,12 +424,12 @@ export default function HomePage() {
 
   useEffect(() => {
     if (!started || viewMode !== "quiz") return;
-    setQuizRound(buildQuizRound(ordered));
+    setQuizRound(buildQuizRound(quizPool, ordered));
     setQuizIndex(0);
     setQuizPhase("question");
     setQuizState("idle");
     setSelectedOption(null);
-  }, [started, ordered, viewMode]);
+  }, [started, ordered, viewMode, quizPool]);
 
   useEffect(() => {
     function onReset() {
@@ -522,6 +578,34 @@ export default function HomePage() {
             <section className="study-shell" aria-label="Flashcard study interface">
               <div className="card-stack">
                 {viewMode === "quiz" ? (
+                  <div className="quiz-filter-row">
+                    <div className="quiz-filter-group" role="group" aria-label="Filter questions by principle">
+                      {(["All", ...POUR] as PrincipleFilter[]).map((p) => (
+                        <button
+                          key={p}
+                          className={`quiz-filter-chip ${quizPrincipleFilter === p ? "active" : ""}`}
+                          aria-pressed={quizPrincipleFilter === p}
+                          onClick={() => setQuizPrincipleFilter(p)}
+                        >
+                          {p}
+                        </button>
+                      ))}
+                    </div>
+                    <div className="quiz-filter-group" role="group" aria-label="Filter questions by conformance level">
+                      {(["All", "A", "AA"] as LevelFilter[]).map((l) => (
+                        <button
+                          key={l}
+                          className={`quiz-filter-chip ${quizLevelFilter === l ? "active" : ""}`}
+                          aria-pressed={quizLevelFilter === l}
+                          onClick={() => setQuizLevelFilter(l)}
+                        >
+                          {l === "All" ? "All levels" : `Level ${l}`}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                ) : null}
+                {viewMode === "quiz" ? (
                   quizPhase === "summary" || !currentQuestion ? null : (
                     <article className="flashcard quiz-card" aria-live="polite">
                       <div className="card-front">
@@ -530,7 +614,8 @@ export default function HomePage() {
                           className={
                             currentQuestion.type === "idToTitle"
                               ? "sc-quiz-id"
-                              : currentQuestion.type === "descToTitle"
+                              : currentQuestion.type === "descToTitle" ||
+                                  currentQuestion.type === "scenario"
                                 ? "sc-quiz-quote"
                                 : "sc-quiz-text"
                           }
@@ -570,6 +655,9 @@ export default function HomePage() {
                           <span className={`details-level details-level-${current.level.toLowerCase()}`}>
                             Level {current.level}
                           </span>
+                          {NEW_IN_22.has(current.id) ? (
+                            <span className="details-new-chip">New in 2.2</span>
+                          ) : null}
                           {getAssistiveTech(current).map((tech) => (
                             <span key={`${current.id}-${tech}`} className="details-tech-chip">
                               {tech}
@@ -577,6 +665,16 @@ export default function HomePage() {
                           ))}
                         </div>
                         <div className="reference-meta-divider" aria-hidden="true" />
+                        <a
+                          className="reference-w3c-link"
+                          href={understandingUrl(current)}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          W3C Understanding doc
+                          <span aria-hidden="true"> ↗</span>
+                          <span className="visually-hidden"> (opens in a new tab)</span>
+                        </a>
                       </section>
                       <div className="reference-sections">
                         {detailSections.map((section) => (
@@ -649,8 +747,16 @@ export default function HomePage() {
                         ))}
                       </ul>
                       <div className="start-row">
+                        {quizScore < quizRound.length ? (
+                          <button
+                            className="start-button start-button-primary"
+                            onClick={startMissRound}
+                          >
+                            Practice my misses ({quizRound.length - quizScore})
+                          </button>
+                        ) : null}
                         <button
-                          className="start-button start-button-primary"
+                          className={`start-button ${quizScore === quizRound.length ? "start-button-primary" : ""}`}
                           onClick={startNewRound}
                         >
                           New round
