@@ -588,11 +588,6 @@ a {
   -webkit-tap-highlight-color: transparent;
 }
 
-.arrow-label {
-  color: var(--muted);
-  font-size: 0.9rem;
-}
-
 .study-nav-row {
   display: flex;
   justify-content: center;
@@ -676,21 +671,6 @@ a {
 
 .quiz-option-text {
   min-width: 0;
-}
-
-.nav-key {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 1.3rem;
-  height: 1.3rem;
-  border: 1px solid rgba(104, 127, 168, 0.45);
-  border-radius: 0.3rem;
-  background: rgba(13, 20, 33, 0.6);
-  color: var(--muted);
-  font-family: inherit;
-  font-size: 0.75rem;
-  padding: 0 0.2rem;
 }
 
 .quiz-option:hover {

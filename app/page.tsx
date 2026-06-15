@@ -913,18 +913,12 @@ export default function HomePage() {
                     <button className="arrow-button" onClick={goBack} aria-label="Back">
                       ◀
                     </button>
-                    <span className="arrow-label">
-                      Back <kbd className="nav-key" aria-hidden="true">←</kbd>
-                    </span>
                   </div>
 
                   <div className="arrow-block right">
                     <button className="arrow-button" onClick={goNext} aria-label="Next">
                       ▶
                     </button>
-                    <span className="arrow-label">
-                      Next <kbd className="nav-key" aria-hidden="true">→</kbd>
-                    </span>
                   </div>
                 </div>
               ) : null}
