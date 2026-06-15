@@ -409,6 +409,7 @@ export default function HomePage() {
     setViewMode(mode);
     setFlipped(false);
     setExampleExpanded(false);
+    setIsSidebarOpen(false);
     setQuizState("idle");
     setSelectedOption(null);
     if (typeof window !== "undefined") {
@@ -514,12 +515,18 @@ export default function HomePage() {
     return () => window.removeEventListener("keydown", onShortcut);
   });
 
+  const showSidebar = started && viewMode === "reference";
+
   return (
-    <section className="learn-layout" aria-labelledby="learn-heading">
+    <section
+      className={`learn-layout ${showSidebar ? "" : "no-sidebar"}`}
+      aria-labelledby="learn-heading"
+    >
       <h2 id="learn-heading" className="visually-hidden">
         WCAG Learn Study App
       </h2>
 
+      {showSidebar ? (
       <nav
         id="pour-sidebar"
         className={`learn-sidebar ${isSidebarOpen ? "open" : ""}`}
@@ -584,21 +591,24 @@ export default function HomePage() {
           );
         })}
       </nav>
+      ) : null}
 
-      {isSidebarOpen ? <button className="sidebar-backdrop" onClick={() => setIsSidebarOpen(false)} aria-label="Close navigation menu" /> : null}
+      {showSidebar && isSidebarOpen ? <button className="sidebar-backdrop" onClick={() => setIsSidebarOpen(false)} aria-label="Close navigation menu" /> : null}
 
       <div className="learn-main">
         <div className="learn-top-row">
           <div className="top-left-group">
-            <button
-              className="sidebar-toggle"
-              onClick={() => setIsSidebarOpen((prev) => !prev)}
-              aria-expanded={isSidebarOpen}
-              aria-controls="pour-sidebar"
-              aria-label={isSidebarOpen ? "Close POUR navigation menu" : "Open POUR navigation menu"}
-            >
-              ☰
-            </button>
+            {showSidebar ? (
+              <button
+                className="sidebar-toggle"
+                onClick={() => setIsSidebarOpen((prev) => !prev)}
+                aria-expanded={isSidebarOpen}
+                aria-controls="pour-sidebar"
+                aria-label={isSidebarOpen ? "Close POUR navigation menu" : "Open POUR navigation menu"}
+              >
+                ☰
+              </button>
+            ) : null}
 
             <p className="status-text" aria-live="polite">
               {statusText}

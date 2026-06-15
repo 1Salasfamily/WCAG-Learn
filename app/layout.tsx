@@ -45,9 +45,6 @@ export default function RootLayout({
           {children}
         </main>
         <footer className="site-footer">
-          <p className="footer-tagline">
-            Built on the official W3C WCAG 2.2 specification.
-          </p>
           <Link className="footer-link" href="/about">
             Learn more &amp; sources
           </Link>

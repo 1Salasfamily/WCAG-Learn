@@ -119,12 +119,6 @@ a {
   background: rgba(15, 17, 21, 0.6);
 }
 
-.footer-tagline {
-  margin: 0;
-  color: var(--muted);
-  font-size: 0.85rem;
-}
-
 .footer-link {
   color: var(--link);
   font-size: 0.85rem;
@@ -218,6 +212,10 @@ a {
   height: 100%;
   display: grid;
   grid-template-columns: clamp(240px, 21vw, 320px) minmax(0, 1fr);
+}
+
+.learn-layout.no-sidebar {
+  grid-template-columns: minmax(0, 1fr);
 }
 
 .learn-sidebar {
