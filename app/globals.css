@@ -139,6 +139,11 @@ a {
   border-radius: 0.3rem;
 }
 
+.footer-sep {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
 .about-page {
   height: 100%;
   overflow-y: auto;

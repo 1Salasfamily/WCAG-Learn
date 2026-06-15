@@ -52,6 +52,12 @@ export default function RootLayout({
           <Link className="footer-link" href="/about">
             Learn more &amp; sources
           </Link>
+          <span className="footer-sep" aria-hidden="true">
+            ·
+          </span>
+          <Link className="footer-link" href="/accessibility">
+            Accessibility
+          </Link>
         </footer>
       </body>
     </html>
