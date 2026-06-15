@@ -70,17 +70,6 @@ function getAssistiveTech(item: Criterion): string[] {
 
 const NEW_IN_22 = new Set(["2.4.11", "2.5.7", "2.5.8", "3.2.6", "3.3.7", "3.3.8"]);
 
-function understandingUrl(criterion: Criterion): string {
-  if (criterion.id === "4.1.1") {
-    return "https://www.w3.org/WAI/WCAG22/Understanding/parsing.html";
-  }
-  const slug = criterion.title
-    .toLowerCase()
-    .replace(/[(),]/g, "")
-    .replace(/\s+/g, "-");
-  return `https://www.w3.org/WAI/WCAG22/Understanding/${slug}.html`;
-}
-
 type QuizQuestionType =
   | "idToTitle"
   | "titleToId"
@@ -714,14 +703,30 @@ export default function HomePage() {
                 ) : (
                   <article className="flashcard" aria-live="polite">
                     <div className="card-back reference-back">
-                      <div className="reference-media">
+                      <section className="reference-topbar" aria-label="Criterion summary details">
+                        <span className="details-id-badge">{current.id}</span>
+                        <p className="reference-title">{current.title}</p>
+                        <span className={`details-level details-level-${current.level.toLowerCase()}`}>
+                          Level {current.level}
+                        </span>
+                        {NEW_IN_22.has(current.id) ? (
+                          <span className="details-new-chip">New in 2.2</span>
+                        ) : null}
+                        {getAssistiveTech(current).map((tech) => (
+                          <span key={`${current.id}-${tech}`} className="details-tech-chip">
+                            {tech}
+                          </span>
+                        ))}
+                      </section>
+                      <div className="reference-meta-divider" aria-hidden="true" />
+                      <div className="reference-hero">
                         <button
                           className="reference-image-trigger"
                           onClick={toggleExampleExpanded}
                           aria-label={`Expand example image for ${current.id} ${current.title}`}
                         >
                           <div className="example-image-frame">
-                          <div className="example-image-shell">
+                            <div className="example-image-shell">
                               <img
                                 className="example-image"
                                 src={currentImageSrc}
@@ -732,36 +737,6 @@ export default function HomePage() {
                           </div>
                         </button>
                       </div>
-                      <section className="reference-meta-panel" aria-label="Criterion summary details">
-                        <div className="reference-header-row">
-                          <span className="details-id-badge">{current.id}</span>
-                          <p className="reference-title">{current.title}</p>
-                        </div>
-                        <div className="reference-chip-row" aria-label="Criterion metadata">
-                          <span className={`details-level details-level-${current.level.toLowerCase()}`}>
-                            Level {current.level}
-                          </span>
-                          {NEW_IN_22.has(current.id) ? (
-                            <span className="details-new-chip">New in 2.2</span>
-                          ) : null}
-                          {getAssistiveTech(current).map((tech) => (
-                            <span key={`${current.id}-${tech}`} className="details-tech-chip">
-                              {tech}
-                            </span>
-                          ))}
-                        </div>
-                        <div className="reference-meta-divider" aria-hidden="true" />
-                        <a
-                          className="reference-w3c-link"
-                          href={understandingUrl(current)}
-                          target="_blank"
-                          rel="noreferrer"
-                        >
-                          W3C Understanding doc
-                          <span aria-hidden="true"> ↗</span>
-                          <span className="visually-hidden"> (opens in a new tab)</span>
-                        </a>
-                      </section>
                       <div className="reference-sections">
                         {detailSections.map((section) => (
                           <section key={`${current.id}-${section.heading}`} className="reference-section">

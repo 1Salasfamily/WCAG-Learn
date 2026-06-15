@@ -30,7 +30,7 @@ body {
 
 body {
   display: grid;
-  grid-template-rows: auto 1fr;
+  grid-template-rows: auto 1fr auto;
 }
 
 a {
@@ -103,8 +103,114 @@ a {
   max-width: none;
   margin: 0;
   height: 100%;
-  padding: 0 env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  padding: 0 env(safe-area-inset-right) 0 env(safe-area-inset-left);
   overflow: hidden;
+}
+
+.site-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.85rem;
+  border-top: 1.5px solid var(--border);
+  padding: 0.55rem calc(1rem + env(safe-area-inset-right))
+    calc(0.55rem + env(safe-area-inset-bottom)) calc(1rem + env(safe-area-inset-left));
+  background: rgba(15, 17, 21, 0.6);
+}
+
+.footer-tagline {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.footer-link {
+  color: var(--link);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  border-radius: 0.3rem;
+}
+
+.about-page {
+  height: 100%;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(111, 138, 184, 0.45) rgba(21, 26, 34, 0.2);
+  padding: 1.5rem 1.2rem 2.5rem;
+}
+
+.about-inner {
+  width: min(760px, 100%);
+  margin-inline: auto;
+}
+
+.about-back {
+  display: inline-block;
+  margin-bottom: 1.2rem;
+  color: var(--link);
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 0.3rem;
+}
+
+.about-back:hover {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.about-title {
+  margin: 0 0 0.8rem;
+  font-size: 1.7rem;
+  font-weight: 700;
+}
+
+.about-lead {
+  margin: 0 0 1.4rem;
+  font-size: 1.1rem;
+  line-height: 1.55;
+  color: var(--muted);
+}
+
+.about-section {
+  border: 1px solid rgba(66, 80, 104, 0.5);
+  background: rgba(20, 29, 43, 0.5);
+  border-radius: 0.9rem;
+  padding: 1rem 1.15rem;
+  margin-bottom: 1rem;
+}
+
+.about-section h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #d8e4ff;
+}
+
+.about-section p {
+  margin: 0;
+  font-size: 0.98rem;
+  line-height: 1.6;
+  color: var(--text);
+}
+
+.about-links {
+  margin: 0;
+  padding-left: 1.1rem;
+  display: grid;
+  gap: 0.55rem;
+}
+
+.about-links li {
+  color: var(--text);
+}
+
+.about-links a {
+  color: var(--link);
+  text-underline-offset: 2px;
 }
 
 .learn-layout {
@@ -349,8 +455,11 @@ a {
 .main-stage {
   min-height: 0;
   display: grid;
-  align-content: center;
+  align-content: safe center;
   justify-items: center;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(111, 138, 184, 0.45) rgba(21, 26, 34, 0.2);
 }
 
 .deck {
@@ -955,25 +1064,29 @@ a {
 }
 
 .reference-back {
-  display: grid;
-  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
-  grid-template-areas:
-    "media meta"
-    "sections sections"
-    "examples examples";
-  align-items: stretch;
-  justify-content: center;
-  text-align: left;
-  gap: 0.75rem;
-  padding: 0.75rem;
-}
-
-.reference-media {
-  grid-area: media;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
   align-items: stretch;
+  text-align: left;
+  gap: 0.5rem;
+  padding: 0.7rem 0.9rem;
+}
+
+.reference-topbar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  min-width: 0;
+}
+
+.reference-hero {
+  display: flex;
+  justify-content: center;
+}
+
+.reference-hero .reference-image-trigger {
+  width: min(500px, 100%);
 }
 
 .reference-image-trigger {
@@ -1101,49 +1214,20 @@ a {
   transform: none;
 }
 
-.reference-meta-panel {
-  grid-area: meta;
-  border: 1px solid rgba(66, 80, 104, 0.6);
-  background: rgba(20, 29, 43, 0.58);
-  border-radius: 0.9rem;
-  padding: 0.62rem 0.72rem;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.reference-header-row {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  min-width: 0;
-}
-
 .reference-title {
-  margin: 0;
-  font-size: 1.15rem;
+  margin: 0 0.3rem 0 0;
+  font-size: 1.2rem;
   font-weight: 700;
   line-height: 1.2;
   min-width: 0;
 }
 
-.reference-chip-row {
-  margin-top: 0.5rem;
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 0.35rem;
-}
-
 .reference-meta-divider {
-  margin-top: 0.55rem;
   height: 1px;
-  background: linear-gradient(90deg, rgba(101, 128, 172, 0.55), rgba(101, 128, 172, 0));
+  background: linear-gradient(90deg, rgba(101, 128, 172, 0.55), rgba(101, 128, 172, 0.08), rgba(101, 128, 172, 0));
 }
 
 .reference-sections {
-  grid-area: sections;
   margin-top: 0;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -1178,7 +1262,6 @@ a {
 }
 
 .reference-examples {
-  grid-area: examples;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0.5rem;
@@ -1209,7 +1292,7 @@ a {
   background: rgba(19, 44, 31, 0.5);
 }
 
-.example-pass h4 {
+.example-pass h3 {
   color: #8ed9ae;
 }
 
@@ -1218,7 +1301,7 @@ a {
   background: rgba(50, 22, 24, 0.5);
 }
 
-.example-fail h4 {
+.example-fail h3 {
   color: #efa3a3;
 }
 
@@ -1433,23 +1516,42 @@ a {
 
 }
 
-@media (max-width: 1280px) {
+@media (min-width: 769px) and (max-height: 860px) {
+  .reference-hero .reference-image-trigger {
+    width: min(396px, 100%);
+  }
+
   .reference-back {
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-areas:
-      "media"
-      "meta"
-      "sections"
-      "examples";
+    gap: 0.4rem;
+    padding: 0.55rem 0.9rem;
   }
 
-  .reference-media {
-    width: min(760px, 100%);
-    margin-inline: auto;
+  .reference-section p {
+    -webkit-line-clamp: 4;
   }
 
-  .reference-sections {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .reference-section,
+  .reference-example {
+    padding: 0.42rem 0.6rem;
+  }
+
+  .study-shell {
+    gap: 0.55rem;
+  }
+
+  .arrow-button {
+    width: 48px;
+    height: 48px;
+  }
+}
+
+@media (min-width: 769px) and (max-height: 720px) {
+  .reference-hero .reference-image-trigger {
+    width: min(360px, 100%);
+  }
+
+  .reference-section p {
+    -webkit-line-clamp: 3;
   }
 }
 
@@ -1532,18 +1634,8 @@ a {
   }
 
   .reference-back {
-    grid-template-columns: 1fr;
-    grid-template-areas:
-      "media"
-      "meta"
-      "sections"
-      "examples";
     gap: 0.72rem;
     padding: 0.85rem;
-  }
-
-  .reference-back .example-image-shell {
-    aspect-ratio: 16 / 9;
   }
 
   .reference-sections {
@@ -1561,12 +1653,6 @@ a {
   .reference-section p {
     font-size: 0.93rem;
     -webkit-line-clamp: unset;
-  }
-
-  .reference-header-row {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 0.35rem;
   }
 
   .reference-title {

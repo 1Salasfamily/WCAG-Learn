@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import Link from "next/link";
 import "./globals.css";
 import ResetButton from "./reset-button";
 
@@ -43,6 +44,14 @@ export default function RootLayout({
         <main id="main-content" className="main-content" tabIndex={-1}>
           {children}
         </main>
+        <footer className="site-footer">
+          <p className="footer-tagline">
+            Built on the official W3C WCAG 2.2 specification.
+          </p>
+          <Link className="footer-link" href="/about">
+            Learn more &amp; sources
+          </Link>
+        </footer>
       </body>
     </html>
   );
