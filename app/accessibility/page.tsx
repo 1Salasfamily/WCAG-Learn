@@ -45,7 +45,7 @@ export default function AccessibilityPage() {
 
         <section className="about-section">
           <h3>How we&apos;ve tested it</h3>
-          <p>To keep it honest, we check the app with:</p>
+          <p>Our method covers:</p>
           <ul className="about-links">
             {testedWith.map((item) => (
               <li key={item}>{item}</li>
