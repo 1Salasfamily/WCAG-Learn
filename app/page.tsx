@@ -458,6 +458,12 @@ export default function HomePage() {
   }, [ordered]);
 
   useEffect(() => {
+    window.dispatchEvent(
+      new CustomEvent("wcag-learn:started", { detail: started })
+    );
+  }, [started]);
+
+  useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape") {
         setExampleExpanded((wasOpen) => {

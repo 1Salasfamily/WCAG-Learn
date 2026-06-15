@@ -32,7 +32,11 @@ export default function RootLayout({
           Skip to main content
         </a>
         <header className="site-header">
-          <h1 className="site-title">WCAG Learn</h1>
+          <h1 className="site-title">
+            <Link className="site-title-link" href="/" aria-label="WCAG Learn — go to start page">
+              WCAG Learn
+            </Link>
+          </h1>
           <nav className="site-nav" aria-label="Primary">
             <ul className="nav-list">
               <li>

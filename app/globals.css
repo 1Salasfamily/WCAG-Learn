@@ -86,6 +86,17 @@ a {
   letter-spacing: 0.01em;
 }
 
+.site-title-link {
+  color: var(--text);
+  text-decoration: none;
+  border-radius: 0.3rem;
+}
+
+.site-title-link:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
 .site-nav {
   margin-top: 0;
 }
