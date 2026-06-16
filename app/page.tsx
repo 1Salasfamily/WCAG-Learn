@@ -601,7 +601,7 @@ export default function HomePage() {
 
       {showSidebar && isSidebarOpen ? <button className="sidebar-backdrop" onClick={() => setIsSidebarOpen(false)} aria-label="Close navigation menu" /> : null}
 
-      <div className="learn-main">
+      <div className="learn-main" tabIndex={-1} aria-label="Main study content">
         <div className="learn-top-row">
           <div className="top-left-group">
             {showSidebar ? (

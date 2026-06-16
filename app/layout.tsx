@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import Link from "next/link";
 import "./globals.css";
 import ResetButton from "./reset-button";
+import SkipLink from "./skip-link";
 
 export const metadata: Metadata = {
   title: "WCAG Learn",
@@ -28,9 +29,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <a className="skip-link" href="#main-content">
-          Skip to main content
-        </a>
+        <SkipLink />
         <header className="site-header">
           <h1 className="site-title">
             <Link className="site-title-link" href="/" aria-label="WCAG Learn — go to start page">
