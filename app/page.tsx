@@ -170,6 +170,7 @@ export default function HomePage() {
   function startOrder() {
     setCards(ordered);
     setActiveIndex(0);
+    setViewMode("reference");
     resetTransientUI();
     setStarted(true);
   }
@@ -177,6 +178,7 @@ export default function HomePage() {
   function startRandom() {
     setCards(shuffle(ordered));
     setActiveIndex(0);
+    setViewMode("reference");
     resetTransientUI();
     setStarted(true);
   }

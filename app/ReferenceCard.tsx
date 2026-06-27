@@ -51,7 +51,7 @@ export default function ReferenceCard({
                   alt={`Example visual for ${criterion.id} ${criterion.title}`}
                 />
               </div>
-              <span className="reference-expand-hint">Click image to expand</span>
+              <span className="reference-expand-hint">Select to expand</span>
             </div>
           </button>
         </div>
