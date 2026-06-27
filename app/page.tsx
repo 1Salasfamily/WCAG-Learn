@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { KeyboardEvent as ReactKeyboardEvent } from "react";
 import wcagData from "@/data/wcag.json";
 
@@ -493,42 +493,49 @@ export default function HomePage() {
     return () => window.removeEventListener("keydown", onKeyDown);
   }, []);
 
-  useEffect(() => {
-    function onShortcut(event: KeyboardEvent) {
-      const target = event.target as HTMLElement | null;
-      const isEditable =
-        target &&
-        (target.tagName === "INPUT" ||
-          target.tagName === "TEXTAREA" ||
-          target.isContentEditable);
-      if (isEditable || exampleExpanded || !started) return;
-      if (event.altKey || event.ctrlKey || event.metaKey) return;
+  // Keep the latest shortcut logic in a ref so the keydown listener can be
+  // bound once (below) yet always see fresh state, instead of re-subscribing
+  // on every render.
+  const shortcutHandlerRef = useRef<(event: KeyboardEvent) => void>(() => {});
+  shortcutHandlerRef.current = (event: KeyboardEvent) => {
+    const target = event.target as HTMLElement | null;
+    const isEditable =
+      target &&
+      (target.tagName === "INPUT" ||
+        target.tagName === "TEXTAREA" ||
+        target.isContentEditable);
+    if (isEditable || exampleExpanded || !started) return;
+    if (event.altKey || event.ctrlKey || event.metaKey) return;
 
-      if (viewMode === "reference") {
-        if (event.key === "ArrowLeft") {
-          event.preventDefault();
-          goBack();
-        } else if (event.key === "ArrowRight") {
-          event.preventDefault();
-          goNext();
-        }
-        return;
+    if (viewMode === "reference") {
+      if (event.key === "ArrowLeft") {
+        event.preventDefault();
+        goBack();
+      } else if (event.key === "ArrowRight") {
+        event.preventDefault();
+        goNext();
       }
+      return;
+    }
 
-      if (viewMode === "quiz" && quizPhase === "question" && currentQuestion) {
-        if (/^[1-4]$/.test(event.key)) {
-          const optionIndex = Number(event.key) - 1;
-          const option = currentQuestion.options[optionIndex];
-          if (option) {
-            handleQuizOptionPick(option);
-          }
+    if (viewMode === "quiz" && quizPhase === "question" && currentQuestion) {
+      if (/^[1-4]$/.test(event.key)) {
+        const optionIndex = Number(event.key) - 1;
+        const option = currentQuestion.options[optionIndex];
+        if (option) {
+          handleQuizOptionPick(option);
         }
       }
     }
+  };
 
+  useEffect(() => {
+    function onShortcut(event: KeyboardEvent) {
+      shortcutHandlerRef.current(event);
+    }
     window.addEventListener("keydown", onShortcut);
     return () => window.removeEventListener("keydown", onShortcut);
-  });
+  }, []);
 
   const showSidebar = started && viewMode === "reference";
 
@@ -726,7 +733,7 @@ export default function HomePage() {
                     </article>
                   )
                 ) : (
-                  <article className="flashcard" aria-live="polite">
+                  <article className="flashcard">
                     <div className="card-back reference-back">
                       <section className="reference-topbar" aria-label="Criterion summary details">
                         <span className="details-id-badge">{current.id}</span>
@@ -793,7 +800,6 @@ export default function HomePage() {
                   quizPhase === "summary" ? (
                     <section
                       className="quiz-summary"
-                      aria-live="polite"
                       aria-label="Quiz round results"
                     >
                       <p className="quiz-summary-kicker">Round complete</p>
