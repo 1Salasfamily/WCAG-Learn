@@ -2,7 +2,7 @@
 
 An interactive study and quick-reference app for the **Web Content Accessibility Guidelines (WCAG) 2.2**, Levels A and AA. Flip through illustrated reference cards or test yourself with a scored flashcard quiz — and because it's a tool for learning accessibility, the app is built to meet WCAG 2.2 AA itself.
 
-**Live:** https://wcag-learn.vercel.app/
+**Live:** https://wcaglearn.com/
 
 ![The WCAG Learn reference guide: a POUR sidebar, and a card for criterion 1.1.1 Non-text Content with an accessible-vs-violation illustration, explanation sections, and pass/fail examples.](docs/preview.svg)
 
@@ -33,7 +33,7 @@ The interface is built to model the guidelines it teaches. It targets **WCAG 2.2
 - Visible focus styles, semantic landmarks/headings, and scoped live regions
 - `prefers-reduced-motion` support
 
-See the in-app [Accessibility statement](https://wcag-learn.vercel.app/accessibility).
+See the in-app [Accessibility statement](https://wcaglearn.com/accessibility).
 
 ## Tech stack
 
@@ -79,7 +79,7 @@ public/images/        56 per-criterion SVG illustrations
 
 ## Content & sources
 
-All criteria, explanations, and examples are based on the official **W3C WCAG 2.2 specification**, published by the W3C Web Accessibility Initiative (WAI). The wording is simplified for study; the requirements are not. For formal audits, refer to the official documents linked from the in-app [About & sources](https://wcag-learn.vercel.app/about) page — they take precedence over any summary here.
+All criteria, explanations, and examples are based on the official **W3C WCAG 2.2 specification**, published by the W3C Web Accessibility Initiative (WAI). The wording is simplified for study; the requirements are not. For formal audits, refer to the official documents linked from the in-app [About & sources](https://wcaglearn.com/about) page — they take precedence over any summary here.
 
 ## Feedback
 
