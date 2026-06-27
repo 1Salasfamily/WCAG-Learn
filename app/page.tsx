@@ -1,205 +1,28 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import type { KeyboardEvent as ReactKeyboardEvent } from "react";
 import wcagData from "@/data/wcag.json";
-
-type Principle = "Perceivable" | "Operable" | "Understandable" | "Robust";
-
-type Criterion = {
-  id: string;
-  title: string;
-  level: "A" | "AA" | "AAA";
-  principle: Principle;
-  shortExplanation: string;
-  assistiveTech?: string[];
-  example?: {
-    pass: string;
-    fail: string;
-  };
-};
-type ViewMode = "reference" | "quiz";
-type QuizState = "idle" | "correct" | "wrong";
-
-const POUR: Principle[] = [
-  "Perceivable",
-  "Operable",
-  "Understandable",
-  "Robust"
-];
-
-function parseId(id: string): number[] {
-  return id.split(".").map((n) => Number(n));
-}
-
-function compareCriteria(a: Criterion, b: Criterion): number {
-  const aa = parseId(a.id);
-  const bb = parseId(b.id);
-  const max = Math.max(aa.length, bb.length);
-
-  for (let i = 0; i < max; i += 1) {
-    const av = aa[i] ?? 0;
-    const bv = bb[i] ?? 0;
-    if (av !== bv) return av - bv;
-  }
-
-  return 0;
-}
-
-function shuffle<T>(input: T[]): T[] {
-  const arr = [...input];
-  for (let i = arr.length - 1; i > 0; i -= 1) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [arr[i], arr[j]] = [arr[j], arr[i]];
-  }
-  return arr;
-}
-
-const principleTechMap: Record<Principle, string[]> = {
-  Perceivable: ["Screen Reader", "Braille Display", "Captions/Media Support"],
-  Operable: ["Keyboard Navigation", "Switch Control", "Voice Control"],
-  Understandable: ["Screen Reader", "Cognitive Support Tools", "Input Assistance"],
-  Robust: ["Screen Reader", "Assistive Browser Tech", "AT Compatibility"]
-};
-
-function getAssistiveTech(item: Criterion): string[] {
-  if (item.assistiveTech && item.assistiveTech.length > 0) {
-    return item.assistiveTech;
-  }
-  return principleTechMap[item.principle];
-}
-
-const NEW_IN_22 = new Set(["2.4.11", "2.5.7", "2.5.8", "3.2.6", "3.3.7", "3.3.8"]);
-
-type QuizQuestionType =
-  | "idToTitle"
-  | "titleToId"
-  | "descToTitle"
-  | "level"
-  | "principle"
-  | "scenario";
-
-type PrincipleFilter = "All" | Principle;
-type LevelFilter = "All" | "A" | "AA";
-
-type QuizPhase = "question" | "summary";
-
-type QuizQuestion = {
-  criterion: Criterion;
-  type: QuizQuestionType;
-  kicker: string;
-  cardText: string;
-  prompt: string;
-  options: string[];
-  answer: string;
-  firstTryCorrect: boolean | null;
-};
-
-const QUIZ_ROUND_LENGTH = 10;
-
-function firstSentence(text: string): string {
-  const para = text.split("\n\n")[0] ?? "";
-  const idx = para.indexOf(". ");
-  const sentence = idx >= 0 ? para.slice(0, idx + 1) : para;
-  if (sentence.length <= 180) return sentence;
-  return `${sentence.slice(0, 177).replace(/\s+\S*$/, "")}…`;
-}
-
-function pickDistractors(pool: string[], answer: string, count: number): string[] {
-  return shuffle(pool.filter((item) => item !== answer)).slice(0, count);
-}
-
-function buildQuizQuestion(criterion: Criterion, all: Criterion[]): QuizQuestion {
-  const types: QuizQuestionType[] = [
-    "idToTitle",
-    "titleToId",
-    "descToTitle",
-    "level",
-    "principle"
-  ];
-  if (criterion.example?.fail) {
-    types.push("scenario");
-  }
-  const type = types[Math.floor(Math.random() * types.length)];
-  const titles = all.map((c) => c.title);
-  const ids = all.map((c) => c.id);
-  const base = { criterion, type, firstTryCorrect: null };
-
-  switch (type) {
-    case "idToTitle":
-      return {
-        ...base,
-        kicker: "Success criterion",
-        cardText: criterion.id,
-        prompt: `Which success criterion is ${criterion.id}?`,
-        options: shuffle([
-          criterion.title,
-          ...pickDistractors(titles, criterion.title, 2)
-        ]),
-        answer: criterion.title
-      };
-    case "titleToId":
-      return {
-        ...base,
-        kicker: "Name the number",
-        cardText: criterion.title,
-        prompt: `Which number is “${criterion.title}”?`,
-        options: shuffle([
-          criterion.id,
-          ...pickDistractors(ids, criterion.id, 2)
-        ]),
-        answer: criterion.id
-      };
-    case "descToTitle":
-      return {
-        ...base,
-        kicker: "Match the description",
-        cardText: `“${firstSentence(criterion.shortExplanation)}”`,
-        prompt: "Which success criterion does this describe?",
-        options: shuffle([
-          criterion.title,
-          ...pickDistractors(titles, criterion.title, 2)
-        ]),
-        answer: criterion.title
-      };
-    case "level":
-      return {
-        ...base,
-        kicker: "Conformance level",
-        cardText: `${criterion.id} ${criterion.title}`,
-        prompt: "What conformance level is this criterion?",
-        options: ["Level A", "Level AA", "Level AAA"],
-        answer: `Level ${criterion.level}`
-      };
-    case "scenario":
-      return {
-        ...base,
-        kicker: "Spot the violation",
-        cardText: `“${criterion.example?.fail ?? ""}”`,
-        prompt: "Which success criterion does this scenario violate?",
-        options: shuffle([
-          criterion.title,
-          ...pickDistractors(titles, criterion.title, 2)
-        ]),
-        answer: criterion.title
-      };
-    default:
-      return {
-        ...base,
-        kicker: "POUR principle",
-        cardText: `${criterion.id} ${criterion.title}`,
-        prompt: "Which POUR principle does this criterion belong to?",
-        options: [...POUR],
-        answer: criterion.principle
-      };
-  }
-}
-
-function buildQuizRound(pool: Criterion[], all: Criterion[]): QuizQuestion[] {
-  return shuffle(pool)
-    .slice(0, QUIZ_ROUND_LENGTH)
-    .map((criterion) => buildQuizQuestion(criterion, all));
-}
+import {
+  buildQuizQuestion,
+  buildQuizRound,
+  compareCriteria,
+  POUR,
+  shuffle
+} from "./wcag";
+import type {
+  Criterion,
+  LevelFilter,
+  Principle,
+  PrincipleFilter,
+  QuizPhase,
+  QuizQuestion,
+  QuizState,
+  ViewMode
+} from "./wcag";
+import Sidebar from "./Sidebar";
+import ReferenceCard from "./ReferenceCard";
+import Quiz from "./Quiz";
+import ImageOverlay from "./ImageOverlay";
 
 export default function HomePage() {
   const ordered = useMemo(
@@ -398,23 +221,6 @@ export default function HomePage() {
     });
   }
 
-  function trapOverlayFocus(event: ReactKeyboardEvent<HTMLDivElement>) {
-    if (event.key !== "Tab") return;
-    const focusables = event.currentTarget.querySelectorAll<HTMLElement>(
-      'button, [href], input, [tabindex]:not([tabindex="-1"])'
-    );
-    if (focusables.length === 0) return;
-    const first = focusables[0];
-    const last = focusables[focusables.length - 1];
-    if (event.shiftKey && document.activeElement === first) {
-      event.preventDefault();
-      last.focus();
-    } else if (!event.shiftKey && document.activeElement === last) {
-      event.preventDefault();
-      first.focus();
-    }
-  }
-
   function setMode(mode: ViewMode) {
     setViewMode(mode);
     setExampleExpanded(false);
@@ -549,70 +355,19 @@ export default function HomePage() {
       </h2>
 
       {showSidebar ? (
-      <nav
-        id="pour-sidebar"
-        className={`learn-sidebar ${isSidebarOpen ? "open" : ""}`}
-        aria-label="POUR criteria navigation"
-      >
-        <h3 className="sidebar-title">POUR Navigation</h3>
-
-        <div className="sidebar-search">
-          <label className="visually-hidden" htmlFor="criteria-search">
-            Search success criteria
-          </label>
-          <input
-            id="criteria-search"
-            className="sidebar-search-input"
-            type="search"
-            placeholder="Search criteria…"
-            value={sidebarQuery}
-            onChange={(event) => setSidebarQuery(event.target.value)}
-          />
-          <p className="sidebar-search-count" aria-live="polite">
-            {isSearching
-              ? `${searchMatchCount} of ${ordered.length} criteria match`
-              : ""}
-          </p>
-        </div>
-
-        {POUR.map((principle) => {
-          const open = isSearching ? true : expanded[principle];
-          if (isSearching && visibleGrouped[principle].length === 0) {
-            return null;
-          }
-          return (
-            <section className="sidebar-group" key={principle}>
-              <button
-                className="group-toggle"
-                onClick={() => toggleSection(principle)}
-                aria-expanded={open}
-                aria-controls={`group-${principle}`}
-              >
-                <span className={`group-arrow ${open ? "open" : ""}`}>
-                  ▶
-                </span>
-                <span>{principle}</span>
-              </button>
-
-              <div id={`group-${principle}`} className={`criteria-wrap ${open ? "" : "hidden"}`}>
-                {visibleGrouped[principle].map((item) => {
-                  const active = started && current?.id === item.id;
-                  return (
-                    <button
-                      key={item.id}
-                      className={`criteria-row ${active ? "active" : ""}`}
-                      onClick={() => jumpToCriterion(item.id)}
-                    >
-                      <span className="criteria-id">{item.id}</span>
-                      <span>{item.title}</span>
-                    </button>
-                  );
-                })}
-              </div>
-            </section>
-          );
-        })}
-      </nav>
+        <Sidebar
+          isOpen={isSidebarOpen}
+          query={sidebarQuery}
+          onQueryChange={setSidebarQuery}
+          isSearching={isSearching}
+          matchCount={searchMatchCount}
+          totalCount={ordered.length}
+          visibleGrouped={visibleGrouped}
+          expanded={expanded}
+          onToggleSection={toggleSection}
+          currentId={current?.id}
+          onJump={jumpToCriterion}
+        />
       ) : null}
 
       {showSidebar && isSidebarOpen ? <button className="sidebar-backdrop" onClick={() => setIsSidebarOpen(false)} aria-label="Close navigation menu" /> : null}
@@ -685,246 +440,31 @@ export default function HomePage() {
             <section className="study-shell" aria-label="Flashcard study interface">
               <div className="card-stack">
                 {viewMode === "quiz" ? (
-                  <div className="quiz-filter-row">
-                    <div className="quiz-filter-group" role="group" aria-label="Filter questions by principle">
-                      {(["All", ...POUR] as PrincipleFilter[]).map((p) => (
-                        <button
-                          key={p}
-                          className={`quiz-filter-chip ${quizPrincipleFilter === p ? "active" : ""}`}
-                          aria-pressed={quizPrincipleFilter === p}
-                          onClick={() => setQuizPrincipleFilter(p)}
-                        >
-                          {p}
-                        </button>
-                      ))}
-                    </div>
-                    <div className="quiz-filter-group" role="group" aria-label="Filter questions by conformance level">
-                      {(["All", "A", "AA"] as LevelFilter[]).map((l) => (
-                        <button
-                          key={l}
-                          className={`quiz-filter-chip ${quizLevelFilter === l ? "active" : ""}`}
-                          aria-pressed={quizLevelFilter === l}
-                          onClick={() => setQuizLevelFilter(l)}
-                        >
-                          {l === "All" ? "All levels" : `Level ${l}`}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                ) : null}
-                {viewMode === "quiz" ? (
-                  quizPhase === "summary" || !currentQuestion ? null : (
-                    <article className="flashcard quiz-card" aria-live="polite">
-                      <div className="card-front">
-                        <p className="sc-quiz-kicker">{currentQuestion.kicker}</p>
-                        <p
-                          className={
-                            currentQuestion.type === "idToTitle"
-                              ? "sc-quiz-id"
-                              : currentQuestion.type === "descToTitle" ||
-                                  currentQuestion.type === "scenario"
-                                ? "sc-quiz-quote"
-                                : "sc-quiz-text"
-                          }
-                        >
-                          {currentQuestion.cardText}
-                        </p>
-                      </div>
-                    </article>
-                  )
+                  <Quiz
+                    principleFilter={quizPrincipleFilter}
+                    onPrincipleFilter={setQuizPrincipleFilter}
+                    levelFilter={quizLevelFilter}
+                    onLevelFilter={setQuizLevelFilter}
+                    phase={quizPhase}
+                    question={currentQuestion}
+                    index={quizIndex}
+                    round={quizRound}
+                    score={quizScore}
+                    state={quizState}
+                    selectedOption={selectedOption}
+                    onPick={handleQuizOptionPick}
+                    onNext={goToNextQuestion}
+                    onPracticeMisses={startMissRound}
+                    onNewRound={startNewRound}
+                    onReviewGuide={() => setMode("reference")}
+                  />
                 ) : (
-                  <article className="flashcard">
-                    <div className="card-back reference-back">
-                      <section className="reference-topbar" aria-label="Criterion summary details">
-                        <span className="details-id-badge">{current.id}</span>
-                        <p className="reference-title">{current.title}</p>
-                        <span className={`details-level details-level-${current.level.toLowerCase()}`}>
-                          Level {current.level}
-                        </span>
-                        {NEW_IN_22.has(current.id) ? (
-                          <span className="details-new-chip">New in 2.2</span>
-                        ) : null}
-                        {getAssistiveTech(current).map((tech) => (
-                          <span key={`${current.id}-${tech}`} className="details-tech-chip">
-                            {tech}
-                          </span>
-                        ))}
-                      </section>
-                      <div className="reference-meta-divider" aria-hidden="true" />
-                      <div className="reference-hero">
-                        <button
-                          className="reference-image-trigger"
-                          onClick={toggleExampleExpanded}
-                          aria-label={`Expand example image for ${current.id} ${current.title}`}
-                        >
-                          <div className="example-image-frame">
-                            <div className="example-image-shell">
-                              <img
-                                className="example-image"
-                                src={currentImageSrc}
-                                alt={`Example visual for ${current.id} ${current.title}`}
-                              />
-                            </div>
-                            <span className="reference-expand-hint">Click image to expand</span>
-                          </div>
-                        </button>
-                      </div>
-                      <div className="reference-sections">
-                        {detailSections.map((section) => (
-                          <section key={`${current.id}-${section.heading}`} className="reference-section">
-                            <h3>{section.heading}</h3>
-                            <p>{section.text}</p>
-                          </section>
-                        ))}
-                      </div>
-                      {current.example ? (
-                        <div className="reference-examples" aria-label="Pass and fail examples">
-                          <section className="reference-example example-pass">
-                            <h3>
-                              <span aria-hidden="true">✓</span> Pass example
-                            </h3>
-                            <p>{current.example.pass}</p>
-                          </section>
-                          <section className="reference-example example-fail">
-                            <h3>
-                              <span aria-hidden="true">✕</span> Fail example
-                            </h3>
-                            <p>{current.example.fail}</p>
-                          </section>
-                        </div>
-                      ) : null}
-                    </div>
-                  </article>
-                )}
-                {viewMode === "quiz" ? (
-                  quizPhase === "summary" ? (
-                    <section
-                      className="quiz-summary"
-                      aria-label="Quiz round results"
-                    >
-                      <p className="quiz-summary-kicker">Round complete</p>
-                      <p className="quiz-summary-score">
-                        {quizScore} / {quizRound.length}
-                      </p>
-                      <p className="quiz-summary-message">
-                        {quizScore === quizRound.length
-                          ? "Perfect round!"
-                          : quizScore >= 8
-                            ? "Excellent — almost flawless."
-                            : quizScore >= 6
-                              ? "Solid work. Review the misses below."
-                              : quizScore >= 4
-                                ? "Getting there — keep practicing."
-                                : "Tough round. The reference guide is one click away."}
-                      </p>
-                      <ul
-                        className="quiz-summary-list"
-                        tabIndex={0}
-                        aria-label="Question-by-question results"
-                      >
-                        {quizRound.map((q) => (
-                          <li
-                            key={`${q.criterion.id}-${q.type}`}
-                            className={`summary-row ${q.firstTryCorrect ? "correct" : "missed"}`}
-                          >
-                            <span className="summary-mark" aria-hidden="true">
-                              {q.firstTryCorrect ? "✓" : "✕"}
-                            </span>
-                            <span className="visually-hidden">
-                              {q.firstTryCorrect ? "Correct:" : "Missed:"}
-                            </span>
-                            <span className="summary-crit">
-                              {q.criterion.id} {q.criterion.title}
-                            </span>
-                            {!q.firstTryCorrect ? (
-                              <span className="summary-answer">Answer: {q.answer}</span>
-                            ) : null}
-                          </li>
-                        ))}
-                      </ul>
-                      <div className="start-row">
-                        {quizScore < quizRound.length ? (
-                          <button
-                            className="start-button start-button-primary"
-                            onClick={startMissRound}
-                          >
-                            Practice my misses ({quizRound.length - quizScore})
-                          </button>
-                        ) : null}
-                        <button
-                          className={`start-button ${quizScore === quizRound.length ? "start-button-primary" : ""}`}
-                          onClick={startNewRound}
-                        >
-                          New round
-                        </button>
-                        <button
-                          className="start-button"
-                          onClick={() => setMode("reference")}
-                        >
-                          Review the guide
-                        </button>
-                      </div>
-                    </section>
-                  ) : currentQuestion ? (
-                    <div className="quiz-wrap" aria-live="polite">
-                      <div className="quiz-progress-row">
-                        <p className="quiz-progress">
-                          Question {quizIndex + 1} of {quizRound.length}
-                        </p>
-                        <span className="quiz-score-chip">Score: {quizScore}</span>
-                      </div>
-                      <p className="quiz-prompt">{currentQuestion.prompt}</p>
-                      <div className="quiz-options" role="group" aria-label="Quiz answer choices">
-                        {currentQuestion.options.map((option, optionIndex) => {
-                          const isSelected = selectedOption === option;
-                          const isCorrect = option === currentQuestion.answer;
-                          const stateClass =
-                            quizState === "correct" && isCorrect
-                              ? "correct"
-                              : quizState === "wrong" && isSelected
-                                ? "wrong"
-                                : "";
-
-                          return (
-                            <button
-                              key={`${currentQuestion.criterion.id}-${option}`}
-                              className={`quiz-option ${stateClass}`}
-                              onClick={() => handleQuizOptionPick(option)}
-                              disabled={quizState === "correct" && !isCorrect}
-                            >
-                              <kbd className="quiz-key" aria-hidden="true">
-                                {optionIndex + 1}
-                              </kbd>
-                              <span className="quiz-option-text">{option}</span>
-                            </button>
-                          );
-                        })}
-                      </div>
-                      {quizState === "correct" ? (
-                        <>
-                          <p className="quiz-correct-burst">Correct!</p>
-                          <div className="quiz-next-row">
-                            <button
-                              className="start-button start-button-primary"
-                              onClick={goToNextQuestion}
-                            >
-                              {quizIndex + 1 >= quizRound.length
-                                ? "See results"
-                                : "Next question"}
-                            </button>
-                          </div>
-                        </>
-                      ) : (
-                        <p className={`quiz-message ${quizState === "wrong" ? "wrong" : ""}`}>
-                          {quizState === "wrong"
-                            ? "Not quite — try again."
-                            : "Choose one option."}
-                        </p>
-                      )}
-                    </div>
-                  ) : null
-                ) : (
-                  null
+                  <ReferenceCard
+                    criterion={current}
+                    imageSrc={currentImageSrc}
+                    sections={detailSections}
+                    onExpandImage={toggleExampleExpanded}
+                  />
                 )}
               </div>
 
@@ -949,29 +489,11 @@ export default function HomePage() {
       </div>
 
       {exampleExpanded ? (
-        <div
-          className="example-overlay"
-          role="dialog"
-          aria-modal="true"
-          aria-label={`Expanded example for ${current.id} ${current.title}`}
-          onClick={closeExampleExpanded}
-          onKeyDown={trapOverlayFocus}
-        >
-          <div className="example-overlay-image-wrap" onClick={(event) => event.stopPropagation()}>
-            <img
-              className="example-overlay-image"
-              src={currentImageSrc}
-              alt={`Expanded example visual for ${current.id} ${current.title}`}
-            />
-          </div>
-          <button
-            className="start-button overlay-close"
-            onClick={closeExampleExpanded}
-            autoFocus
-          >
-            Close
-          </button>
-        </div>
+        <ImageOverlay
+          criterion={current}
+          imageSrc={currentImageSrc}
+          onClose={closeExampleExpanded}
+        />
       ) : null}
 
     </section>
