@@ -4,6 +4,8 @@ An interactive study and quick-reference app for the **Web Content Accessibility
 
 **Live:** https://wcag-learn.vercel.app/
 
+![The WCAG Learn reference guide: a POUR sidebar, and a card for criterion 1.1.1 Non-text Content with an accessible-vs-violation illustration, explanation sections, and pass/fail examples.](docs/preview.svg)
+
 ## What it does
 
 **Reference Guide** — A card for every one of the 56 Level A/AA success criteria, each with:

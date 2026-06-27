@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" font-family="Verdana, Geneva, sans-serif" role="img" aria-label="Preview of the WCAG Learn reference card interface">
+  <defs>
+    <radialGradient id="bg" cx="0.14" cy="0" r="0.95">
+      <stop offset="0" stop-color="#1e2635"/>
+      <stop offset="0.6" stop-color="#0f1115"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="720" rx="16" fill="url(#bg)"/>
+
+  <!-- header -->
+  <text x="40" y="47" font-size="26" font-weight="bold" fill="#f3f5f9">WCAG Learn</text>
+  <rect x="893" y="24" width="277" height="40" rx="20" fill="#121a27" stroke="#2b3241"/>
+  <rect x="899" y="29" width="142" height="30" rx="15" fill="#384e74" stroke="#85a7e3" stroke-opacity="0.5"/>
+  <text x="970" y="49" font-size="13" font-weight="bold" fill="#f3f5f9" text-anchor="middle">Reference Guide</text>
+  <text x="1108" y="49" font-size="13" fill="#b8c0cf" text-anchor="middle">Flashcard Quiz</text>
+  <line x1="0" y1="74" x2="1200" y2="74" stroke="#2b3241" stroke-width="1.5"/>
+
+  <!-- sidebar -->
+  <line x1="262" y1="74" x2="262" y2="720" stroke="#2b3241" stroke-width="1.5"/>
+  <text x="24" y="106" font-size="14" fill="#b8c0cf">POUR Navigation</text>
+  <rect x="18" y="120" width="226" height="34" rx="8" fill="#151a22" stroke="#2b3241"/>
+  <text x="32" y="142" font-size="12" fill="#6b7689">Search criteria…</text>
+  <text x="24" y="186" font-size="14" font-weight="bold" fill="#f3f5f9">▾  Perceivable</text>
+  <rect x="18" y="200" width="226" height="36" rx="8" fill="#2b3b55" stroke="#6f8ab8" stroke-opacity="0.65"/>
+  <text x="32" y="223" font-size="12" fill="#f3f5f9"><tspan font-weight="bold">1.1.1</tspan>  Non-text Content</text>
+  <g fill="#b8c0cf" font-size="12">
+    <text x="32" y="265">1.2.1  Audio-only and Video-only</text>
+    <text x="32" y="307">1.2.2  Captions (Prerecorded)</text>
+    <text x="32" y="349">1.3.1  Info and Relationships</text>
+    <text x="32" y="391">1.4.1  Use of Color</text>
+    <text x="32" y="433">1.4.3  Contrast (Minimum)</text>
+  </g>
+
+  <!-- main card -->
+  <rect x="300" y="92" width="868" height="600" rx="16" fill="#151a22" stroke="#2b3241" stroke-width="1.5"/>
+
+  <!-- topbar -->
+  <rect x="320" y="112" width="64" height="30" rx="15" fill="#243348" stroke="#82a6db" stroke-opacity="0.55"/>
+  <text x="352" y="132" font-size="14" font-weight="bold" fill="#f3f5f9" text-anchor="middle">1.1.1</text>
+  <text x="398" y="134" font-size="20" font-weight="bold" fill="#f3f5f9">Non-text Content</text>
+  <rect x="606" y="115" width="70" height="26" rx="13" fill="#10703a" fill-opacity="0.24" stroke="#45d174" stroke-opacity="0.5"/>
+  <text x="641" y="132" font-size="12" font-weight="bold" fill="#ccf7d8" text-anchor="middle">Level A</text>
+  <rect x="686" y="115" width="108" height="26" rx="13" fill="#253146" fill-opacity="0.5" stroke="#687fa8" stroke-opacity="0.55"/>
+  <text x="740" y="132" font-size="11" fill="#d8e4ff" text-anchor="middle">Screen Reader</text>
+  <rect x="802" y="115" width="108" height="26" rx="13" fill="#253146" fill-opacity="0.5" stroke="#687fa8" stroke-opacity="0.55"/>
+  <text x="856" y="132" font-size="11" fill="#d8e4ff" text-anchor="middle">Braille Display</text>
+  <line x1="320" y1="160" x2="1148" y2="160" stroke="#6580ac" stroke-opacity="0.4" stroke-width="1"/>
+
+  <!-- hero illustration -->
+  <rect x="468" y="176" width="532" height="220" rx="12" fill="#1b2230" stroke="#3a4354" stroke-width="1.5"/>
+  <rect x="486" y="194" width="240" height="184" rx="8" fill="#151a22" stroke="#3a4354"/>
+  <circle cx="510" cy="220" r="11" fill="none" stroke="#3fca72" stroke-width="2"/>
+  <path d="M505 220 l3.5 3.5 l7 -7" stroke="#3fca72" stroke-width="2" fill="none"/>
+  <text x="528" y="225" font-size="12" fill="#3fca72">Accessible</text>
+  <rect x="504" y="240" width="120" height="74" rx="6" fill="#1b2230" stroke="#7aa0e1"/>
+  <path d="M520 300 l24 -34 l16 18 l14 -12 l22 28 z" fill="#7aa0e1" fill-opacity="0.55"/>
+  <circle cx="540" cy="262" r="7" fill="#ffba60"/>
+  <rect x="504" y="326" width="150" height="22" rx="5" fill="#13301f" stroke="#3fca72" stroke-opacity="0.6"/>
+  <text x="514" y="341" font-size="11" fill="#8ed9ae">alt="Red sneaker"</text>
+
+  <rect x="742" y="194" width="240" height="184" rx="8" fill="#151a22" stroke="#3a4354"/>
+  <circle cx="766" cy="220" r="11" fill="none" stroke="#e9607d" stroke-width="2"/>
+  <path d="M761 215 l10 10 M771 215 l-10 10" stroke="#e9607d" stroke-width="2"/>
+  <text x="784" y="225" font-size="12" fill="#e9607d">Violation</text>
+  <rect x="760" y="240" width="120" height="74" rx="6" fill="#1b2230" stroke="#3a4354"/>
+  <path d="M776 300 l22 -28 l14 16 l20 12 z" fill="#3a4354"/>
+  <circle cx="794" cy="262" r="7" fill="#3a4354"/>
+  <rect x="760" y="326" width="120" height="22" rx="5" fill="#32161a" stroke="#e9607d" stroke-opacity="0.6"/>
+  <text x="770" y="341" font-size="11" fill="#efa3a3">alt="button1"</text>
+
+  <!-- section cards -->
+  <g>
+    <rect x="320" y="412" width="268" height="112" rx="12" fill="#0d1420" fill-opacity="0.52" stroke="#425068" stroke-opacity="0.5"/>
+    <rect x="600" y="412" width="268" height="112" rx="12" fill="#0d1420" fill-opacity="0.52" stroke="#425068" stroke-opacity="0.5"/>
+    <rect x="880" y="412" width="268" height="112" rx="12" fill="#0d1420" fill-opacity="0.52" stroke="#425068" stroke-opacity="0.5"/>
+    <text x="336" y="436" font-size="11" font-weight="bold" letter-spacing="1" fill="#a9bce3">WHAT THIS MEANS</text>
+    <text x="616" y="436" font-size="11" font-weight="bold" letter-spacing="1" fill="#a9bce3">WHY IT MATTERS</text>
+    <text x="896" y="436" font-size="11" font-weight="bold" letter-spacing="1" fill="#a9bce3">WHO IT HELPS</text>
+    <g fill="#b8c0cf" fill-opacity="0.35">
+      <rect x="336" y="450" width="236" height="7" rx="3.5"/><rect x="336" y="466" width="236" height="7" rx="3.5"/><rect x="336" y="482" width="200" height="7" rx="3.5"/><rect x="336" y="498" width="150" height="7" rx="3.5"/>
+      <rect x="616" y="450" width="236" height="7" rx="3.5"/><rect x="616" y="466" width="210" height="7" rx="3.5"/><rect x="616" y="482" width="236" height="7" rx="3.5"/><rect x="616" y="498" width="120" height="7" rx="3.5"/>
+      <rect x="896" y="450" width="236" height="7" rx="3.5"/><rect x="896" y="466" width="180" height="7" rx="3.5"/><rect x="896" y="482" width="236" height="7" rx="3.5"/><rect x="896" y="498" width="160" height="7" rx="3.5"/>
+    </g>
+  </g>
+
+  <!-- example cards -->
+  <rect x="320" y="540" width="408" height="124" rx="12" fill="#132c1f" fill-opacity="0.5" stroke="#60be89" stroke-opacity="0.5"/>
+  <text x="336" y="566" font-size="11" font-weight="bold" letter-spacing="1" fill="#8ed9ae">✓ PASS EXAMPLE</text>
+  <g fill="#b8c0cf" fill-opacity="0.4">
+    <rect x="336" y="582" width="376" height="7" rx="3.5"/><rect x="336" y="598" width="376" height="7" rx="3.5"/><rect x="336" y="614" width="280" height="7" rx="3.5"/>
+  </g>
+  <rect x="740" y="540" width="408" height="124" rx="12" fill="#32161a" fill-opacity="0.5" stroke="#d66e6e" stroke-opacity="0.5"/>
+  <text x="756" y="566" font-size="11" font-weight="bold" letter-spacing="1" fill="#efa3a3">✕ FAIL EXAMPLE</text>
+  <g fill="#b8c0cf" fill-opacity="0.4">
+    <rect x="756" y="582" width="376" height="7" rx="3.5"/><rect x="756" y="598" width="376" height="7" rx="3.5"/><rect x="756" y="614" width="240" height="7" rx="3.5"/>
+  </g>
+</svg>
