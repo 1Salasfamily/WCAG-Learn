@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import type { KeyboardEvent as ReactKeyboardEvent } from "react";
 import wcagData from "@/data/wcag.json";
 
 type Principle = "Perceivable" | "Operable" | "Understandable" | "Robust";
@@ -225,7 +226,6 @@ export default function HomePage() {
   const [cards, setCards] = useState<Criterion[]>(ordered);
   const [activeIndex, setActiveIndex] = useState(0);
   const [viewMode, setViewMode] = useState<ViewMode>("reference");
-  const [flipped, setFlipped] = useState(false);
   const [exampleExpanded, setExampleExpanded] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [quizRound, setQuizRound] = useState<QuizQuestion[]>([]);
@@ -302,7 +302,6 @@ export default function HomePage() {
       : `Viewing ${activeIndex + 1} of ${cards.length}: ${current.id} ${current.title}`;
 
   function resetTransientUI() {
-    setFlipped(false);
     setExampleExpanded(false);
     setQuizState("idle");
     setSelectedOption(null);
@@ -372,15 +371,9 @@ export default function HomePage() {
   }
 
   function jumpToCriterion(id: string) {
-    if (viewMode === "quiz") {
-      setMode("reference");
-    }
-    if (!started) {
-      setCards(ordered);
-      setStarted(true);
-    }
-
-    const idx = (started ? cards : ordered).findIndex((item) => item.id === id);
+    // The sidebar that calls this only renders while started and in
+    // reference mode, so `cards` is always the active deck here.
+    const idx = cards.findIndex((item) => item.id === id);
     if (idx >= 0) {
       setActiveIndex(idx);
       resetTransientUI();
@@ -405,9 +398,25 @@ export default function HomePage() {
     });
   }
 
+  function trapOverlayFocus(event: ReactKeyboardEvent<HTMLDivElement>) {
+    if (event.key !== "Tab") return;
+    const focusables = event.currentTarget.querySelectorAll<HTMLElement>(
+      'button, [href], input, [tabindex]:not([tabindex="-1"])'
+    );
+    if (focusables.length === 0) return;
+    const first = focusables[0];
+    const last = focusables[focusables.length - 1];
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  }
+
   function setMode(mode: ViewMode) {
     setViewMode(mode);
-    setFlipped(false);
     setExampleExpanded(false);
     setIsSidebarOpen(false);
     setQuizState("idle");
@@ -940,6 +949,7 @@ export default function HomePage() {
           aria-modal="true"
           aria-label={`Expanded example for ${current.id} ${current.title}`}
           onClick={closeExampleExpanded}
+          onKeyDown={trapOverlayFocus}
         >
           <div className="example-overlay-image-wrap" onClick={(event) => event.stopPropagation()}>
             <img
