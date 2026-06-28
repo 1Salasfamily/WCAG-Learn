@@ -203,13 +203,17 @@ export default function HomePage() {
       setActiveIndex(idx);
       resetTransientUI();
       setIsSidebarOpen(false);
-      // Mirror the "Skip to main content" link: move focus into the study
-      // region so keyboard users land on the selected criterion.
+      // Move focus onto the selected criterion's summary card so keyboard and
+      // screen-reader users land directly on the content they chose, not back
+      // at the top of the sidebar.
       requestAnimationFrame(() => {
         const target =
-          document.querySelector<HTMLElement>(".learn-main") ??
-          document.getElementById("main-content");
+          document.querySelector<HTMLElement>(".reference-topbar") ??
+          document.querySelector<HTMLElement>(".learn-main");
         if (!target) return;
+        if (!target.hasAttribute("tabindex")) {
+          target.setAttribute("tabindex", "-1");
+        }
         target.focus();
         target.scrollIntoView({ block: "start" });
       });
