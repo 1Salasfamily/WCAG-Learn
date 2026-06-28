@@ -183,10 +183,30 @@ export default function HomePage() {
     setStarted(true);
   }
 
+  // Move focus onto the selected criterion's summary card so keyboard and
+  // screen-reader users land directly on the chosen content — the same region
+  // the "Skip to main content" link and sidebar selection target.
+  function focusCriterionCard() {
+    requestAnimationFrame(() => {
+      const target =
+        document.querySelector<HTMLElement>(".reference-topbar") ??
+        document.querySelector<HTMLElement>(".learn-main");
+      if (!target) return;
+      if (!target.hasAttribute("tabindex")) {
+        target.setAttribute("tabindex", "-1");
+      }
+      target.focus();
+      target.scrollIntoView({ block: "start" });
+    });
+  }
+
   function goBack() {
     if (!started) return;
     setActiveIndex((prev) => (prev - 1 + cards.length) % cards.length);
     resetTransientUI();
+    // No focus move here: Next/Back is sequential browsing, so focus stays on
+    // the button for repeated activation. The aria-live status announces each
+    // card change.
   }
 
   function goNext() {
@@ -203,20 +223,7 @@ export default function HomePage() {
       setActiveIndex(idx);
       resetTransientUI();
       setIsSidebarOpen(false);
-      // Move focus onto the selected criterion's summary card so keyboard and
-      // screen-reader users land directly on the content they chose, not back
-      // at the top of the sidebar.
-      requestAnimationFrame(() => {
-        const target =
-          document.querySelector<HTMLElement>(".reference-topbar") ??
-          document.querySelector<HTMLElement>(".learn-main");
-        if (!target) return;
-        if (!target.hasAttribute("tabindex")) {
-          target.setAttribute("tabindex", "-1");
-        }
-        target.focus();
-        target.scrollIntoView({ block: "start" });
-      });
+      focusCriterionCard();
     }
   }
 
