@@ -476,7 +476,7 @@ a {
   scrollbar-color: rgba(111, 138, 184, 0.45) rgba(21, 26, 34, 0.2);
 }
 
-.deck {
+.start-screen {
   width: min(660px, 100%);
   margin: 0 auto;
   border: 1.5px solid var(--border);
@@ -492,7 +492,7 @@ a {
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.3);
 }
 
-.deck-eyebrow {
+.start-screen-eyebrow {
   margin: 0 0 0.7rem;
   font-size: 0.8rem;
   font-weight: 700;
@@ -505,13 +505,13 @@ a {
   padding: 0.24rem 0.7rem;
 }
 
-.deck-title {
+.start-screen-title {
   margin: 0;
   font-size: clamp(2.1rem, 4.5vw, 2.6rem);
   font-weight: 700;
 }
 
-.deck-sub {
+.start-screen-sub {
   margin: 0.7rem 0 0;
   color: var(--muted);
   font-size: 1.02rem;
@@ -519,7 +519,7 @@ a {
   max-width: 42ch;
 }
 
-.deck-stats {
+.start-screen-stats {
   margin: 1.1rem 0 0;
   padding: 0;
   list-style: none;
@@ -529,7 +529,7 @@ a {
   gap: 0.45rem;
 }
 
-.deck-stat {
+.start-screen-stat {
   font-size: 0.84rem;
   font-weight: 600;
   color: #d8e4ff;
@@ -1446,7 +1446,7 @@ a {
     align-content: start;
   }
 
-  .deck-title {
+  .start-screen-title {
     font-size: 1.8rem;
   }
 

@@ -438,17 +438,17 @@ export default function HomePage() {
 
         <div className="main-stage">
           {!started ? (
-            <section className="deck" aria-label="Flashcard deck">
-              <p className="deck-eyebrow">Study deck</p>
-              <p className="deck-title">WCAG Learn</p>
-              <p className="deck-sub">
+            <section className="start-screen" aria-label="Start screen">
+              <p className="start-screen-eyebrow">Get started</p>
+              <p className="start-screen-title">WCAG Learn</p>
+              <p className="start-screen-sub">
                 Flashcards and a quick-reference guide for every WCAG 2.2
                 success criterion.
               </p>
-              <ul className="deck-stats" aria-label="Deck contents">
-                <li className="deck-stat">{ordered.length} criteria</li>
-                <li className="deck-stat">Levels A &amp; AA</li>
-                <li className="deck-stat">POUR principles</li>
+              <ul className="start-screen-stats" aria-label="What's included">
+                <li className="start-screen-stat">{ordered.length} criteria</li>
+                <li className="start-screen-stat">Levels A &amp; AA</li>
+                <li className="start-screen-stat">POUR principles</li>
               </ul>
               <div className="start-row" role="group" aria-label="Start modes">
                 <button className="start-button start-button-primary" onClick={() => start("reference")}>
