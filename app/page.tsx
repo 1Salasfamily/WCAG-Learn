@@ -289,6 +289,20 @@ export default function HomePage() {
   }, [quizPool, ordered]);
 
   useEffect(() => {
+    // The site logo returns to the start screen from anywhere in the app.
+    function onHome() {
+      setCards(ordered);
+      setActiveIndex(0);
+      setIsSidebarOpen(false);
+      resetTransientUI();
+      setStarted(false);
+    }
+
+    window.addEventListener("wcag-learn:home", onHome);
+    return () => window.removeEventListener("wcag-learn:home", onHome);
+  }, [ordered]);
+
+  useEffect(() => {
     window.dispatchEvent(
       new CustomEvent("wcag-learn:state", { detail: { started, viewMode } })
     );
