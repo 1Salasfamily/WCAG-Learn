@@ -160,13 +160,6 @@ export default function HomePage() {
     setSelectedOption(null);
   }
 
-  function resetToStart() {
-    setCards(ordered);
-    setActiveIndex(0);
-    resetTransientUI();
-    setStarted(false);
-  }
-
   // The two start-screen buttons enter a mode directly. Reference is always in
   // order (the sidebar is ordered by POUR regardless); the quiz round is built
   // fresh and shuffled on every entry by the viewMode effect below.
@@ -285,19 +278,21 @@ export default function HomePage() {
   }, [started, ordered, viewMode, quizPool]);
 
   useEffect(() => {
+    // Reset only clears the current quiz's progress — a fresh shuffled round
+    // within the active filters — rather than returning to the start screen.
     function onReset() {
-      resetToStart();
+      startNewRound();
     }
 
     window.addEventListener("wcag-learn:reset", onReset);
     return () => window.removeEventListener("wcag-learn:reset", onReset);
-  }, [ordered]);
+  }, [quizPool, ordered]);
 
   useEffect(() => {
     window.dispatchEvent(
-      new CustomEvent("wcag-learn:started", { detail: started })
+      new CustomEvent("wcag-learn:state", { detail: { started, viewMode } })
     );
-  }, [started]);
+  }, [started, viewMode]);
 
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
