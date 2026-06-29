@@ -140,16 +140,20 @@ export function buildQuizQuestion(
   const ids = all.map((c) => c.id);
   const base = { criterion, type, firstTryCorrect: null };
 
+  // Criterion numbers are always shown with the "WCAG" prefix — that's how
+  // they're referenced everywhere outside this app.
+  const wcagId = (id: string) => `WCAG ${id}`;
+
   switch (type) {
     case "idToTitle":
       return {
         ...base,
         kicker: "Success criterion",
-        cardText: criterion.id,
-        prompt: `Which success criterion is ${criterion.id}?`,
+        cardText: wcagId(criterion.id),
+        prompt: `Which success criterion is ${wcagId(criterion.id)}?`,
         options: shuffle([
           criterion.title,
-          ...pickDistractors(titles, criterion.title, 2)
+          ...pickDistractors(titles, criterion.title, 3)
         ]),
         answer: criterion.title
       };
@@ -160,10 +164,10 @@ export function buildQuizQuestion(
         cardText: criterion.title,
         prompt: `Which number is “${criterion.title}”?`,
         options: shuffle([
-          criterion.id,
-          ...pickDistractors(ids, criterion.id, 2)
+          wcagId(criterion.id),
+          ...pickDistractors(ids, criterion.id, 3).map(wcagId)
         ]),
-        answer: criterion.id
+        answer: wcagId(criterion.id)
       };
     case "descToTitle":
       return {
@@ -173,7 +177,7 @@ export function buildQuizQuestion(
         prompt: "Which success criterion does this describe?",
         options: shuffle([
           criterion.title,
-          ...pickDistractors(titles, criterion.title, 2)
+          ...pickDistractors(titles, criterion.title, 3)
         ]),
         answer: criterion.title
       };
@@ -181,7 +185,7 @@ export function buildQuizQuestion(
       return {
         ...base,
         kicker: "Conformance level",
-        cardText: `${criterion.id} ${criterion.title}`,
+        cardText: `${wcagId(criterion.id)} ${criterion.title}`,
         prompt: "What conformance level is this criterion?",
         options: ["Level A", "Level AA", "Level AAA"],
         answer: `Level ${criterion.level}`
@@ -194,7 +198,7 @@ export function buildQuizQuestion(
         prompt: "Which success criterion does this scenario violate?",
         options: shuffle([
           criterion.title,
-          ...pickDistractors(titles, criterion.title, 2)
+          ...pickDistractors(titles, criterion.title, 3)
         ]),
         answer: criterion.title
       };
@@ -202,7 +206,7 @@ export function buildQuizQuestion(
       return {
         ...base,
         kicker: "POUR principle",
-        cardText: `${criterion.id} ${criterion.title}`,
+        cardText: `${wcagId(criterion.id)} ${criterion.title}`,
         prompt: "Which POUR principle does this criterion belong to?",
         options: [...POUR],
         answer: criterion.principle
