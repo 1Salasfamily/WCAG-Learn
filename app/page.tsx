@@ -117,7 +117,7 @@ export default function HomePage() {
   const quizScore = quizRound.filter((q) => q.firstTryCorrect === true).length;
 
   const statusText = !started
-    ? "Ready. Choose Start in Order or Start Random Order."
+    ? "Ready. Choose Start Reference Guide or Start Quiz."
     : viewMode === "quiz"
       ? quizPhase === "summary"
         ? `Round complete: ${quizScore} of ${quizRound.length} correct.`
@@ -167,20 +167,18 @@ export default function HomePage() {
     setStarted(false);
   }
 
-  function startOrder() {
+  // The two start-screen buttons enter a mode directly. Reference is always in
+  // order (the sidebar is ordered by POUR regardless); the quiz round is built
+  // fresh and shuffled on every entry by the viewMode effect below.
+  function start(mode: ViewMode) {
     setCards(ordered);
     setActiveIndex(0);
-    setViewMode("reference");
+    setViewMode(mode);
     resetTransientUI();
     setStarted(true);
-  }
-
-  function startRandom() {
-    setCards(shuffle(ordered));
-    setActiveIndex(0);
-    setViewMode("reference");
-    resetTransientUI();
-    setStarted(true);
+    if (typeof window !== "undefined") {
+      window.localStorage.setItem("wcag-learn:view-mode", mode);
+    }
   }
 
   // Move focus onto the selected criterion's summary card so keyboard and
@@ -418,6 +416,7 @@ export default function HomePage() {
             </p>
           </div>
 
+          {started ? (
           <div className="mode-toggle" role="group" aria-label="Study mode">
             <button
               className={`mode-toggle-button ${viewMode === "reference" ? "active" : ""}`}
@@ -434,6 +433,7 @@ export default function HomePage() {
               Flashcard Quiz
             </button>
           </div>
+          ) : null}
         </div>
 
         <div className="main-stage">
@@ -451,11 +451,11 @@ export default function HomePage() {
                 <li className="deck-stat">POUR principles</li>
               </ul>
               <div className="start-row" role="group" aria-label="Start modes">
-                <button className="start-button start-button-primary" onClick={startOrder}>
-                  Start in Order
+                <button className="start-button start-button-primary" onClick={() => start("reference")}>
+                  Start Reference Guide
                 </button>
-                <button className="start-button" onClick={startRandom}>
-                  Start Random Order
+                <button className="start-button" onClick={() => start("quiz")}>
+                  Start Quiz
                 </button>
               </div>
             </section>
