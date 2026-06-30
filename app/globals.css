@@ -19,9 +19,9 @@ body {
   margin: 0;
   padding: 0;
   height: 100dvh;
-  background: radial-gradient(circle at 12% -14%, #1e2635 0%, var(--bg) 56%);
+  background: var(--bg);
   color: var(--text);
-  font-family: "Trebuchet MS", Trebuchet, Verdana, sans-serif;
+  font-family: var(--font-sans), "Trebuchet MS", Trebuchet, Verdana, sans-serif;
   -webkit-text-size-adjust: 100%;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -481,9 +481,7 @@ a {
   margin: 0 auto;
   border: 1.5px solid var(--border);
   border-radius: 1.1rem;
-  background:
-    radial-gradient(circle at 80% -30%, rgba(56, 78, 116, 0.35) 0%, rgba(56, 78, 116, 0) 55%),
-    var(--panel);
+  background: var(--panel);
   display: grid;
   align-content: center;
   justify-items: center;
@@ -565,7 +563,6 @@ a {
 .start-button-primary {
   background: var(--active);
   border-color: rgba(133, 167, 227, 0.55);
-  box-shadow: 0 6px 16px rgba(15, 25, 42, 0.5);
 }
 
 .nav-reset {
@@ -1272,7 +1269,8 @@ a {
 
 .details-id-badge {
   margin: 0;
-  font-size: 0.95rem;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.9rem;
   font-weight: 700;
   border: 1px solid rgba(130, 166, 219, 0.55);
   background: rgba(36, 51, 72, 0.55);

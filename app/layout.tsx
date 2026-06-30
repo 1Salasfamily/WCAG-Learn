@@ -1,6 +1,20 @@
 import type { Metadata, Viewport } from "next";
 import Link from "next/link";
+import { Schibsted_Grotesk, Space_Mono } from "next/font/google";
 import "./globals.css";
+
+const sans = Schibsted_Grotesk({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-sans"
+});
+
+const mono = Space_Mono({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  display: "swap",
+  variable: "--font-mono"
+});
 import ResetButton from "./reset-button";
 import SiteTitle from "./site-title";
 import SkipLink from "./skip-link";
@@ -28,7 +42,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${sans.variable} ${mono.variable}`}>
       <body>
         <SkipLink />
         <header className="site-header">
