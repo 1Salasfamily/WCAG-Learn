@@ -187,7 +187,10 @@ export function buildQuizQuestion(
         kicker: "Conformance level",
         cardText: `${wcagId(criterion.id)} ${criterion.title}`,
         prompt: "What conformance level is this criterion?",
-        options: ["Level A", "Level AA", "Level AAA"],
+        // "Best practice" is a deliberate 4th distractor — it's a real term
+        // people confuse with a conformance level, so every question stays at
+        // four options without inventing a fake level.
+        options: ["Level A", "Level AA", "Level AAA", "Best practice"],
         answer: `Level ${criterion.level}`
       };
     case "scenario":
