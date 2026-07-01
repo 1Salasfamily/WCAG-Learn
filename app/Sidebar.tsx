@@ -55,6 +55,13 @@ export default function Sidebar({
         </p>
       </div>
 
+      {isSearching && matchCount === 0 ? (
+        <p className="sidebar-empty">
+          No matches. Try a criterion number like 1.4.3, or a keyword like
+          &ldquo;contrast&rdquo; or &ldquo;keyboard&rdquo;.
+        </p>
+      ) : null}
+
       {POUR.map((principle) => {
         const open = isSearching ? true : expanded[principle];
         if (isSearching && visibleGrouped[principle].length === 0) {

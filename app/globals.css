@@ -276,6 +276,13 @@ a {
   color: var(--muted);
 }
 
+.sidebar-empty {
+  margin: 0.4rem 0 0;
+  font-size: 0.85rem;
+  line-height: 1.45;
+  color: var(--muted);
+}
+
 .sidebar-group {
   margin-bottom: 0.6rem;
 }

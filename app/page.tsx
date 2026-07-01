@@ -4,8 +4,11 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import wcagData from "@/data/wcag.json";
 import {
   buildQuizQuestion,
+  buildQuizQuestionOfType,
   buildQuizRound,
   compareCriteria,
+  criterionMatches,
+  normalizeSearchQuery,
   POUR,
   shuffle
 } from "./wcag";
@@ -16,6 +19,7 @@ import type {
   PrincipleFilter,
   QuizPhase,
   QuizQuestion,
+  QuizQuestionType,
   QuizState,
   ViewMode
 } from "./wcag";
@@ -23,6 +27,27 @@ import Sidebar from "./Sidebar";
 import ReferenceCard from "./ReferenceCard";
 import Quiz from "./Quiz";
 import ImageOverlay from "./ImageOverlay";
+
+// Saved-session shape for auto-resume. Questions persist as (criterion id,
+// type, first-try result) and are rebuilt on restore — options may reshuffle,
+// but the subject, progress, and score are preserved.
+const SESSION_KEY = "wcag-learn:session:v1";
+
+type SavedSession = {
+  started: boolean;
+  activeIndex: number;
+  quiz?: {
+    round: Array<{
+      id: string;
+      type: QuizQuestionType;
+      ftc: boolean | null;
+    }>;
+    index: number;
+    phase: QuizPhase;
+    principleFilter: PrincipleFilter;
+    levelFilter: LevelFilter;
+  };
+};
 
 export default function HomePage() {
   const ordered = useMemo(
@@ -60,7 +85,12 @@ export default function HomePage() {
   const [quizLevelFilter, setQuizLevelFilter] = useState<LevelFilter>("All");
   const [sidebarQuery, setSidebarQuery] = useState("");
 
-  const searchQuery = sidebarQuery.trim().toLowerCase();
+  // Mirrors used by the quiz round-build effect so an in-progress round
+  // survives mode round-trips and restored sessions (see that effect below).
+  const quizRoundRef = useRef<QuizQuestion[]>([]);
+  const roundFiltersRef = useRef<string | null>(null);
+
+  const searchQuery = normalizeSearchQuery(sidebarQuery);
   const isSearching = searchQuery.length > 0;
 
   const visibleGrouped = useMemo(() => {
@@ -72,10 +102,8 @@ export default function HomePage() {
       Robust: []
     };
     POUR.forEach((principle) => {
-      map[principle] = grouped[principle].filter(
-        (item) =>
-          item.id.toLowerCase().includes(searchQuery) ||
-          item.title.toLowerCase().includes(searchQuery)
+      map[principle] = grouped[principle].filter((item) =>
+        criterionMatches(item, searchQuery)
       );
     });
     return map;
@@ -169,6 +197,11 @@ export default function HomePage() {
     setViewMode(mode);
     resetTransientUI();
     setStarted(true);
+    // Starting fresh from the start screen always deals a new quiz round —
+    // clear any leftover round so the round-build effect rebuilds.
+    setQuizRound([]);
+    quizRoundRef.current = [];
+    roundFiltersRef.current = null;
     if (typeof window !== "undefined") {
       window.localStorage.setItem("wcag-learn:view-mode", mode);
     }
@@ -266,16 +299,103 @@ export default function HomePage() {
     if (stored === "reference" || stored === "quiz") {
       setViewMode(stored);
     }
+
+    // Auto-resume: restore the saved session so a reload, an About-page
+    // detour, or a mobile tab eviction doesn't lose the user's place. The
+    // logo and Reset remain the intentional ways to leave/restart.
+    try {
+      const raw = window.localStorage.getItem(SESSION_KEY);
+      if (!raw) return;
+      const saved = JSON.parse(raw) as SavedSession;
+      if (!saved?.started) return;
+      setStarted(true);
+      setActiveIndex(
+        Math.min(Math.max(0, saved.activeIndex ?? 0), ordered.length - 1)
+      );
+      const quiz = saved.quiz;
+      if (!quiz) return;
+      if (quiz.principleFilter) setQuizPrincipleFilter(quiz.principleFilter);
+      if (quiz.levelFilter) setQuizLevelFilter(quiz.levelFilter);
+      const round = (quiz.round ?? [])
+        .map((entry) => {
+          const criterion = ordered.find((c) => c.id === entry.id);
+          if (!criterion) return null;
+          const type: QuizQuestionType =
+            entry.type === "scenario" && !criterion.example?.fail
+              ? "idToTitle"
+              : entry.type;
+          return {
+            ...buildQuizQuestionOfType(criterion, ordered, type),
+            firstTryCorrect: entry.ftc
+          };
+        })
+        .filter((q): q is QuizQuestion => q !== null);
+      if (round.length === 0) return;
+      // Prime the refs so the round-build effect resumes this round instead
+      // of dealing a new one.
+      quizRoundRef.current = round;
+      roundFiltersRef.current = `${quiz.principleFilter}|${quiz.levelFilter}`;
+      setQuizRound(round);
+      setQuizIndex(Math.min(Math.max(0, quiz.index ?? 0), round.length - 1));
+      setQuizPhase(quiz.phase === "summary" ? "summary" : "question");
+    } catch {
+      // Corrupt/legacy payload — start clean.
+      window.localStorage.removeItem(SESSION_KEY);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
+    quizRoundRef.current = quizRound;
+  }, [quizRound]);
+
+  useEffect(() => {
     if (!started || viewMode !== "quiz") return;
+    const filtersKey = `${quizPrincipleFilter}|${quizLevelFilter}`;
+    // Resume an in-progress round (mode round-trips, restored sessions).
+    // Only deal a new round when there is none, or the filters changed —
+    // peeking at the reference guide mid-round no longer wipes progress.
+    if (
+      quizRoundRef.current.length > 0 &&
+      roundFiltersRef.current === filtersKey
+    ) {
+      return;
+    }
+    roundFiltersRef.current = filtersKey;
     setQuizRound(buildQuizRound(quizPool, ordered));
     setQuizIndex(0);
     setQuizPhase("question");
     setQuizState("idle");
     setSelectedOption(null);
-  }, [started, ordered, viewMode, quizPool]);
+  }, [started, ordered, viewMode, quizPool, quizPrincipleFilter, quizLevelFilter]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const payload: SavedSession = {
+      started,
+      activeIndex,
+      quiz: {
+        round: quizRound.map((q) => ({
+          id: q.criterion.id,
+          type: q.type,
+          ftc: q.firstTryCorrect
+        })),
+        index: quizIndex,
+        phase: quizPhase,
+        principleFilter: quizPrincipleFilter,
+        levelFilter: quizLevelFilter
+      }
+    };
+    window.localStorage.setItem(SESSION_KEY, JSON.stringify(payload));
+  }, [
+    started,
+    activeIndex,
+    quizRound,
+    quizIndex,
+    quizPhase,
+    quizPrincipleFilter,
+    quizLevelFilter
+  ]);
 
   useEffect(() => {
     // Reset only clears the current quiz's progress — a fresh shuffled round
