@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import wcagData from "@/data/wcag.json";
 import {
   buildQuizQuestionOfType,
@@ -59,6 +59,40 @@ function safeSetItem(key: string, value: string) {
   }
 }
 
+// Parse-or-remove: a corrupt payload is deleted so it can't brick every
+// subsequent mount, and storage-denied environments read as "nothing saved".
+function readJSON<T>(key: string): T | null {
+  try {
+    const raw = window.localStorage.getItem(key);
+    return raw ? (JSON.parse(raw) as T) : null;
+  } catch {
+    try {
+      window.localStorage.removeItem(key);
+    } catch {
+      // Storage unavailable — nothing to clean up.
+    }
+    return null;
+  }
+}
+
+// Restores run pre-paint so a returning user never sees a start-screen flash
+// before their session pops in. useLayoutEffect warns during prerender, so
+// fall back to useEffect on the server (where neither ever runs).
+const useClientLayoutEffect =
+  typeof window === "undefined" ? useEffect : useLayoutEffect;
+
+function filterPool(
+  pool: Criterion[],
+  principle: PrincipleFilter,
+  level: LevelFilter
+): Criterion[] {
+  return pool.filter(
+    (item) =>
+      (principle === "All" || item.principle === principle) &&
+      (level === "All" || item.level === level)
+  );
+}
+
 type SavedSession = {
   started: boolean;
   activeIndex: number;
@@ -111,11 +145,6 @@ export default function HomePage() {
   const [quizLevelFilter, setQuizLevelFilter] = useState<LevelFilter>("All");
   const [sidebarQuery, setSidebarQuery] = useState("");
 
-  // Mirrors used by the quiz round-build effect so an in-progress round
-  // survives mode round-trips and restored sessions (see that effect below).
-  const quizRoundRef = useRef<QuizQuestion[]>([]);
-  const roundFiltersRef = useRef<string | null>(null);
-
   // Cross-session mastery: first-try history per criterion. Survives the
   // logo/Reset exits — it's learning progress, not session state.
   const [mastery, setMastery] = useState<MasteryMap>({});
@@ -148,20 +177,16 @@ export default function HomePage() {
     0
   );
 
-  const quizPool = useMemo(
-    () =>
-      ordered.filter(
-        (item) =>
-          !OBSOLETE_IDS.has(item.id) &&
-          (quizPrincipleFilter === "All" || item.principle === quizPrincipleFilter) &&
-          (quizLevelFilter === "All" || item.level === quizLevelFilter)
-      ),
-    [ordered, quizPrincipleFilter, quizLevelFilter]
-  );
-
+  // Quiz eligibility is defined once: quizzable excludes obsolete criteria,
+  // and the active pool is quizzable narrowed by the filters.
   const quizzable = useMemo(
     () => ordered.filter((item) => !OBSOLETE_IDS.has(item.id)),
     [ordered]
+  );
+
+  const quizPool = useMemo(
+    () => filterPool(quizzable, quizPrincipleFilter, quizLevelFilter),
+    [quizzable, quizPrincipleFilter, quizLevelFilter]
   );
 
   const masteryStats = useMemo(() => {
@@ -254,8 +279,23 @@ export default function HomePage() {
     if (practicePool.length === 0) return;
     setQuizPrincipleFilter("All");
     setQuizLevelFilter("All");
-    roundFiltersRef.current = "All|All";
     dealRound(buildQuizRound(practicePool, ordered));
+  }
+
+  // Committing a filter deals a fresh round from the new pool — rounds are
+  // dealt only in event handlers, so nothing can wipe one as a side effect.
+  function applyPrincipleFilter(value: PrincipleFilter) {
+    setQuizPrincipleFilter(value);
+    dealRound(
+      buildQuizRound(filterPool(quizzable, value, quizLevelFilter), ordered)
+    );
+  }
+
+  function applyLevelFilter(value: LevelFilter) {
+    setQuizLevelFilter(value);
+    dealRound(
+      buildQuizRound(filterPool(quizzable, quizPrincipleFilter, value), ordered)
+    );
   }
 
   function goToNextQuestion() {
@@ -268,20 +308,22 @@ export default function HomePage() {
     setSelectedOption(null);
   }
 
-  // The two start-screen buttons enter a mode directly. Reference is always in
-  // order (the sidebar is ordered by POUR regardless); the quiz round is built
-  // fresh and shuffled on every entry by the viewMode effect below.
+  // The two start-screen buttons enter a mode directly. Reference is always
+  // in order (the sidebar is ordered by POUR regardless); starting the quiz
+  // deals a fresh shuffled round.
   function start(mode: ViewMode) {
     setCards(ordered);
     setActiveIndex(0);
     setViewMode(mode);
     resetTransientUI();
     setStarted(true);
-    // Starting fresh from the start screen always deals a new quiz round —
-    // clear any leftover round so the round-build effect rebuilds.
-    setQuizRound([]);
-    quizRoundRef.current = [];
-    roundFiltersRef.current = null;
+    if (mode === "quiz") {
+      dealRound(buildQuizRound(quizPool, ordered));
+    } else {
+      // A leftover round from before a logo-home exit shouldn't resume via
+      // the mode toggle; the toggle deals fresh when the round is empty.
+      setQuizRound([]);
+    }
     safeSetItem("wcag-learn:view-mode", mode);
   }
 
@@ -350,9 +392,12 @@ export default function HomePage() {
     setViewMode(mode);
     setExampleExpanded(false);
     setIsSidebarOpen(false);
-    // Leave quizState/selectedOption alone: a resumed round must re-present
-    // the current question exactly as the user left it (an answered-correct
-    // question keeps its Next button after a reference-guide peek).
+    // Entering the quiz with no round in hand deals one; an in-progress round
+    // (or its summary) resumes untouched — quizState/selectedOption included,
+    // so the current question re-presents exactly as the user left it.
+    if (mode === "quiz" && quizRound.length === 0) {
+      dealRound(buildQuizRound(quizPool, ordered));
+    }
     safeSetItem("wcag-learn:view-mode", mode);
   }
 
@@ -385,38 +430,28 @@ export default function HomePage() {
     );
   }
 
-  useEffect(() => {
+  useClientLayoutEffect(() => {
     // Mastery payloads are untrusted: JSON.parse("null") succeeds, so shape-
     // validate every entry instead of letting a bad value crash the render.
-    try {
-      const raw = window.localStorage.getItem(MASTERY_KEY);
-      if (!raw) return;
-      const parsed = JSON.parse(raw) as unknown;
-      if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
-        return;
-      }
-      const cleaned: MasteryMap = {};
-      for (const [id, entry] of Object.entries(parsed)) {
-        const candidate = entry as MasteryEntry | null;
-        if (
-          candidate &&
-          typeof candidate.attempts === "number" &&
-          typeof candidate.streak === "number"
-        ) {
-          cleaned[id] = {
-            attempts: candidate.attempts,
-            streak: candidate.streak
-          };
-        }
-      }
-      if (Object.keys(cleaned).length > 0) setMastery(cleaned);
-    } catch {
-      try {
-        window.localStorage.removeItem(MASTERY_KEY);
-      } catch {
-        // Storage unavailable — nothing to clean up.
+    const parsed = readJSON<unknown>(MASTERY_KEY);
+    if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
+      return;
+    }
+    const cleaned: MasteryMap = {};
+    for (const [id, entry] of Object.entries(parsed)) {
+      const candidate = entry as MasteryEntry | null;
+      if (
+        candidate &&
+        typeof candidate.attempts === "number" &&
+        typeof candidate.streak === "number"
+      ) {
+        cleaned[id] = {
+          attempts: candidate.attempts,
+          streak: candidate.streak
+        };
       }
     }
+    if (Object.keys(cleaned).length > 0) setMastery(cleaned);
   }, []);
 
   useEffect(() => {
@@ -427,21 +462,20 @@ export default function HomePage() {
     safeSetItem(MASTERY_KEY, JSON.stringify(mastery));
   }, [mastery]);
 
-  useEffect(() => {
+  useClientLayoutEffect(() => {
     // Auto-resume: restore the saved session so a reload, an About-page
     // detour, or a mobile tab eviction doesn't lose the user's place. The
     // logo and Reset remain the intentional ways to leave/restart. Payload
     // fields are validated individually — a partial or tampered payload
     // degrades to defaults instead of crashing or discarding the round.
+    // Runs pre-paint so returning users never see a start-screen flash.
     try {
       const stored = window.localStorage.getItem("wcag-learn:view-mode");
-      if (stored === "reference" || stored === "quiz") {
-        setViewMode(stored);
-      }
+      const mode: ViewMode =
+        stored === "reference" || stored === "quiz" ? stored : "reference";
+      setViewMode(mode);
 
-      const raw = window.localStorage.getItem(SESSION_KEY);
-      if (!raw) return;
-      const saved = JSON.parse(raw) as Partial<SavedSession> | null;
+      const saved = readJSON<Partial<SavedSession>>(SESSION_KEY);
       if (!saved || saved.started !== true) return;
       setStarted(true);
       const savedActive =
@@ -449,63 +483,63 @@ export default function HomePage() {
       setActiveIndex(Math.min(Math.max(0, savedActive), ordered.length - 1));
 
       const quiz = saved.quiz;
-      if (!quiz || !Array.isArray(quiz.round)) return;
-      // Filters and the round-identity key must derive from the same
-      // defaults, or a payload missing filters primes a key that never
-      // matches and the round-build effect discards the restored round.
       const principleFilter = PRINCIPLE_FILTER_VALUES.includes(
-        quiz.principleFilter as PrincipleFilter
+        quiz?.principleFilter as PrincipleFilter
       )
-        ? (quiz.principleFilter as PrincipleFilter)
+        ? (quiz?.principleFilter as PrincipleFilter)
         : "All";
       const levelFilter = LEVEL_FILTER_VALUES.includes(
-        quiz.levelFilter as LevelFilter
+        quiz?.levelFilter as LevelFilter
       )
-        ? (quiz.levelFilter as LevelFilter)
+        ? (quiz?.levelFilter as LevelFilter)
         : "All";
       setQuizPrincipleFilter(principleFilter);
       setQuizLevelFilter(levelFilter);
 
       const savedIndex =
-        typeof quiz.index === "number" ? Math.max(0, quiz.index) : 0;
+        typeof quiz?.index === "number" ? Math.max(0, quiz.index) : 0;
       const round: QuizQuestion[] = [];
       // Entries dropped before the saved index shift the round down; count
       // survivors below it so resume lands on the same question, not one past.
       let index = 0;
-      quiz.round.forEach((entry, originalIndex) => {
-        if (
-          !entry ||
-          typeof entry.id !== "string" ||
-          OBSOLETE_IDS.has(entry.id)
-        ) {
-          return;
+      (Array.isArray(quiz?.round) ? quiz.round : []).forEach(
+        (entry, originalIndex) => {
+          if (
+            !entry ||
+            typeof entry.id !== "string" ||
+            OBSOLETE_IDS.has(entry.id)
+          ) {
+            return;
+          }
+          const criterion = ordered.find((c) => c.id === entry.id);
+          if (!criterion) return;
+          const type = QUESTION_TYPES.includes(entry.type)
+            ? entry.type
+            : "idToTitle";
+          round.push({
+            ...buildQuizQuestionOfType(criterion, ordered, type),
+            firstTryCorrect:
+              entry.ftc === true ? true : entry.ftc === false ? false : null
+          });
+          if (originalIndex < savedIndex) index += 1;
         }
-        const criterion = ordered.find((c) => c.id === entry.id);
-        if (!criterion) return;
-        const savedType = QUESTION_TYPES.includes(entry.type)
-          ? entry.type
-          : "idToTitle";
-        const type: QuizQuestionType =
-          savedType === "scenario" && !criterion.example?.fail
-            ? "idToTitle"
-            : savedType;
-        round.push({
-          ...buildQuizQuestionOfType(criterion, ordered, type),
-          firstTryCorrect:
-            entry.ftc === true ? true : entry.ftc === false ? false : null
-        });
-        if (originalIndex < savedIndex) index += 1;
-      });
-      if (round.length === 0) return;
-      // Prime the refs so the round-build effect resumes this round instead
-      // of dealing a new one.
-      quizRoundRef.current = round;
-      roundFiltersRef.current = `${principleFilter}|${levelFilter}`;
-      setQuizRound(round);
-      setQuizIndex(Math.min(index, round.length - 1));
-      setQuizPhase(quiz.phase === "summary" ? "summary" : "question");
+      );
+      if (round.length > 0) {
+        setQuizRound(round);
+        setQuizIndex(Math.min(index, round.length - 1));
+        setQuizPhase(quiz?.phase === "summary" ? "summary" : "question");
+      } else if (mode === "quiz") {
+        // Resumed into quiz mode with nothing to resume — deal fresh.
+        dealRound(
+          buildQuizRound(
+            filterPool(quizzable, principleFilter, levelFilter),
+            ordered
+          )
+        );
+      }
     } catch {
-      // Corrupt payload or storage unavailable — start clean.
+      // A restore bug must not brick startup — drop the payload and start
+      // clean rather than crash on every subsequent mount.
       try {
         window.localStorage.removeItem(SESSION_KEY);
       } catch {
@@ -516,56 +550,57 @@ export default function HomePage() {
       // can't clobber the session it is about to restore.
       setSessionHydrated(true);
     }
-  }, [ordered]);
+  }, [ordered, quizzable]);
 
-  useEffect(() => {
-    quizRoundRef.current = quizRound;
-  }, [quizRound]);
-
-  useEffect(() => {
-    if (!started || viewMode !== "quiz") return;
-    const filtersKey = `${quizPrincipleFilter}|${quizLevelFilter}`;
-    // Resume an in-progress round (mode round-trips, restored sessions).
-    // Only deal a new round when there is none, or the filters changed —
-    // peeking at the reference guide mid-round no longer wipes progress.
-    if (
-      quizRoundRef.current.length > 0 &&
-      roundFiltersRef.current === filtersKey
-    ) {
-      return;
-    }
-    roundFiltersRef.current = filtersKey;
-    dealRound(buildQuizRound(quizPool, ordered));
-  }, [started, ordered, viewMode, quizPool, quizPrincipleFilter, quizLevelFilter]);
+  // The session snapshot is serialized once per state change, debounced to a
+  // single write (arrow-key card navigation would otherwise write per key
+  // repeat), and flushed on pagehide so a closing tab keeps its last state.
+  const sessionPayload = useMemo(
+    () =>
+      JSON.stringify({
+        started,
+        activeIndex,
+        quiz: {
+          round: quizRound.map((q) => ({
+            id: q.criterion.id,
+            type: q.type,
+            ftc: q.firstTryCorrect
+          })),
+          index: quizIndex,
+          phase: quizPhase,
+          principleFilter: quizPrincipleFilter,
+          levelFilter: quizLevelFilter
+        }
+      } satisfies SavedSession),
+    [
+      started,
+      activeIndex,
+      quizRound,
+      quizIndex,
+      quizPhase,
+      quizPrincipleFilter,
+      quizLevelFilter
+    ]
+  );
+  const sessionPayloadRef = useRef(sessionPayload);
+  sessionPayloadRef.current = sessionPayload;
 
   useEffect(() => {
     if (!sessionHydrated) return;
-    const payload: SavedSession = {
-      started,
-      activeIndex,
-      quiz: {
-        round: quizRound.map((q) => ({
-          id: q.criterion.id,
-          type: q.type,
-          ftc: q.firstTryCorrect
-        })),
-        index: quizIndex,
-        phase: quizPhase,
-        principleFilter: quizPrincipleFilter,
-        levelFilter: quizLevelFilter
-      }
-    };
-    safeSetItem(SESSION_KEY, JSON.stringify(payload));
-  }, [
-    sessionHydrated,
-    started,
-    activeIndex,
-    quizRound,
-    quizIndex,
-    quizPhase,
-    quizPrincipleFilter,
-    quizLevelFilter
-  ]);
+    const id = window.setTimeout(() => {
+      safeSetItem(SESSION_KEY, sessionPayload);
+    }, 250);
+    return () => window.clearTimeout(id);
+  }, [sessionHydrated, sessionPayload]);
+
+  useEffect(() => {
+    if (!sessionHydrated) return;
+    function flush() {
+      safeSetItem(SESSION_KEY, sessionPayloadRef.current);
+    }
+    window.addEventListener("pagehide", flush);
+    return () => window.removeEventListener("pagehide", flush);
+  }, [sessionHydrated]);
 
   useEffect(() => {
     // Reset only clears the current quiz's progress — a fresh shuffled round
@@ -765,9 +800,9 @@ export default function HomePage() {
                 {viewMode === "quiz" ? (
                   <Quiz
                     principleFilter={quizPrincipleFilter}
-                    onPrincipleFilter={setQuizPrincipleFilter}
+                    onPrincipleFilter={applyPrincipleFilter}
                     levelFilter={quizLevelFilter}
-                    onLevelFilter={setQuizLevelFilter}
+                    onLevelFilter={applyLevelFilter}
                     phase={quizPhase}
                     question={currentQuestion}
                     index={quizIndex}

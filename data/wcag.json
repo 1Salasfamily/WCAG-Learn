@@ -8,7 +8,8 @@
     "example": {
       "pass": "A product photo includes alt=\"Red canvas high-top sneaker with white rubber sole\", and a decorative divider graphic uses alt=\"\" so screen readers skip it.",
       "fail": "A \"Buy now\" image button has alt=\"button1\", so a screen reader user has no idea what pressing it will do."
-    }
+    },
+    "keywords": "alt text alternative text image images icon"
   },
   {
     "id": "1.2.1",
@@ -19,7 +20,8 @@
     "example": {
       "pass": "A podcast episode page includes a complete text transcript directly below the audio player.",
       "fail": "A silent screen-recording demo of a new feature is published with no transcript and no descriptive audio track."
-    }
+    },
+    "keywords": "video transcript media"
   },
   {
     "id": "1.2.2",
@@ -30,7 +32,8 @@
     "example": {
       "pass": "A training video ships with accurate, human-reviewed closed captions that identify each speaker and note sounds like [phone rings].",
       "fail": "A product launch video relies on unedited auto-captions that garble technical terms, with no way to follow the actual script."
-    }
+    },
+    "keywords": "video subtitles media"
   },
   {
     "id": "1.2.3",
@@ -41,7 +44,8 @@
     "example": {
       "pass": "A tutorial video links to a descriptive transcript that narrates each on-screen step, like \"The presenter opens Settings and selects Display.\"",
       "fail": "A how-to video where the presenter says \"just click here, then this one\" while pointing at the screen, with no description of what was clicked."
-    }
+    },
+    "keywords": "video media"
   },
   {
     "id": "1.3.1",
@@ -52,7 +56,8 @@
     "example": {
       "pass": "A checkout form associates every input with a visible label element, and section titles use real heading tags.",
       "fail": "Section \"headings\" are just bold, enlarged paragraph text, so a screen reader user can't jump between sections or perceive the page outline."
-    }
+    },
+    "keywords": "structure headings semantic markup tables form"
   },
   {
     "id": "1.3.2",
@@ -63,7 +68,8 @@
     "example": {
       "pass": "A three-step signup flow keeps steps 1, 2, and 3 in code order, even though the design displays them side by side in columns.",
       "fail": "A CSS grid visually pairs questions with answers, but in code order a screen reader hears all the answers before any of the questions."
-    }
+    },
+    "keywords": "reading order sequence"
   },
   {
     "id": "1.3.3",
@@ -74,7 +80,8 @@
     "example": {
       "pass": "\"Select Submit (the green button below the form)\" — the button is identified by name first, with sensory hints as a bonus.",
       "fail": "\"To continue, click the round icon in the corner\" — there is no name, so a screen reader user cannot find the control."
-    }
+    },
+    "keywords": "shape position sound instructions"
   },
   {
     "id": "1.4.1",
@@ -85,7 +92,8 @@
     "example": {
       "pass": "Invalid form fields get a red border plus an error icon and the message \"Phone number must contain 10 digits.\"",
       "fail": "A form says \"fields marked in red are required\" with no asterisk, label, or other non-color indicator."
-    }
+    },
+    "keywords": "color colour alone links"
   },
   {
     "id": "1.4.2",
@@ -96,7 +104,8 @@
     "example": {
       "pass": "A site with ambient background music places a visible Pause button at the very top of the page, reachable as the first tab stop.",
       "fail": "A homepage hero video auto-plays with sound and the mute control only appears on mouse hover, unreachable by keyboard."
-    }
+    },
+    "keywords": "autoplay sound background audio mute stop"
   },
   {
     "id": "1.2.4",
@@ -107,7 +116,8 @@
     "example": {
       "pass": "A company all-hands livestream includes professional real-time captioning (CART) displayed in the player.",
       "fail": "A live product webinar offers no captions, with a promise that \"a captioned recording will be posted later.\""
-    }
+    },
+    "keywords": "live video subtitles"
   },
   {
     "id": "1.2.5",
@@ -118,7 +128,8 @@
     "example": {
       "pass": "A demo video offers an alternate audio-described track: \"She selects the Reports tab and a bar chart of monthly sales appears.\"",
       "fail": "An instructional video shows each step silently while music plays, and the spoken narration never says what is happening on screen."
-    }
+    },
+    "keywords": "video narration media"
   },
   {
     "id": "1.3.4",
@@ -129,7 +140,8 @@
     "example": {
       "pass": "A learning app reflows its layout cleanly whether the tablet is held in portrait or landscape.",
       "fail": "A banking app displays \"Please rotate your device\" and refuses to function in landscape, blocking a user whose tablet is mounted sideways."
-    }
+    },
+    "keywords": "rotate portrait landscape orientation lock"
   },
   {
     "id": "1.3.5",
@@ -140,7 +152,8 @@
     "example": {
       "pass": "The email field is coded as input type=\"email\" autocomplete=\"email\", so the browser offers to fill it instantly.",
       "fail": "A checkout form disables autocomplete on every field, forcing a user with a tremor to hand-type their full name, address, and card number."
-    }
+    },
+    "keywords": "autofill autocomplete input purpose form"
   },
   {
     "id": "1.4.3",
@@ -151,7 +164,8 @@
     "example": {
       "pass": "Body text uses dark gray #595959 on white — a 7:1 ratio, comfortably above the 4.5:1 minimum.",
       "fail": "Help text is light gray #AAAAAA on white — about 2.3:1, well below the minimum and illegible to many readers."
-    }
+    },
+    "keywords": "color colour contrast ratio text"
   },
   {
     "id": "1.4.4",
@@ -162,7 +176,8 @@
     "example": {
       "pass": "At 200% browser zoom, the page reflows: all text remains visible and every menu and button still works.",
       "fail": "A mobile page sets maximum-scale=1 to block pinch zoom, and at 200% desktop zoom the fixed-height navigation cuts menu labels in half."
-    }
+    },
+    "keywords": "zoom resize enlarge magnify text size"
   },
   {
     "id": "1.4.5",
@@ -173,7 +188,8 @@
     "example": {
       "pass": "A promotional banner is built with web fonts and CSS styling, so it stays sharp at any zoom level and can be read aloud.",
       "fail": "A restaurant publishes its entire menu as a JPEG — blurry at zoom, invisible to screen readers, and untranslatable."
-    }
+    },
+    "keywords": "images of text"
   },
   {
     "id": "1.4.10",
@@ -184,7 +200,8 @@
     "example": {
       "pass": "At 400% zoom an article reflows into one readable column; only vertical scrolling is needed.",
       "fail": "At 400% zoom the page keeps its desktop layout, so reading each sentence requires scrolling right and then back left."
-    }
+    },
+    "keywords": "zoom reflow horizontal scrolling responsive mobile"
   },
   {
     "id": "1.4.11",
@@ -195,7 +212,8 @@
     "example": {
       "pass": "Form inputs use a #767676 border on white (4.5:1), and the focus ring is a solid high-contrast outline.",
       "fail": "A toggle switch shows \"on\" and \"off\" as two barely different light grays at about 1.4:1 — its state is indistinguishable."
-    }
+    },
+    "keywords": "color colour contrast ui components icons"
   },
   {
     "id": "1.4.12",
@@ -206,7 +224,8 @@
     "example": {
       "pass": "When a user's spacing stylesheet kicks in, cards and buttons grow to fit the taller text and everything stays visible.",
       "fail": "A button with a hard-coded fixed height clips its own label in half as soon as line height increases to 1.5."
-    }
+    },
+    "keywords": "text spacing line height letter spacing"
   },
   {
     "id": "1.4.13",
@@ -217,7 +236,8 @@
     "example": {
       "pass": "An info-icon tooltip stays open while the pointer travels onto it, and pressing Escape dismisses it instantly.",
       "fail": "A tooltip disappears the moment the pointer leaves the icon, and while open it covers the input field with no way to close it."
-    }
+    },
+    "keywords": "tooltip hover popup popover dismiss"
   },
   {
     "id": "2.1.1",
@@ -228,7 +248,8 @@
     "example": {
       "pass": "A custom dropdown opens with Enter, moves through options with arrow keys, and selects with Enter.",
       "fail": "An image carousel's next/previous controls respond only to mouse clicks — Tab can never reach them."
-    }
+    },
+    "keywords": "keyboard only mouse"
   },
   {
     "id": "2.1.2",
@@ -239,7 +260,8 @@
     "example": {
       "pass": "A modal dialog holds focus inside while open, but Escape closes it and returns focus to the button that opened it.",
       "fail": "An embedded third-party widget accepts Tab focus but never releases it — every subsequent Tab cycles inside the widget forever."
-    }
+    },
+    "keywords": "keyboard trap stuck"
   },
   {
     "id": "2.1.4",
@@ -250,7 +272,8 @@
     "example": {
       "pass": "An email app's single-key shortcuts (e to archive) can be disabled or remapped in settings.",
       "fail": "Pressing \"k\" anywhere on the page permanently deletes the selected item, and there is no way to turn the shortcut off."
-    }
+    },
+    "keywords": "keyboard shortcuts single key"
   },
   {
     "id": "2.2.1",
@@ -261,7 +284,8 @@
     "example": {
       "pass": "Twenty seconds before session timeout, a dialog appears: \"Still there? Press Continue to extend your session.\"",
       "fail": "A government benefits form silently logs the user out after 10 minutes, erasing 9 minutes of carefully entered answers."
-    }
+    },
+    "keywords": "time limit timeout session expire"
   },
   {
     "id": "2.2.2",
@@ -272,7 +296,8 @@
     "example": {
       "pass": "A stock ticker and a news carousel each include a clearly visible pause button.",
       "fail": "A hero carousel auto-rotates every 4 seconds indefinitely, with no pause control — users can never finish reading a slide."
-    }
+    },
+    "keywords": "animation carousel auto-updating moving blinking pause"
   },
   {
     "id": "2.3.1",
@@ -283,7 +308,8 @@
     "example": {
       "pass": "An alert animation pulses twice to draw attention, then remains solid.",
       "fail": "A \"FLASH SALE\" banner strobes white-to-red five times per second across the full width of the page."
-    }
+    },
+    "keywords": "flash flashing seizure strobe"
   },
   {
     "id": "2.4.1",
@@ -294,7 +320,8 @@
     "example": {
       "pass": "The first press of Tab reveals a \"Skip to main content\" link that jumps focus straight past the navigation.",
       "fail": "Every page begins with 40 navigation links and no skip link or landmarks, so reaching the content takes 40+ keypresses each time."
-    }
+    },
+    "keywords": "skip link bypass repeated blocks"
   },
   {
     "id": "2.4.2",
@@ -305,7 +332,8 @@
     "example": {
       "pass": "The search results page is titled \"Search results for 'sneakers' – ShopCo\".",
       "fail": "Every page on the site is titled simply \"Home\", so all open tabs look identical and screen readers announce nothing useful."
-    }
+    },
+    "keywords": "page title tab"
   },
   {
     "id": "2.4.3",
@@ -316,7 +344,8 @@
     "example": {
       "pass": "Tabbing through a checkout form moves logically: name, address, payment fields, then the Submit button.",
       "fail": "Stray positive tabindex values make focus jump from the first field to the newsletter signup in the footer, then back up to field two."
-    }
+    },
+    "keywords": "focus order tab order"
   },
   {
     "id": "2.4.4",
@@ -327,7 +356,8 @@
     "example": {
       "pass": "A link reads \"Read our full refund policy\" — its destination is obvious even out of context.",
       "fail": "Three product cards each end with an identical \"Learn more\" link, indistinguishable in a screen reader's link list."
-    }
+    },
+    "keywords": "link text purpose click here"
   },
   {
     "id": "2.5.1",
@@ -338,7 +368,8 @@
     "example": {
       "pass": "A map can be zoomed by pinching or by tapping dedicated + and − buttons.",
       "fail": "An image gallery can only be browsed by swiping — there are no next/previous buttons."
-    }
+    },
+    "keywords": "gestures swipe pinch multipoint touch"
   },
   {
     "id": "2.5.2",
@@ -349,7 +380,8 @@
     "example": {
       "pass": "A Delete button activates on release, so pressing it by mistake can be cancelled by sliding off before letting go.",
       "fail": "A one-click purchase button fires the instant it's pressed down — an accidental touch completes the order with no escape."
-    }
+    },
+    "keywords": "pointer cancel touch mouse up"
   },
   {
     "id": "2.5.3",
@@ -360,7 +392,8 @@
     "example": {
       "pass": "A button displays \"Search\" and its accessible name is exactly \"Search\" — saying \"Click Search\" works.",
       "fail": "A button displays \"Send\" but is coded with aria-label=\"Submit message form\", so the voice command \"Click Send\" does nothing."
-    }
+    },
+    "keywords": "label in name voice control speech"
   },
   {
     "id": "2.5.4",
@@ -371,7 +404,8 @@
     "example": {
       "pass": "Shake-to-undo exists, but an Undo button is always available and the shake gesture can be turned off in settings.",
       "fail": "Shaking the phone is the only way to undo typing, with no button alternative and no way to disable the gesture."
-    }
+    },
+    "keywords": "shake tilt motion actuation device"
   },
   {
     "id": "2.4.5",
@@ -382,7 +416,8 @@
     "example": {
       "pass": "A documentation site offers hierarchical navigation, full-text search, and an A–Z index.",
       "fail": "Support articles can only be reached by drilling down a single specific menu path — there's no search and no index."
-    }
+    },
+    "keywords": "multiple ways search sitemap"
   },
   {
     "id": "2.4.6",
@@ -393,7 +428,8 @@
     "example": {
       "pass": "A settings page uses headings like \"Email notifications\" and \"Privacy controls\" — each section's purpose is obvious.",
       "fail": "A multi-part form labels its sections \"Step 1\", \"Step 2\", and \"More info\", revealing nothing about what each step asks for."
-    }
+    },
+    "keywords": "headings labels descriptive"
   },
   {
     "id": "2.4.7",
@@ -404,7 +440,8 @@
     "example": {
       "pass": "Every interactive element shows a thick, high-contrast focus ring when reached by keyboard.",
       "fail": "A global CSS rule sets outline: none for aesthetics, leaving keyboard users with no clue where focus is."
-    }
+    },
+    "keywords": "focus indicator visible outline ring"
   },
   {
     "id": "2.4.11",
@@ -415,7 +452,8 @@
     "example": {
       "pass": "The page uses scroll-padding so that elements focused near the top scroll into view below the sticky header.",
       "fail": "Tabbing to footer links leaves them entirely hidden beneath a full-width cookie consent banner."
-    }
+    },
+    "keywords": "focus obscured hidden sticky header overlay"
   },
   {
     "id": "2.5.7",
@@ -426,7 +464,8 @@
     "example": {
       "pass": "Kanban cards can be dragged between columns, or moved via a \"Move to…\" menu on each card.",
       "fail": "Reordering a playlist works only by dragging rows — there are no up/down buttons or move commands."
-    }
+    },
+    "keywords": "drag and drop dragging slider"
   },
   {
     "id": "2.5.8",
@@ -437,7 +476,8 @@
     "example": {
       "pass": "Toolbar icon buttons are 32×32 pixels with comfortable spacing between them.",
       "fail": "A row of 16×16 pixel edit/delete/share icons sits flush together, making accidental deletes routine."
-    }
+    },
+    "keywords": "touch target tap target size button spacing"
   },
   {
     "id": "3.1.1",
@@ -448,7 +488,8 @@
     "example": {
       "pass": "A Spanish-language page is coded <html lang=\"es\">, so screen readers switch to Spanish pronunciation automatically.",
       "fail": "A German page omits the lang attribute, so screen readers mangle every word with English pronunciation rules."
-    }
+    },
+    "keywords": "language lang attribute page"
   },
   {
     "id": "3.2.1",
@@ -459,7 +500,8 @@
     "example": {
       "pass": "Tabbing across all the controls in a navigation menu only highlights them — nothing activates until Enter is pressed.",
       "fail": "When focus lands on the \"Help\" link, a popup window opens immediately, hijacking the user mid-navigation."
-    }
+    },
+    "keywords": "focus unexpected change context"
   },
   {
     "id": "3.2.2",
@@ -470,7 +512,8 @@
     "example": {
       "pass": "Choosing a country in a select updates nothing until the user presses the adjacent \"Apply\" button.",
       "fail": "A \"Sort by\" dropdown reloads the page the moment a value changes, so arrowing through options fires three page loads."
-    }
+    },
+    "keywords": "input unexpected change select form"
   },
   {
     "id": "3.2.6",
@@ -481,7 +524,8 @@
     "example": {
       "pass": "The \"Chat with us\" button sits in the bottom-right corner of every single page.",
       "fail": "The support link lives in the header on the homepage, the sidebar on product pages, and the footer at checkout."
-    }
+    },
+    "keywords": "help contact support consistent"
   },
   {
     "id": "3.3.1",
@@ -492,7 +536,8 @@
     "example": {
       "pass": "Beside the field: \"Email address must include an @ symbol\" — visible, specific, and announced to screen readers.",
       "fail": "Submitting the form just turns two fields red, leaving the user to guess which rule each one broke."
-    }
+    },
+    "keywords": "form validation error message identify"
   },
   {
     "id": "3.3.2",
@@ -503,7 +548,8 @@
     "example": {
       "pass": "Each field has a permanent visible label, required fields are marked, and the date field's label includes its expected format.",
       "fail": "A form uses placeholder-only hints that disappear on typing, so reviewing your answers means guessing which box was which."
-    }
+    },
+    "keywords": "form labels instructions placeholder required"
   },
   {
     "id": "3.3.7",
@@ -514,7 +560,8 @@
     "example": {
       "pass": "The payment step offers a \"Billing address same as shipping\" checkbox that copies everything over.",
       "fail": "After entering their full address at shipping, the user must type the identical address again from scratch at billing."
-    }
+    },
+    "keywords": "redundant re-enter autofill duplicate form"
   },
   {
     "id": "3.1.2",
@@ -525,7 +572,8 @@
     "example": {
       "pass": "An English article wraps a quoted French proverb in <blockquote lang=\"fr\">, so it is pronounced as French.",
       "fail": "The same proverb without the attribute is read with English pronunciation, producing meaningless sounds."
-    }
+    },
+    "keywords": "language lang parts foreign"
   },
   {
     "id": "3.2.3",
@@ -536,7 +584,8 @@
     "example": {
       "pass": "The header menu reads Home, Products, Pricing, Support in that order on every page of the site.",
       "fail": "On some pages Support comes first and Products last, so users must re-scan the whole menu every time."
-    }
+    },
+    "keywords": "navigation consistent menu"
   },
   {
     "id": "3.2.4",
@@ -547,7 +596,8 @@
     "example": {
       "pass": "The download action uses the same icon and the label \"Download\" everywhere it appears.",
       "fail": "The identical save-to-PDF feature is labeled \"Download\" on one page, \"Export\" on another, and \"Save\" on a third."
-    }
+    },
+    "keywords": "consistent identification icons"
   },
   {
     "id": "3.3.3",
@@ -558,7 +608,8 @@
     "example": {
       "pass": "\"We couldn't find that state. Did you mean: Washington, West Virginia, Wisconsin?\" with the expected format shown.",
       "fail": "The date field rejects \"3/4/26\" with only the message \"Invalid date\" — no hint that it wants MM/DD/YYYY."
-    }
+    },
+    "keywords": "error suggestion fix form"
   },
   {
     "id": "3.3.4",
@@ -569,7 +620,8 @@
     "example": {
       "pass": "Checkout ends with a review page summarizing the order, with edit links, before the final \"Place order\" button.",
       "fail": "A single click on \"Delete account\" immediately and permanently erases everything — no confirmation, no undo window."
-    }
+    },
+    "keywords": "legal financial commitments confirm review submit"
   },
   {
     "id": "3.3.8",
@@ -580,7 +632,8 @@
     "example": {
       "pass": "The login form accepts pasted passwords, works with password managers, and offers an emailed magic-link alternative.",
       "fail": "Login blocks paste \"for security,\" forces the password to be typed from memory, then demands typing distorted CAPTCHA characters."
-    }
+    },
+    "keywords": "password copy paste captcha login authentication"
   },
   {
     "id": "4.1.1",
@@ -591,7 +644,8 @@
     "example": {
       "pass": "An auditor notes 4.1.1 as \"not applicable\" in a WCAG 2.2 audit and files duplicate-ID issues under 4.1.2 instead.",
       "fail": "A 2.2 audit report cites a page as failing 4.1.1 for unclosed tags — a criterion that no longer exists in 2.2."
-    }
+    },
+    "keywords": "parsing html obsolete"
   },
   {
     "id": "4.1.2",
@@ -602,7 +656,8 @@
     "example": {
       "pass": "A custom toggle uses role=\"switch\", aria-checked, and a clear label, so a screen reader announces \"Dark mode, switch, on.\"",
       "fail": "The menu opener is a clickable div with an icon — no role, no name — so assistive tech presents it as inert text, if at all."
-    }
+    },
+    "keywords": "name role value aria custom controls widgets"
   },
   {
     "id": "4.1.3",
@@ -613,6 +668,7 @@
     "example": {
       "pass": "\"Item added to cart\" renders inside a role=\"status\" region, so screen readers announce it while focus stays put.",
       "fail": "After clicking Save, a small \"Saved!\" note appears visually but is never announced — the screen reader user clicks Save again and again."
-    }
+    },
+    "keywords": "status message toast live region announcement"
   }
 ]

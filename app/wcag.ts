@@ -13,6 +13,9 @@ export type Criterion = {
   level: "A" | "AA" | "AAA";
   principle: Principle;
   shortExplanation: string;
+  // Concept terms people actually type into search ("alt text", "zoom") —
+  // curated per criterion in data/wcag.json, next to the content it describes.
+  keywords?: string;
   assistiveTech?: string[];
   example?: {
     pass: string;
@@ -116,67 +119,6 @@ export function getAssistiveTech(item: Criterion): string[] {
   return principleTechMap[item.principle];
 }
 
-// Concept keywords per criterion, so sidebar search matches the words people
-// actually type ("alt text", "zoom", "autoplay") — not just id and title.
-const SEARCH_KEYWORDS: Record<string, string> = {
-  "1.1.1": "alt text alternative text image images icon",
-  "1.2.1": "video transcript media",
-  "1.2.2": "video subtitles media",
-  "1.2.3": "video media",
-  "1.2.4": "live video subtitles",
-  "1.2.5": "video narration media",
-  "1.3.1": "structure headings semantic markup tables form",
-  "1.3.2": "reading order sequence",
-  "1.3.3": "shape position sound instructions",
-  "1.3.4": "rotate portrait landscape orientation lock",
-  "1.3.5": "autofill autocomplete input purpose form",
-  "1.4.1": "color colour alone links",
-  "1.4.2": "autoplay sound background audio mute stop",
-  "1.4.3": "color colour contrast ratio text",
-  "1.4.4": "zoom resize enlarge magnify text size",
-  "1.4.5": "images of text",
-  "1.4.10": "zoom reflow horizontal scrolling responsive mobile",
-  "1.4.11": "color colour contrast ui components icons",
-  "1.4.12": "text spacing line height letter spacing",
-  "1.4.13": "tooltip hover popup popover dismiss",
-  "2.1.1": "keyboard only mouse",
-  "2.1.2": "keyboard trap stuck",
-  "2.1.4": "keyboard shortcuts single key",
-  "2.2.1": "time limit timeout session expire",
-  "2.2.2": "animation carousel auto-updating moving blinking pause",
-  "2.3.1": "flash flashing seizure strobe",
-  "2.4.1": "skip link bypass repeated blocks",
-  "2.4.2": "page title tab",
-  "2.4.3": "focus order tab order",
-  "2.4.4": "link text purpose click here",
-  "2.4.5": "multiple ways search sitemap",
-  "2.4.6": "headings labels descriptive",
-  "2.4.7": "focus indicator visible outline ring",
-  "2.4.11": "focus obscured hidden sticky header overlay",
-  "2.5.1": "gestures swipe pinch multipoint touch",
-  "2.5.2": "pointer cancel touch mouse up",
-  "2.5.3": "label in name voice control speech",
-  "2.5.4": "shake tilt motion actuation device",
-  "2.5.7": "drag and drop dragging slider",
-  "2.5.8": "touch target tap target size button spacing",
-  "3.1.1": "language lang attribute page",
-  "3.1.2": "language lang parts foreign",
-  "3.2.1": "focus unexpected change context",
-  "3.2.2": "input unexpected change select form",
-  "3.2.3": "navigation consistent menu",
-  "3.2.4": "consistent identification icons",
-  "3.2.6": "help contact support consistent",
-  "3.3.1": "form validation error message identify",
-  "3.3.2": "form labels instructions placeholder required",
-  "3.3.3": "error suggestion fix form",
-  "3.3.4": "legal financial commitments confirm review submit",
-  "3.3.7": "redundant re-enter autofill duplicate form",
-  "3.3.8": "password copy paste captcha login authentication",
-  "4.1.1": "parsing html obsolete",
-  "4.1.2": "name role value aria custom controls widgets",
-  "4.1.3": "status message toast live region announcement"
-};
-
 const BRITISH_SPELLINGS: Array<[RegExp, string]> = [
   [/colour/g, "color"],
   [/behaviour/g, "behavior"],
@@ -205,7 +147,7 @@ function haystackWords(item: Criterion): string[] {
   let words = HAYSTACK_CACHE.get(item.id);
   if (!words) {
     words = `${item.id} ${item.title} ${
-      SEARCH_KEYWORDS[item.id] ?? ""
+      item.keywords ?? ""
     } ${item.shortExplanation}`
       .toLowerCase()
       .split(/[^a-z0-9.]+/)
@@ -282,8 +224,14 @@ export function buildQuizQuestion(
 export function buildQuizQuestionOfType(
   criterion: Criterion,
   all: Criterion[],
-  type: QuizQuestionType
+  requestedType: QuizQuestionType
 ): QuizQuestion {
+  // A criterion without a fail example can't host a scenario question; coerce
+  // here so no caller (e.g. session restore) can build an empty-card question.
+  const type: QuizQuestionType =
+    requestedType === "scenario" && !criterion.example?.fail
+      ? "idToTitle"
+      : requestedType;
   const distractors = pickDistractorCriteria(criterion, all, 3);
   const base = { criterion, type, firstTryCorrect: null };
 
