@@ -59,38 +59,41 @@ export default function Quiz({
   return (
     <>
       <div className="quiz-filter-row">
-        <div
-          className="quiz-filter-group"
-          role="group"
-          aria-label="Filter questions by principle"
-        >
-          {(["All", ...POUR] as PrincipleFilter[]).map((p) => (
-            <button
-              key={p}
-              className={`quiz-filter-chip ${principleFilter === p ? "active" : ""}`}
-              aria-pressed={principleFilter === p}
-              onClick={() => onPrincipleFilter(p)}
+        <label className="quiz-filter">
+          <span className="quiz-filter-label">Principle</span>
+          <span className="quiz-select-shell">
+            <select
+              className="quiz-filter-select"
+              value={principleFilter}
+              onChange={(event) =>
+                onPrincipleFilter(event.target.value as PrincipleFilter)
+              }
             >
-              {p}
-            </button>
-          ))}
-        </div>
-        <div
-          className="quiz-filter-group"
-          role="group"
-          aria-label="Filter questions by conformance level"
-        >
-          {(["All", "A", "AA"] as LevelFilter[]).map((l) => (
-            <button
-              key={l}
-              className={`quiz-filter-chip ${levelFilter === l ? "active" : ""}`}
-              aria-pressed={levelFilter === l}
-              onClick={() => onLevelFilter(l)}
+              <option value="All">All principles</option>
+              {POUR.map((p) => (
+                <option key={p} value={p}>
+                  {p}
+                </option>
+              ))}
+            </select>
+          </span>
+        </label>
+        <label className="quiz-filter">
+          <span className="quiz-filter-label">Level</span>
+          <span className="quiz-select-shell">
+            <select
+              className="quiz-filter-select"
+              value={levelFilter}
+              onChange={(event) =>
+                onLevelFilter(event.target.value as LevelFilter)
+              }
             >
-              {l === "All" ? "All levels" : `Level ${l}`}
-            </button>
-          ))}
-        </div>
+              <option value="All">All levels</option>
+              <option value="A">Level A</option>
+              <option value="AA">Level AA</option>
+            </select>
+          </span>
+        </label>
       </div>
 
       {phase === "summary" ? (
