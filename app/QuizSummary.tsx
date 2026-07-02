@@ -1,11 +1,15 @@
 "use client";
 
-import type { QuizQuestion } from "./wcag";
+import type { Principle, QuizQuestion } from "./wcag";
 
 type QuizSummaryProps = {
   round: QuizQuestion[];
   score: number;
-  onPracticeMisses: () => void;
+  mastered: number;
+  masteryTotal: number;
+  perPrinciple: Array<{ principle: Principle; mastered: number; total: number }>;
+  weakestCount: number;
+  onPracticeWeakest: () => void;
   onNewRound: () => void;
   onReviewGuide: () => void;
 };
@@ -13,7 +17,11 @@ type QuizSummaryProps = {
 export default function QuizSummary({
   round,
   score,
-  onPracticeMisses,
+  mastered,
+  masteryTotal,
+  perPrinciple,
+  weakestCount,
+  onPracticeWeakest,
   onNewRound,
   onReviewGuide
 }: QuizSummaryProps) {
@@ -34,6 +42,36 @@ export default function QuizSummary({
                 ? "Getting there — keep practicing."
                 : "Tough round. The reference guide is one click away."}
       </p>
+      <div className="mastery-block">
+        <p className="mastery-line">
+          Overall mastery{" "}
+          <span className="mastery-num">
+            {mastered} / {masteryTotal}
+          </span>
+        </p>
+        <div className="mastery-bar" aria-hidden="true">
+          <div
+            className="mastery-fill"
+            style={{ width: `${(mastered / masteryTotal) * 100}%` }}
+          />
+        </div>
+        <ul className="mastery-rows" aria-label="Mastery by principle">
+          {perPrinciple.map((row) => (
+            <li className="mastery-row" key={row.principle}>
+              <span className="mastery-row-label">{row.principle}</span>
+              <span className="mastery-row-bar" aria-hidden="true">
+                <span
+                  className="mastery-fill"
+                  style={{ width: `${(row.mastered / row.total) * 100}%` }}
+                />
+              </span>
+              <span className="mastery-row-num">
+                {row.mastered}/{row.total}
+              </span>
+            </li>
+          ))}
+        </ul>
+      </div>
       <ul
         className="quiz-summary-list"
         tabIndex={0}
@@ -60,16 +98,16 @@ export default function QuizSummary({
         ))}
       </ul>
       <div className="start-row">
-        {score < round.length ? (
+        {weakestCount > 0 ? (
           <button
             className="start-button start-button-primary"
-            onClick={onPracticeMisses}
+            onClick={onPracticeWeakest}
           >
-            Practice my misses ({round.length - score})
+            Practice weakest ({weakestCount})
           </button>
         ) : null}
         <button
-          className={`start-button ${score === round.length ? "start-button-primary" : ""}`}
+          className={`start-button ${weakestCount === 0 ? "start-button-primary" : ""}`}
           onClick={onNewRound}
         >
           New round

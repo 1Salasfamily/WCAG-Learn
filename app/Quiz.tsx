@@ -3,6 +3,7 @@
 import { POUR } from "./wcag";
 import type {
   LevelFilter,
+  Principle,
   PrincipleFilter,
   QuizPhase,
   QuizQuestion,
@@ -24,7 +25,11 @@ type QuizProps = {
   selectedOption: string | null;
   onPick: (option: string) => void;
   onNext: () => void;
-  onPracticeMisses: () => void;
+  mastered: number;
+  masteryTotal: number;
+  perPrinciple: Array<{ principle: Principle; mastered: number; total: number }>;
+  weakestCount: number;
+  onPracticeWeakest: () => void;
   onNewRound: () => void;
   onReviewGuide: () => void;
 };
@@ -43,7 +48,11 @@ export default function Quiz({
   selectedOption,
   onPick,
   onNext,
-  onPracticeMisses,
+  mastered,
+  masteryTotal,
+  perPrinciple,
+  weakestCount,
+  onPracticeWeakest,
   onNewRound,
   onReviewGuide
 }: QuizProps) {
@@ -88,7 +97,11 @@ export default function Quiz({
         <QuizSummary
           round={round}
           score={score}
-          onPracticeMisses={onPracticeMisses}
+          mastered={mastered}
+          masteryTotal={masteryTotal}
+          perPrinciple={perPrinciple}
+          weakestCount={weakestCount}
+          onPracticeWeakest={onPracticeWeakest}
           onNewRound={onNewRound}
           onReviewGuide={onReviewGuide}
         />

@@ -8,14 +8,17 @@ import {
   buildQuizRound,
   compareCriteria,
   criterionMatches,
+  MASTERY_STREAK,
   normalizeSearchQuery,
   OBSOLETE_IDS,
   POUR,
+  QUIZ_ROUND_LENGTH,
   shuffle
 } from "./wcag";
 import type {
   Criterion,
   LevelFilter,
+  MasteryMap,
   Principle,
   PrincipleFilter,
   QuizPhase,
@@ -33,6 +36,7 @@ import ImageOverlay from "./ImageOverlay";
 // type, first-try result) and are rebuilt on restore — options may reshuffle,
 // but the subject, progress, and score are preserved.
 const SESSION_KEY = "wcag-learn:session:v1";
+const MASTERY_KEY = "wcag-learn:mastery:v1";
 
 type SavedSession = {
   started: boolean;
@@ -91,6 +95,10 @@ export default function HomePage() {
   const quizRoundRef = useRef<QuizQuestion[]>([]);
   const roundFiltersRef = useRef<string | null>(null);
 
+  // Cross-session mastery: first-try history per criterion. Survives the
+  // logo/Reset exits — it's learning progress, not session state.
+  const [mastery, setMastery] = useState<MasteryMap>({});
+
   const searchQuery = normalizeSearchQuery(sidebarQuery);
   const isSearching = searchQuery.length > 0;
 
@@ -125,6 +133,32 @@ export default function HomePage() {
       ),
     [ordered, quizPrincipleFilter, quizLevelFilter]
   );
+
+  const quizzable = useMemo(
+    () => ordered.filter((item) => !OBSOLETE_IDS.has(item.id)),
+    [ordered]
+  );
+
+  const masteryStats = useMemo(() => {
+    const perPrinciple = POUR.map((principle) => {
+      const items = quizzable.filter((c) => c.principle === principle);
+      const mastered = items.filter(
+        (c) => (mastery[c.id]?.streak ?? 0) >= MASTERY_STREAK
+      ).length;
+      return { principle, mastered, total: items.length };
+    });
+    // "Weakest" = attempted but the most recent first try was wrong.
+    const weakest = quizzable.filter((c) => {
+      const entry = mastery[c.id];
+      return entry !== undefined && entry.attempts > 0 && entry.streak === 0;
+    });
+    return {
+      mastered: perPrinciple.reduce((sum, row) => sum + row.mastered, 0),
+      total: quizzable.length,
+      perPrinciple,
+      weakest
+    };
+  }, [quizzable, mastery]);
   const [expanded, setExpanded] = useState<Record<Principle, boolean>>({
     Perceivable: true,
     Operable: true,
@@ -168,12 +202,18 @@ export default function HomePage() {
     setSelectedOption(null);
   }
 
-  function startMissRound() {
-    const missed = quizRound
-      .filter((q) => q.firstTryCorrect !== true)
-      .map((q) => q.criterion);
-    if (missed.length === 0) return;
-    setQuizRound(shuffle(missed).map((criterion) => buildQuizQuestion(criterion, ordered)));
+  // Practice weakest: a round built from every criterion whose most recent
+  // first try was wrong — across all sessions, not just this round. This
+  // round's misses are already recorded by the time the summary shows, so
+  // they're included automatically.
+  function startWeakestRound() {
+    const pool = masteryStats.weakest;
+    if (pool.length === 0) return;
+    setQuizRound(
+      shuffle(pool)
+        .slice(0, QUIZ_ROUND_LENGTH)
+        .map((criterion) => buildQuizQuestion(criterion, ordered))
+    );
     setQuizIndex(0);
     setQuizPhase("question");
     setQuizState("idle");
@@ -286,6 +326,21 @@ export default function HomePage() {
     setSelectedOption(option);
     const isCorrect = option === currentQuestion.answer;
     setQuizState(isCorrect ? "correct" : "wrong");
+    // Long-term mastery records first tries only — retries after a wrong
+    // answer don't count toward (or against) the streak.
+    if (currentQuestion.firstTryCorrect === null) {
+      const id = currentQuestion.criterion.id;
+      setMastery((prev) => {
+        const entry = prev[id] ?? { attempts: 0, streak: 0 };
+        return {
+          ...prev,
+          [id]: {
+            attempts: entry.attempts + 1,
+            streak: isCorrect ? entry.streak + 1 : 0
+          }
+        };
+      });
+    }
     setQuizRound((prev) =>
       prev.map((q, i) =>
         i === quizIndex && q.firstTryCorrect === null
@@ -294,6 +349,26 @@ export default function HomePage() {
       )
     );
   }
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    try {
+      const raw = window.localStorage.getItem(MASTERY_KEY);
+      if (raw) setMastery(JSON.parse(raw) as MasteryMap);
+    } catch {
+      window.localStorage.removeItem(MASTERY_KEY);
+    }
+  }, []);
+
+  useEffect(() => {
+    // Entries are only ever added or updated, so an empty map is always the
+    // pre-load initial state — persisting it would clobber saved history
+    // (StrictMode runs mount effects twice, interleaving save with load).
+    if (typeof window === "undefined" || Object.keys(mastery).length === 0) {
+      return;
+    }
+    window.localStorage.setItem(MASTERY_KEY, JSON.stringify(mastery));
+  }, [mastery]);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -609,7 +684,11 @@ export default function HomePage() {
                     selectedOption={selectedOption}
                     onPick={handleQuizOptionPick}
                     onNext={goToNextQuestion}
-                    onPracticeMisses={startMissRound}
+                    mastered={masteryStats.mastered}
+                    masteryTotal={masteryStats.total}
+                    perPrinciple={masteryStats.perPrinciple}
+                    weakestCount={masteryStats.weakest.length}
+                    onPracticeWeakest={startWeakestRound}
                     onNewRound={startNewRound}
                     onReviewGuide={() => setMode("reference")}
                   />

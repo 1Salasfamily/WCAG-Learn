@@ -842,6 +842,79 @@ a {
   color: var(--muted);
 }
 
+.mastery-block {
+  width: min(420px, 100%);
+  display: grid;
+  gap: 0.45rem;
+  margin-top: 0.35rem;
+}
+
+.mastery-line {
+  margin: 0;
+  font-size: 0.88rem;
+  color: var(--muted);
+  text-align: center;
+}
+
+.mastery-num {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.mastery-bar {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--border);
+  overflow: hidden;
+}
+
+.mastery-fill {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: rgba(96, 190, 137, 0.75);
+}
+
+.mastery-rows {
+  list-style: none;
+  margin: 0.25rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.4rem;
+}
+
+.mastery-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.mastery-row-label {
+  width: 7.2rem;
+  flex-shrink: 0;
+  font-size: 0.8rem;
+  color: var(--muted);
+  text-align: left;
+}
+
+.mastery-row-bar {
+  flex: 1;
+  height: 5px;
+  border-radius: 999px;
+  background: var(--border);
+  overflow: hidden;
+}
+
+.mastery-row-num {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.72rem;
+  color: var(--muted);
+  width: 2.9rem;
+  flex-shrink: 0;
+  text-align: right;
+}
+
 .quiz-summary-list {
   list-style: none;
   margin: 0.5rem 0 0.4rem;

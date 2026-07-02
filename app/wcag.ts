@@ -68,6 +68,13 @@ export const QUIZ_ROUND_LENGTH = 10;
 // entries, but never quizzed and never offered as answer options.
 export const OBSOLETE_IDS = new Set(["4.1.1"]);
 
+// Long-term, cross-session first-try history per criterion. A criterion is
+// "mastered" at MASTERY_STREAK consecutive first-try corrects — one lucky
+// guess isn't mastery, and a later miss resets the streak.
+export type MasteryEntry = { attempts: number; streak: number };
+export type MasteryMap = Record<string, MasteryEntry>;
+export const MASTERY_STREAK = 2;
+
 function parseId(id: string): number[] {
   return id.split(".").map((n) => Number(n));
 }
