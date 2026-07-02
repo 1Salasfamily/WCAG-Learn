@@ -1,5 +1,6 @@
 "use client";
 
+import { QUIZ_ROUND_LENGTH } from "./wcag";
 import type { Principle, QuizQuestion } from "./wcag";
 
 type QuizSummaryProps = {
@@ -103,7 +104,11 @@ export default function QuizSummary({
             className="start-button start-button-primary"
             onClick={onPracticeWeakest}
           >
-            Practice weakest ({weakestCount})
+            Practice weakest (
+            {weakestCount > QUIZ_ROUND_LENGTH
+              ? `${QUIZ_ROUND_LENGTH} of ${weakestCount}`
+              : weakestCount}
+            )
           </button>
         ) : null}
         <button

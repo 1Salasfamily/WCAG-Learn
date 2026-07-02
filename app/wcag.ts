@@ -198,19 +198,32 @@ export function normalizeSearchQuery(raw: string): string {
   return q;
 }
 
+// Criteria are static, so each haystack is tokenized once and cached.
+const HAYSTACK_CACHE = new Map<string, string[]>();
+
+function haystackWords(item: Criterion): string[] {
+  let words = HAYSTACK_CACHE.get(item.id);
+  if (!words) {
+    words = `${item.id} ${item.title} ${
+      SEARCH_KEYWORDS[item.id] ?? ""
+    } ${item.shortExplanation}`
+      .toLowerCase()
+      .split(/[^a-z0-9.]+/)
+      .filter(Boolean);
+    HAYSTACK_CACHE.set(item.id, words);
+  }
+  return words;
+}
+
 export function criterionMatches(item: Criterion, query: string): boolean {
   if (!query) return true;
-  const haystack = `${item.id} ${item.title} ${
-    SEARCH_KEYWORDS[item.id] ?? ""
-  } ${item.shortExplanation}`.toLowerCase();
-  // Phrases match anywhere; single words match at word starts only, so
-  // "form" finds forms and formats but not "information".
-  if (query.includes(" ")) {
-    return haystack.includes(query);
-  }
-  return haystack
-    .split(/[^a-z0-9.]+/)
-    .some((word) => word.startsWith(query));
+  const words = haystackWords(item);
+  // Every query word must start some haystack word. Word-prefix keeps "form"
+  // from matching "information"; all-words (rather than contiguous phrase)
+  // lets "color contrast" find 1.4.3 even though the words aren't adjacent.
+  return query
+    .split(" ")
+    .every((queryWord) => words.some((word) => word.startsWith(queryWord)));
 }
 
 function firstSentence(text: string): string {

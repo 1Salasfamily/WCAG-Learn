@@ -1,5 +1,6 @@
 "use client";
 
+import { useRef, useState } from "react";
 import { POUR } from "./wcag";
 import type {
   LevelFilter,
@@ -10,6 +11,81 @@ import type {
   QuizState
 } from "./wcag";
 import QuizSummary from "./QuizSummary";
+
+const BROWSE_KEYS = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "Home", "End"];
+
+type FilterSelectProps<T extends string> = {
+  label: string;
+  value: T;
+  options: Array<{ value: T; label: string }>;
+  onCommit: (value: T) => void;
+};
+
+// Native select that defers keyboard-browsed changes until the user commits
+// them (Enter, or leaving the control). On Windows/Linux a closed select
+// fires `change` on every arrow keypress; committing those immediately would
+// deal a new quiz round while the user is still browsing the options. Mouse
+// and touch picks commit instantly, as before.
+function FilterSelect<T extends string>({
+  label,
+  value,
+  options,
+  onCommit
+}: FilterSelectProps<T>) {
+  const [pending, setPending] = useState<T | null>(null);
+  const keyboardBrowsing = useRef(false);
+
+  function commit(next: T) {
+    setPending(null);
+    keyboardBrowsing.current = false;
+    if (next !== value) onCommit(next);
+  }
+
+  return (
+    <label className="quiz-filter">
+      <span className="quiz-filter-label">{label}</span>
+      <span className="quiz-select-shell">
+        <select
+          className="quiz-filter-select"
+          value={pending ?? value}
+          onKeyDown={(event) => {
+            if (BROWSE_KEYS.includes(event.key)) {
+              keyboardBrowsing.current = true;
+            }
+          }}
+          onKeyUp={(event) => {
+            // keyup, not keydown: when a dropdown selection is confirmed with
+            // Enter, the change event lands between the two.
+            if (event.key === "Enter" && pending !== null) {
+              commit(pending);
+            }
+          }}
+          onChange={(event) => {
+            const next = event.target.value as T;
+            if (keyboardBrowsing.current) {
+              setPending(next);
+            } else {
+              commit(next);
+            }
+          }}
+          onBlur={() => {
+            if (pending !== null) {
+              commit(pending);
+            } else {
+              keyboardBrowsing.current = false;
+            }
+          }}
+        >
+          {options.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+      </span>
+    </label>
+  );
+}
 
 type QuizProps = {
   principleFilter: PrincipleFilter;
@@ -59,41 +135,25 @@ export default function Quiz({
   return (
     <>
       <div className="quiz-filter-row">
-        <label className="quiz-filter">
-          <span className="quiz-filter-label">Principle</span>
-          <span className="quiz-select-shell">
-            <select
-              className="quiz-filter-select"
-              value={principleFilter}
-              onChange={(event) =>
-                onPrincipleFilter(event.target.value as PrincipleFilter)
-              }
-            >
-              <option value="All">All principles</option>
-              {POUR.map((p) => (
-                <option key={p} value={p}>
-                  {p}
-                </option>
-              ))}
-            </select>
-          </span>
-        </label>
-        <label className="quiz-filter">
-          <span className="quiz-filter-label">Level</span>
-          <span className="quiz-select-shell">
-            <select
-              className="quiz-filter-select"
-              value={levelFilter}
-              onChange={(event) =>
-                onLevelFilter(event.target.value as LevelFilter)
-              }
-            >
-              <option value="All">All levels</option>
-              <option value="A">Level A</option>
-              <option value="AA">Level AA</option>
-            </select>
-          </span>
-        </label>
+        <FilterSelect<PrincipleFilter>
+          label="Principle"
+          value={principleFilter}
+          onCommit={onPrincipleFilter}
+          options={[
+            { value: "All", label: "All principles" },
+            ...POUR.map((p) => ({ value: p as PrincipleFilter, label: p }))
+          ]}
+        />
+        <FilterSelect<LevelFilter>
+          label="Level"
+          value={levelFilter}
+          onCommit={onLevelFilter}
+          options={[
+            { value: "All", label: "All levels" },
+            { value: "A", label: "Level A" },
+            { value: "AA", label: "Level AA" }
+          ]}
+        />
       </div>
 
       {phase === "summary" ? (
