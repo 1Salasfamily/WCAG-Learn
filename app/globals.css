@@ -1528,3 +1528,17 @@ a {
     scroll-behavior: auto !important;
   }
 }
+
+/* Comfortable 44px touch targets on touch devices; desktop keeps its
+   tighter visual sizing. */
+@media (pointer: coarse) {
+  .quiz-filter-chip,
+  .mode-toggle-button {
+    min-height: 44px;
+  }
+
+  .footer-link {
+    display: inline-block;
+    padding: 0.6rem 0.4rem;
+  }
+}

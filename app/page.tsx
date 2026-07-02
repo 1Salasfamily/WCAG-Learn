@@ -9,6 +9,7 @@ import {
   compareCriteria,
   criterionMatches,
   normalizeSearchQuery,
+  OBSOLETE_IDS,
   POUR,
   shuffle
 } from "./wcag";
@@ -118,6 +119,7 @@ export default function HomePage() {
     () =>
       ordered.filter(
         (item) =>
+          !OBSOLETE_IDS.has(item.id) &&
           (quizPrincipleFilter === "All" || item.principle === quizPrincipleFilter) &&
           (quizLevelFilter === "All" || item.level === quizLevelFilter)
       ),
@@ -318,6 +320,7 @@ export default function HomePage() {
       if (quiz.levelFilter) setQuizLevelFilter(quiz.levelFilter);
       const round = (quiz.round ?? [])
         .map((entry) => {
+          if (OBSOLETE_IDS.has(entry.id)) return null;
           const criterion = ordered.find((c) => c.id === entry.id);
           if (!criterion) return null;
           const type: QuizQuestionType =

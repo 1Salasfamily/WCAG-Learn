@@ -64,6 +64,10 @@ export const NEW_IN_22 = new Set([
 
 export const QUIZ_ROUND_LENGTH = 10;
 
+// Criteria removed from WCAG 2.2 — kept in the reference guide as historical
+// entries, but never quizzed and never offered as answer options.
+export const OBSOLETE_IDS = new Set(["4.1.1"]);
+
 function parseId(id: string): number[] {
   return id.split(".").map((n) => Number(n));
 }
@@ -210,12 +214,28 @@ function firstSentence(text: string): string {
   return `${sentence.slice(0, 177).replace(/\s+\S*$/, "")}…`;
 }
 
-function pickDistractors(
-  pool: string[],
-  answer: string,
+// Distractors come from the same POUR principle when possible — plausible
+// confusions (1.4.3 vs 1.4.11) teach more than obvious cross-category
+// mismatches. Falls back to other principles when the pool runs thin
+// (e.g. Robust), and never offers obsolete criteria.
+function pickDistractorCriteria(
+  criterion: Criterion,
+  all: Criterion[],
   count: number
-): string[] {
-  return shuffle(pool.filter((item) => item !== answer)).slice(0, count);
+): Criterion[] {
+  const eligible = all.filter(
+    (c) => c.id !== criterion.id && !OBSOLETE_IDS.has(c.id)
+  );
+  const picked = shuffle(
+    eligible.filter((c) => c.principle === criterion.principle)
+  ).slice(0, count);
+  if (picked.length < count) {
+    const fallback = shuffle(
+      eligible.filter((c) => c.principle !== criterion.principle)
+    );
+    picked.push(...fallback.slice(0, count - picked.length));
+  }
+  return picked;
 }
 
 export function buildQuizQuestion(
@@ -244,8 +264,7 @@ export function buildQuizQuestionOfType(
   all: Criterion[],
   type: QuizQuestionType
 ): QuizQuestion {
-  const titles = all.map((c) => c.title);
-  const ids = all.map((c) => c.id);
+  const distractors = pickDistractorCriteria(criterion, all, 3);
   const base = { criterion, type, firstTryCorrect: null };
 
   // Criterion numbers are always shown with the "WCAG" prefix — that's how
@@ -261,7 +280,7 @@ export function buildQuizQuestionOfType(
         prompt: `Which success criterion is ${wcagId(criterion.id)}?`,
         options: shuffle([
           criterion.title,
-          ...pickDistractors(titles, criterion.title, 3)
+          ...distractors.map((c) => c.title)
         ]),
         answer: criterion.title
       };
@@ -273,7 +292,7 @@ export function buildQuizQuestionOfType(
         prompt: `Which number is “${criterion.title}”?`,
         options: shuffle([
           wcagId(criterion.id),
-          ...pickDistractors(ids, criterion.id, 3).map(wcagId)
+          ...distractors.map((c) => wcagId(c.id))
         ]),
         answer: wcagId(criterion.id)
       };
@@ -285,7 +304,7 @@ export function buildQuizQuestionOfType(
         prompt: "Which success criterion does this describe?",
         options: shuffle([
           criterion.title,
-          ...pickDistractors(titles, criterion.title, 3)
+          ...distractors.map((c) => c.title)
         ]),
         answer: criterion.title
       };
@@ -309,7 +328,7 @@ export function buildQuizQuestionOfType(
         prompt: "Which success criterion does this scenario violate?",
         options: shuffle([
           criterion.title,
-          ...pickDistractors(titles, criterion.title, 3)
+          ...distractors.map((c) => c.title)
         ]),
         answer: criterion.title
       };
