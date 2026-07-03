@@ -33,8 +33,10 @@ export default function AboutPage() {
         <h2 className="about-title">About WCAG Learn &amp; our sources</h2>
 
         <p className="about-lead">
-          WCAG Learn is a study and quick-reference tool for the Web Content
-          Accessibility Guidelines (WCAG) 2.2, Levels A and AA.
+          WCAG Learn is an independent study and quick-reference tool for the
+          Web Content Accessibility Guidelines (WCAG) 2.1 and 2.2, Levels A
+          and AA. It is not affiliated with or endorsed by the World Wide Web
+          Consortium (W3C).
         </p>
 
         <section className="about-section">
