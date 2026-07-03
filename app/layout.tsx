@@ -70,6 +70,13 @@ export default function RootLayout({
           <Link className="footer-link" href="/accessibility">
             Accessibility
           </Link>
+          <span className="footer-sep" aria-hidden="true">
+            ·
+          </span>
+          <span className="footer-copyright">
+            © {new Date().getFullYear()} Justin Salas · WCAG Learn. All rights
+            reserved.
+          </span>
         </footer>
       </body>
     </html>

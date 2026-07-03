@@ -144,6 +144,11 @@ a {
   font-size: 0.85rem;
 }
 
+.footer-copyright {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
 .about-page {
   height: 100%;
   overflow-y: auto;
