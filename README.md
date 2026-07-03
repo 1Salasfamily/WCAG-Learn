@@ -1,6 +1,6 @@
 # WCAG Learn
 
-An interactive study and quick-reference app for the **Web Content Accessibility Guidelines (WCAG) 2.2**, Levels A and AA. Flip through illustrated reference cards or test yourself with a scored flashcard quiz — and because it's a tool for learning accessibility, the app is built to meet WCAG 2.2 AA itself.
+An interactive study and quick-reference app for the **Web Content Accessibility Guidelines (WCAG) 2.1 & 2.2**, Levels A and AA. Flip through illustrated reference cards or test yourself with a scored flashcard quiz — and because it's a tool for learning accessibility, the app is built to meet WCAG 2.2 AA itself.
 
 **Live:** https://wcaglearn.com/
 
@@ -8,21 +8,21 @@ An interactive study and quick-reference app for the **Web Content Accessibility
 
 ## What it does
 
-**Reference Guide** — A card for every one of the 56 Level A/AA success criteria, each with:
+**Reference Guide** — A card for every one of the 55 Level A/AA success criteria — plus the retired 4.1.1 Parsing as a historical note — each with:
 - a custom illustration contrasting an accessible example with a violation
 - plain-language sections (*What this means · Why it matters · Who it helps*)
 - concrete pass/fail examples
 - conformance level, assistive-technology tags, and a "New in 2.2" badge where relevant
 
-**Flashcard Quiz** — Rounds of 10 questions across six formats (match the ID, the title, the description, the conformance level, the POUR principle, or spot the violation in a real-world scenario), with:
-- first-try scoring and an end-of-round summary
-- "Practice my misses" to re-drill only what you got wrong
-- filters to scope a round by POUR principle or by level
+**Flashcard Quiz** — Rounds of 10 four-option questions across six formats (match the ID, the title, the description, the conformance level, the POUR principle, or spot the violation in a real-world scenario), with:
+- first-try scoring and an end-of-round summary with cross-session mastery tracking
+- "Practice weakest" to re-drill what you keep getting wrong — this round or any before it
+- principle and level filters to scope a round
 
 **Navigation & input**
-- POUR-organized sidebar with type-to-filter search
+- POUR-organized sidebar with type-to-filter search (criterion numbers, titles, or concepts like "alt text")
 - Keyboard shortcuts: arrow keys move between cards, number keys answer quiz questions
-- Order or random study modes
+- Auto-resume: reload or come back later and pick up exactly where you left off
 
 ## Accessibility
 
@@ -73,8 +73,8 @@ app/
   accessibility/      Accessibility statement page
   globals.css         Theme and layout
 data/
-  wcag.json           The 56 success criteria and their content
-public/images/        56 per-criterion SVG illustrations
+  wcag.json           All success criteria: content, examples, search keywords
+public/images/        Per-criterion SVG illustrations
 ```
 
 ## Content & sources
