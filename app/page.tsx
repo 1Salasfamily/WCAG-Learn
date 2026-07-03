@@ -777,11 +777,11 @@ export default function HomePage() {
               <p className="start-screen-eyebrow">Get started</p>
               <p className="start-screen-title">WCAG Learn</p>
               <p className="start-screen-sub">
-                Flashcards and a quick-reference guide for every WCAG 2.2
-                success criterion.
+                Flashcards and a quick-reference guide for all{" "}
+                {quizzable.length} WCAG 2.1 and 2.2 success criteria.
               </p>
               <ul className="start-screen-stats" aria-label="What's included">
-                <li className="start-screen-stat">{ordered.length} criteria</li>
+                <li className="start-screen-stat">WCAG 2.1 &amp; 2.2</li>
                 <li className="start-screen-stat">Levels A &amp; AA</li>
                 <li className="start-screen-stat">POUR principles</li>
               </ul>
