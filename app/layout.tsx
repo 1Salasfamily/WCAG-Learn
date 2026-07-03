@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { Analytics } from "@vercel/analytics/react";
 import Link from "next/link";
 import { Schibsted_Grotesk, Space_Mono } from "next/font/google";
 import "./globals.css";
@@ -78,6 +79,7 @@ export default function RootLayout({
             reserved.
           </span>
         </footer>
+        <Analytics />
       </body>
     </html>
   );
