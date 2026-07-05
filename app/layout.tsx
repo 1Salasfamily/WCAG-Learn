@@ -24,6 +24,13 @@ export const metadata: Metadata = {
   title: "WCAG Learn",
   description: "Accessible WCAG learning app",
   applicationName: "WCAG Learn",
+  icons: {
+    icon: [
+      { url: "/wcag-learn-favicon.svg", type: "image/svg+xml" },
+      { url: "/favicon-32.png", type: "image/png", sizes: "32x32" }
+    ],
+    apple: "/apple-touch-icon-180.png"
+  },
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
