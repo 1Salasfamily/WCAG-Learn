@@ -81,20 +81,24 @@ a {
 
 .site-title {
   margin: 0;
-  font-size: 1.35rem;
-  font-weight: 700;
-  letter-spacing: 0.01em;
+  line-height: 0;
 }
 
 .site-title-link {
+  display: inline-flex;
   color: var(--text);
   text-decoration: none;
   border-radius: 0.3rem;
 }
 
-.site-title-link:hover {
-  text-decoration: underline;
-  text-underline-offset: 3px;
+.site-logo {
+  display: block;
+  width: auto;
+  height: 34px;
+}
+
+.site-title-link:hover .site-logo {
+  opacity: 0.85;
 }
 
 .site-nav {
@@ -1509,10 +1513,6 @@ a {
 }
 
 @media (max-width: 768px) {
-  .site-title {
-    font-size: 2rem;
-  }
-
   .learn-main {
     padding: 0.9rem;
   }

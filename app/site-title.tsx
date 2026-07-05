@@ -22,7 +22,13 @@ export default function SiteTitle() {
       aria-label="WCAG Learn — go to start page"
       onClick={handleClick}
     >
-      WCAG Learn
+      <img
+        className="site-logo"
+        src="/wcag-learn-lockup-dark.svg"
+        alt=""
+        width={130}
+        height={34}
+      />
     </Link>
   );
 }
