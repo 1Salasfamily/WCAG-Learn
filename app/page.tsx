@@ -138,6 +138,7 @@ export default function HomePage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [quizRound, setQuizRound] = useState<QuizQuestion[]>([]);
   const [quizIndex, setQuizIndex] = useState(0);
+  const mainStageRef = useRef<HTMLDivElement>(null);
   const [quizPhase, setQuizPhase] = useState<QuizPhase>("question");
   const [quizState, setQuizState] = useState<QuizState>("idle");
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
@@ -260,12 +261,20 @@ export default function HomePage() {
   }
 
   // The five pieces of per-round state that must always reset together.
+  // On small screens the stage scrolls internally; answering happens near the
+  // bottom, so each new question or summary should present from the top.
+  // Scroll only — focus stays on the activated button by design.
+  function resetStageScroll() {
+    mainStageRef.current?.scrollTo(0, 0);
+  }
+
   function dealRound(round: QuizQuestion[]) {
     setQuizRound(round);
     setQuizIndex(0);
     setQuizPhase("question");
     setQuizState("idle");
     setSelectedOption(null);
+    resetStageScroll();
   }
 
   function startNewRound() {
@@ -301,11 +310,13 @@ export default function HomePage() {
   function goToNextQuestion() {
     if (quizIndex + 1 >= quizRound.length) {
       setQuizPhase("summary");
+      resetStageScroll();
       return;
     }
     setQuizIndex((prev) => prev + 1);
     setQuizState("idle");
     setSelectedOption(null);
+    resetStageScroll();
   }
 
   // The two start-screen buttons enter a mode directly. Reference is always
@@ -771,7 +782,7 @@ export default function HomePage() {
           ) : null}
         </div>
 
-        <div className="main-stage">
+        <div className="main-stage" ref={mainStageRef}>
           {!started ? (
             <section className="start-screen" aria-label="Start screen">
               <p className="start-screen-eyebrow">Get started</p>
