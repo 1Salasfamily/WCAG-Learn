@@ -1517,6 +1517,23 @@ a {
     padding: 0.9rem;
   }
 
+  /* Keep Next/Back at a fixed spot on the glass: the card scrolls beneath a
+     bar pinned to the bottom of the stage. Pairs with the scroll reset so a
+     new card presents from the top while the arrows never move. */
+  .study-shell {
+    min-height: 100%;
+    grid-template-rows: 1fr auto;
+  }
+
+  .study-nav-row {
+    position: sticky;
+    bottom: 0;
+    z-index: 5;
+    background: var(--bg);
+    border-top: 1.5px solid var(--border);
+    padding: 0.55rem 0.35rem calc(0.55rem + env(safe-area-inset-bottom));
+  }
+
   .mode-toggle {
     justify-self: stretch;
     width: 100%;

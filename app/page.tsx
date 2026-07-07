@@ -260,14 +260,15 @@ export default function HomePage() {
     setExampleExpanded(false);
   }
 
-  // The five pieces of per-round state that must always reset together.
-  // On small screens the stage scrolls internally; answering happens near the
-  // bottom, so each new question or summary should present from the top.
-  // Scroll only — focus stays on the activated button by design.
+  // On small screens the stage scrolls internally and Next/answer buttons sit
+  // near the bottom, so each newly presented card, question, or summary should
+  // present from the top. Scroll only — focus stays on the activated button by
+  // design.
   function resetStageScroll() {
     mainStageRef.current?.scrollTo(0, 0);
   }
 
+  // The five pieces of per-round state that must always reset together.
   function dealRound(round: QuizQuestion[]) {
     setQuizRound(round);
     setQuizIndex(0);
@@ -359,6 +360,7 @@ export default function HomePage() {
     if (!started) return;
     setActiveIndex((prev) => (prev - 1 + cards.length) % cards.length);
     resetTransientUI();
+    resetStageScroll();
     // No focus move here: Next/Back is sequential browsing, so focus stays on
     // the button for repeated activation. The aria-live status announces each
     // card change.
@@ -368,6 +370,7 @@ export default function HomePage() {
     if (!started) return;
     setActiveIndex((prev) => (prev + 1) % cards.length);
     resetTransientUI();
+    resetStageScroll();
   }
 
   function jumpToCriterion(id: string) {
