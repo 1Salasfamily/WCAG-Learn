@@ -1565,8 +1565,53 @@ a {
 }
 
 @media (max-width: 768px) {
+  /* Compact chrome: on small screens the header, status, toggle, arrows, and
+     footer hand their slack to the card content, which otherwise squeezes
+     into ~30% of the screen. Touch targets keep their coarse-pointer sizes. */
+  .site-header {
+    padding: calc(0.35rem + env(safe-area-inset-top)) calc(1rem + env(safe-area-inset-right))
+      0.35rem calc(1rem + env(safe-area-inset-left));
+  }
+
+  .site-logo {
+    height: 28px;
+  }
+
+  /* Pad the hit area up to ~44px without growing the header row. */
+  .site-title-link {
+    padding: 0.5rem 0;
+    margin: -0.5rem 0;
+  }
+
+  .status-text {
+    font-size: 0.85rem;
+    gap: 0.4rem;
+  }
+
+  .mode-toggle-button {
+    padding: 0.4rem 0.6rem;
+    font-size: 0.85rem;
+  }
+
+  .arrow-button {
+    width: 48px;
+    height: 48px;
+  }
+
+  .site-footer {
+    gap: 0.15rem 0.7rem;
+    padding: 0.3rem calc(1rem + env(safe-area-inset-right))
+      calc(0.3rem + env(safe-area-inset-bottom)) calc(1rem + env(safe-area-inset-left));
+  }
+
+  .footer-link,
+  .footer-sep,
+  .footer-copyright {
+    font-size: 0.72rem;
+  }
+
   .learn-main {
-    padding: 0.9rem;
+    padding: 0.5rem;
   }
 
   /* Keep Next/Back at a fixed spot on the glass: the card scrolls beneath a
@@ -1583,7 +1628,7 @@ a {
     z-index: 5;
     background: var(--bg);
     border-top: 1.5px solid var(--border);
-    padding: 0.55rem 0.35rem calc(0.55rem + env(safe-area-inset-bottom));
+    padding: 0.4rem 0.35rem calc(0.4rem + env(safe-area-inset-bottom));
   }
 
   .mode-toggle {
@@ -1599,7 +1644,7 @@ a {
   .learn-top-row {
     flex-direction: column;
     align-items: stretch;
-    gap: 0.6rem;
+    gap: 0.45rem;
   }
 
   .top-left-group {
