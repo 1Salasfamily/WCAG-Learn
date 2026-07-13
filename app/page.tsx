@@ -368,8 +368,11 @@ export default function HomePage() {
       if (!target.hasAttribute("tabindex")) {
         target.setAttribute("tabindex", "-1");
       }
-      target.focus();
-      target.scrollIntoView({ block: "start" });
+      // Present from the top of the stage rather than scrolling the card
+      // flush to it — anything above the card (the tag filter chip) must
+      // stay in view. preventScroll stops focus() from re-scrolling.
+      target.focus({ preventScroll: true });
+      resetStageScroll();
     });
   }
 
