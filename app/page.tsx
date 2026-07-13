@@ -96,6 +96,7 @@ function filterPool(
 type SavedSession = {
   started: boolean;
   activeIndex: number;
+  tagFilter?: string | null;
   quiz?: {
     round: Array<{
       id: string;
@@ -131,8 +132,19 @@ export default function HomePage() {
   }, [ordered]);
 
   const [started, setStarted] = useState(false);
-  const [cards, setCards] = useState<Criterion[]>(ordered);
+  // Reference-guide tag exploration: one tag at a time narrows the deck and
+  // sidebar to the criteria sharing it (Nandita's feedback — the tag pills
+  // looked tappable, so now they are).
+  const [tagFilter, setTagFilter] = useState<string | null>(null);
   const [activeIndex, setActiveIndex] = useState(0);
+
+  const cards = useMemo(
+    () =>
+      tagFilter
+        ? ordered.filter((item) => item.tags?.includes(tagFilter))
+        : ordered,
+    [ordered, tagFilter]
+  );
   const [viewMode, setViewMode] = useState<ViewMode>("reference");
   const [exampleExpanded, setExampleExpanded] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -158,20 +170,24 @@ export default function HomePage() {
   const isSearching = searchQuery.length > 0;
 
   const visibleGrouped = useMemo(() => {
-    if (!isSearching) return grouped;
+    if (!isSearching && !tagFilter) return grouped;
     const map: Record<Principle, Criterion[]> = {
       Perceivable: [],
       Operable: [],
       Understandable: [],
       Robust: []
     };
+    // Search and the tag filter compose: searching while filtered looks
+    // within the tagged subset, matching what the deck shows.
     POUR.forEach((principle) => {
-      map[principle] = grouped[principle].filter((item) =>
-        criterionMatches(item, searchQuery)
+      map[principle] = grouped[principle].filter(
+        (item) =>
+          (!tagFilter || item.tags?.includes(tagFilter)) &&
+          (!isSearching || criterionMatches(item, searchQuery))
       );
     });
     return map;
-  }, [grouped, searchQuery, isSearching]);
+  }, [grouped, searchQuery, isSearching, tagFilter]);
 
   const searchMatchCount = POUR.reduce(
     (count, principle) => count + visibleGrouped[principle].length,
@@ -251,7 +267,8 @@ export default function HomePage() {
       ? quizPhase === "summary"
         ? `Round complete: ${quizScore} of ${quizRound.length} correct.`
         : `Quiz round: question ${quizIndex + 1} of ${quizRound.length}`
-      : `Viewing ${activeIndex + 1} of ${cards.length}: ${current.id} ${current.title}`;
+      : `Viewing ${activeIndex + 1} of ${cards.length}: ${current.id} ${current.title}` +
+        (tagFilter ? ` — filtered by ${tagFilter}` : "");
 
   // Only the expanded example image is transient across navigation. Quiz
   // answer state must survive reference-guide detours so a resumed round
@@ -324,7 +341,7 @@ export default function HomePage() {
   // in order (the sidebar is ordered by POUR regardless); starting the quiz
   // deals a fresh shuffled round.
   function start(mode: ViewMode) {
-    setCards(ordered);
+    setTagFilter(null);
     setActiveIndex(0);
     setViewMode(mode);
     resetTransientUI();
@@ -373,6 +390,46 @@ export default function HomePage() {
     resetStageScroll();
   }
 
+  // Tag pills toggle one filter at a time. The tapped pill is always on the
+  // current card, so the card stays current — only its position and the deck
+  // count change; focus stays on the pill and the live status announces.
+  function toggleTagFilter(tag: string) {
+    const currentId = current?.id;
+    if (tagFilter === tag) {
+      setTagFilter(null);
+      setActiveIndex(
+        Math.max(
+          0,
+          ordered.findIndex((item) => item.id === currentId)
+        )
+      );
+      return;
+    }
+    const filtered = ordered.filter((item) => item.tags?.includes(tag));
+    const idx = filtered.findIndex((item) => item.id === currentId);
+    setTagFilter(tag);
+    setActiveIndex(Math.max(0, idx));
+    // Present the filtered view from the top so the chip that just appeared
+    // above the card is on screen.
+    resetStageScroll();
+  }
+
+  // The chip's "Show all" exit removes its own button, so this is a discrete
+  // jump: focus moves to the criterion card, per the focus principle.
+  function clearTagFilter() {
+    if (!tagFilter) return;
+    const currentId = current?.id;
+    setTagFilter(null);
+    setActiveIndex(
+      Math.max(
+        0,
+        ordered.findIndex((item) => item.id === currentId)
+      )
+    );
+    setIsSidebarOpen(false);
+    focusCriterionCard();
+  }
+
   function jumpToCriterion(id: string) {
     // The sidebar that calls this only renders while started and in
     // reference mode, so `cards` is always the active deck here.
@@ -406,6 +463,18 @@ export default function HomePage() {
     setViewMode(mode);
     setExampleExpanded(false);
     setIsSidebarOpen(false);
+    // Tag exploration is a reference-guide concept; leaving for the quiz ends
+    // it. Keep the current card so returning to reference lands on it.
+    if (mode === "quiz" && tagFilter) {
+      const currentId = current?.id;
+      setTagFilter(null);
+      setActiveIndex(
+        Math.max(
+          0,
+          ordered.findIndex((item) => item.id === currentId)
+        )
+      );
+    }
     // Entering the quiz with no round in hand deals one; an in-progress round
     // (or its summary) resumes untouched — quizState/selectedOption included,
     // so the current question re-presents exactly as the user left it.
@@ -492,9 +561,20 @@ export default function HomePage() {
       const saved = readJSON<Partial<SavedSession>>(SESSION_KEY);
       if (!saved || saved.started !== true) return;
       setStarted(true);
+      // A saved tag is only honored if it still selects at least one
+      // criterion in the current data; the index clamps to that deck.
+      const savedTag =
+        typeof saved.tagFilter === "string" &&
+        ordered.some((item) => item.tags?.includes(saved.tagFilter as string))
+          ? saved.tagFilter
+          : null;
+      setTagFilter(savedTag);
+      const deckLength = savedTag
+        ? ordered.filter((item) => item.tags?.includes(savedTag)).length
+        : ordered.length;
       const savedActive =
         typeof saved.activeIndex === "number" ? saved.activeIndex : 0;
-      setActiveIndex(Math.min(Math.max(0, savedActive), ordered.length - 1));
+      setActiveIndex(Math.min(Math.max(0, savedActive), deckLength - 1));
 
       const quiz = saved.quiz;
       const principleFilter = PRINCIPLE_FILTER_VALUES.includes(
@@ -574,6 +654,7 @@ export default function HomePage() {
       JSON.stringify({
         started,
         activeIndex,
+        tagFilter,
         quiz: {
           round: quizRound.map((q) => ({
             id: q.criterion.id,
@@ -589,6 +670,7 @@ export default function HomePage() {
     [
       started,
       activeIndex,
+      tagFilter,
       quizRound,
       quizIndex,
       quizPhase,
@@ -630,7 +712,7 @@ export default function HomePage() {
   useEffect(() => {
     // The site logo returns to the start screen from anywhere in the app.
     function onHome() {
-      setCards(ordered);
+      setTagFilter(null);
       setActiveIndex(0);
       setIsSidebarOpen(false);
       resetTransientUI();
@@ -731,12 +813,14 @@ export default function HomePage() {
           onQueryChange={setSidebarQuery}
           isSearching={isSearching}
           matchCount={searchMatchCount}
-          totalCount={ordered.length}
+          totalCount={cards.length}
           visibleGrouped={visibleGrouped}
           expanded={expanded}
           onToggleSection={toggleSection}
           currentId={current?.id}
           onJump={jumpToCriterion}
+          tagFilter={tagFilter}
+          onClearTagFilter={clearTagFilter}
         />
       ) : null}
 
@@ -751,9 +835,21 @@ export default function HomePage() {
                 onClick={() => setIsSidebarOpen((prev) => !prev)}
                 aria-expanded={isSidebarOpen}
                 aria-controls="pour-sidebar"
-                aria-label={isSidebarOpen ? "Close POUR navigation menu" : "Open POUR navigation menu"}
+                aria-label={
+                  (isSidebarOpen
+                    ? "Close POUR navigation menu"
+                    : "Open POUR navigation menu") +
+                  (tagFilter
+                    ? ` — filtered by ${tagFilter}, ${cards.length} criteria`
+                    : "")
+                }
               >
                 ☰
+                {tagFilter ? (
+                  <span className="sidebar-toggle-badge" aria-hidden="true">
+                    {cards.length}
+                  </span>
+                ) : null}
               </button>
             ) : null}
 
@@ -835,12 +931,28 @@ export default function HomePage() {
                     onReviewGuide={() => setMode("reference")}
                   />
                 ) : (
-                  <ReferenceCard
-                    criterion={current}
-                    imageSrc={currentImageSrc}
-                    sections={detailSections}
-                    onExpandImage={toggleExampleExpanded}
-                  />
+                  <>
+                    {tagFilter ? (
+                      <button
+                        className="tag-filter-chip"
+                        onClick={clearTagFilter}
+                        aria-label={`Showing ${cards.length} criteria tagged ${tagFilter}. Clear filter to show all criteria.`}
+                      >
+                        {tagFilter} · {cards.length} criteria
+                        <span className="tag-filter-clear" aria-hidden="true">
+                          ✕ Show all
+                        </span>
+                      </button>
+                    ) : null}
+                    <ReferenceCard
+                      criterion={current}
+                      imageSrc={currentImageSrc}
+                      sections={detailSections}
+                      onExpandImage={toggleExampleExpanded}
+                      activeTag={tagFilter}
+                      onToggleTag={toggleTagFilter}
+                    />
+                  </>
                 )}
               </div>
 

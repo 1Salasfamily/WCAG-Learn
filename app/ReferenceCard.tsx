@@ -1,6 +1,6 @@
 "use client";
 
-import { getAssistiveTech, NEW_IN_22 } from "./wcag";
+import { getTags, NEW_IN_22 } from "./wcag";
 import type { Criterion } from "./wcag";
 
 type ReferenceCardProps = {
@@ -8,13 +8,17 @@ type ReferenceCardProps = {
   imageSrc: string;
   sections: { heading: string; text: string }[];
   onExpandImage: () => void;
+  activeTag: string | null;
+  onToggleTag: (tag: string) => void;
 };
 
 export default function ReferenceCard({
   criterion,
   imageSrc,
   sections,
-  onExpandImage
+  onExpandImage,
+  activeTag,
+  onToggleTag
 }: ReferenceCardProps) {
   return (
     <article className="flashcard">
@@ -30,11 +34,20 @@ export default function ReferenceCard({
           {NEW_IN_22.has(criterion.id) ? (
             <span className="details-new-chip">New in 2.2</span>
           ) : null}
-          {getAssistiveTech(criterion).map((tech) => (
-            <span key={`${criterion.id}-${tech}`} className="details-tech-chip">
-              {tech}
-            </span>
-          ))}
+          {getTags(criterion).map((tag) => {
+            const active = activeTag === tag;
+            return (
+              <button
+                key={`${criterion.id}-${tag}`}
+                className={`details-tech-chip ${active ? "active" : ""}`}
+                aria-pressed={active}
+                onClick={() => onToggleTag(tag)}
+              >
+                {tag}
+                {active ? <span aria-hidden="true"> ✓</span> : null}
+              </button>
+            );
+          })}
         </section>
         <div className="reference-meta-divider" aria-hidden="true" />
         <div className="reference-hero">

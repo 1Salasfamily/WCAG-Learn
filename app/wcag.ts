@@ -16,7 +16,10 @@ export type Criterion = {
   // Concept terms people actually type into search ("alt text", "zoom") —
   // curated per criterion in data/wcag.json, next to the content it describes.
   keywords?: string;
-  assistiveTech?: string[];
+  // Who/what the criterion helps ("Screen Reader", "Motor & Touch") — curated
+  // per criterion in data/wcag.json from a fixed ~10-term vocabulary. Drives
+  // the tappable tag filters in the reference guide.
+  tags?: string[];
   example?: {
     pass: string;
     fail: string;
@@ -105,18 +108,8 @@ export function shuffle<T>(input: T[]): T[] {
   return arr;
 }
 
-const principleTechMap: Record<Principle, string[]> = {
-  Perceivable: ["Screen Reader", "Braille Display", "Captions/Media Support"],
-  Operable: ["Keyboard Navigation", "Switch Control", "Voice Control"],
-  Understandable: ["Screen Reader", "Cognitive Support Tools", "Input Assistance"],
-  Robust: ["Screen Reader", "Assistive Browser Tech", "AT Compatibility"]
-};
-
-export function getAssistiveTech(item: Criterion): string[] {
-  if (item.assistiveTech && item.assistiveTech.length > 0) {
-    return item.assistiveTech;
-  }
-  return principleTechMap[item.principle];
+export function getTags(item: Criterion): string[] {
+  return item.tags ?? [];
 }
 
 const BRITISH_SPELLINGS: Array<[RegExp, string]> = [

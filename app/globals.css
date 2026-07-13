@@ -389,6 +389,7 @@ a {
 
 .sidebar-toggle {
   display: none;
+  position: relative;
   align-items: center;
   justify-content: center;
   width: 44px;
@@ -760,10 +761,7 @@ a {
   font-size: 0.78rem;
   font-weight: 700;
   color: #ffe7c4;
-  background: rgba(158, 103, 36, 0.24);
-  border: 1px solid rgba(255, 186, 96, 0.55);
-  border-radius: 999px;
-  padding: 0.16rem 0.5rem;
+  padding: 0.16rem 0.15rem;
 }
 
 .reference-w3c-link {
@@ -1369,15 +1367,16 @@ a {
   transform: translateY(-1px);
 }
 
+/* Affordance rule on the criterion card: bordered pill = tappable, flat
+   label = metadata. The id, level, and "New in 2.2" read as labels; only the
+   tag filter buttons keep the pill ring. */
 .details-id-badge {
   margin: 0;
   font-family: var(--font-mono), ui-monospace, monospace;
   font-size: 0.9rem;
   font-weight: 700;
-  border: 1px solid rgba(130, 166, 219, 0.55);
-  background: rgba(36, 51, 72, 0.55);
-  border-radius: 999px;
-  padding: 0.2rem 0.5rem;
+  color: #e8a13a;
+  padding: 0.2rem 0.15rem;
   letter-spacing: 0.02em;
   flex-shrink: 0;
 }
@@ -1385,36 +1384,89 @@ a {
 .details-level {
   font-size: 0.8rem;
   font-weight: 700;
-  border-radius: 999px;
-  padding: 0.18rem 0.5rem;
-  border: 1px solid transparent;
+  padding: 0.18rem 0.15rem;
 }
 
 .details-level-a {
   color: #ccf7d8;
-  background: rgba(16, 122, 58, 0.24);
-  border-color: rgba(69, 209, 116, 0.5);
 }
 
 .details-level-aa {
   color: #dbe7ff;
-  background: rgba(52, 95, 173, 0.24);
-  border-color: rgba(126, 161, 233, 0.5);
 }
 
 .details-level-aaa {
   color: #ffe7c4;
-  background: rgba(158, 103, 36, 0.24);
-  border-color: rgba(255, 186, 96, 0.55);
 }
 
 .details-tech-chip {
+  font: inherit;
   font-size: 0.78rem;
   color: #d8e4ff;
   border: 1px solid rgba(104, 127, 168, 0.55);
   background: rgba(37, 49, 70, 0.5);
   border-radius: 999px;
   padding: 0.16rem 0.46rem;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.details-tech-chip:hover {
+  border-color: rgba(144, 203, 255, 0.8);
+}
+
+.details-tech-chip.active {
+  color: #0f1115;
+  background: var(--link);
+  border-color: var(--link);
+  font-weight: 700;
+}
+
+.tag-filter-chip {
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #d8e4ff;
+  border: 1px solid rgba(144, 203, 255, 0.7);
+  background: var(--active);
+  border-radius: 999px;
+  padding: 0.3rem 0.8rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  justify-self: start;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.tag-filter-chip:hover .tag-filter-clear {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.tag-filter-clear {
+  color: var(--text);
+  border-left: 1px solid rgba(104, 127, 168, 0.7);
+  padding-left: 0.55rem;
+}
+
+.sidebar-filter-chip {
+  margin-bottom: 0.7rem;
+}
+
+.sidebar-toggle-badge {
+  position: absolute;
+  top: -7px;
+  right: -7px;
+  background: var(--link);
+  color: #0f1115;
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1;
+  border-radius: 999px;
+  padding: 0.18rem 0.4rem;
 }
 
 @media (max-width: 1024px) {
@@ -1637,7 +1689,9 @@ a {
    tighter visual sizing. */
 @media (pointer: coarse) {
   .quiz-filter-select,
-  .mode-toggle-button {
+  .mode-toggle-button,
+  .details-tech-chip,
+  .tag-filter-chip {
     min-height: 44px;
   }
 

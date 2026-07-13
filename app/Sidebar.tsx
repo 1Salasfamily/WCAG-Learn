@@ -15,6 +15,8 @@ type SidebarProps = {
   onToggleSection: (principle: Principle) => void;
   currentId: string | undefined;
   onJump: (id: string) => void;
+  tagFilter: string | null;
+  onClearTagFilter: () => void;
 };
 
 export default function Sidebar({
@@ -28,7 +30,9 @@ export default function Sidebar({
   expanded,
   onToggleSection,
   currentId,
-  onJump
+  onJump,
+  tagFilter,
+  onClearTagFilter
 }: SidebarProps) {
   return (
     <nav
@@ -37,6 +41,19 @@ export default function Sidebar({
       aria-label="POUR criteria navigation"
     >
       <h3 className="sidebar-title">POUR Navigation</h3>
+
+      {tagFilter ? (
+        <button
+          className="tag-filter-chip sidebar-filter-chip"
+          onClick={onClearTagFilter}
+          aria-label={`Showing ${totalCount} criteria tagged ${tagFilter}. Clear filter to show all criteria.`}
+        >
+          {tagFilter} · {totalCount}
+          <span className="tag-filter-clear" aria-hidden="true">
+            ✕ Show all
+          </span>
+        </button>
+      ) : null}
 
       <div className="sidebar-search">
         <label className="visually-hidden" htmlFor="criteria-search">

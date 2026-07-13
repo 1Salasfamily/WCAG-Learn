@@ -12,7 +12,7 @@ An interactive study and quick-reference app for the **Web Content Accessibility
 - a custom illustration contrasting an accessible example with a violation
 - plain-language sections (*What this means · Why it matters · Who it helps*)
 - concrete pass/fail examples
-- conformance level, assistive-technology tags, and a "New in 2.2" badge where relevant
+- conformance level, a "New in 2.2" badge where relevant, and tappable tags ("Screen Reader", "Motor & Touch") that filter the whole guide to the criteria helping that audience
 
 **Flashcard Quiz** — Rounds of 10 four-option questions across six formats (match the ID, the title, the description, the conformance level, the POUR principle, or spot the violation in a real-world scenario), with:
 - first-try scoring and an end-of-round summary with cross-session mastery tracking
