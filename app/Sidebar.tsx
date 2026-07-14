@@ -17,6 +17,7 @@ type SidebarProps = {
   onJump: (id: string) => void;
   tagFilter: string | null;
   onClearTagFilter: () => void;
+  modeSection?: React.ReactNode;
 };
 
 export default function Sidebar({
@@ -32,7 +33,8 @@ export default function Sidebar({
   currentId,
   onJump,
   tagFilter,
-  onClearTagFilter
+  onClearTagFilter,
+  modeSection
 }: SidebarProps) {
   return (
     <nav
@@ -41,6 +43,8 @@ export default function Sidebar({
       aria-label="POUR criteria navigation"
     >
       <h3 className="sidebar-title">POUR Navigation</h3>
+
+      {modeSection}
 
       {tagFilter ? (
         <button

@@ -414,6 +414,54 @@ a {
   display: none;
 }
 
+/* Phone-only drawer furniture: the mode section inside the drawer and the
+   quiz-mode slim drawer (plus its menu button) exist only at ≤768px, where
+   the top mode toggle is hidden to give its row to the card. */
+.sidebar-mode-section {
+  display: none;
+}
+
+.learn-sidebar.quiz-drawer {
+  display: none;
+}
+
+.sidebar-toggle.sidebar-toggle-quiz {
+  display: none;
+}
+
+.sidebar-mode-label {
+  margin: 0 0 0.4rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.sidebar-mode-row {
+  display: block;
+  width: 100%;
+  text-align: left;
+  font: inherit;
+  font-size: 0.92rem;
+  color: var(--muted);
+  border: 1.5px solid var(--border);
+  border-radius: 0.55rem;
+  background: transparent;
+  padding: 0.5rem 0.65rem;
+  margin-bottom: 0.35rem;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.sidebar-mode-row.active {
+  color: var(--text);
+  background: var(--active);
+  border-color: rgba(111, 138, 184, 0.65);
+  box-shadow: inset 3px 0 0 var(--gold);
+}
+
 .mode-toggle {
   display: inline-flex;
   justify-self: end;
@@ -1621,6 +1669,28 @@ a {
 
   .learn-main {
     padding: 0.5rem;
+  }
+
+  /* Mode switching moves into the drawer on phones; the top toggle row's
+     space goes to the card. The quiz gets the same menu button opening a
+     slim drawer holding only the mode section. */
+  .mode-toggle {
+    display: none;
+  }
+
+  .sidebar-mode-section {
+    display: block;
+    border-bottom: 1.5px solid var(--border);
+    margin-bottom: 0.9rem;
+    padding-bottom: 0.55rem;
+  }
+
+  .learn-sidebar.quiz-drawer {
+    display: block;
+  }
+
+  .sidebar-toggle.sidebar-toggle-quiz {
+    display: inline-flex;
   }
 
   /* Keep Next/Back at a fixed spot on the glass: the card scrolls beneath a

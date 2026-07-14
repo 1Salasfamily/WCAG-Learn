@@ -462,6 +462,14 @@ export default function HomePage() {
     });
   }
 
+  // Mode changes from the drawer are discrete jumps: the drawer closes (via
+  // setMode) and focus presents the new mode's card. The desktop top toggle
+  // keeps focus on the toggle button, so it calls setMode directly.
+  function switchModeFromDrawer(mode: ViewMode) {
+    setMode(mode);
+    focusCriterionCard();
+  }
+
   function setMode(mode: ViewMode) {
     setViewMode(mode);
     setExampleExpanded(false);
@@ -800,6 +808,35 @@ export default function HomePage() {
 
   const showSidebar = started && viewMode === "reference";
 
+  // Rendered inside the reference drawer (above the POUR nav) and as the
+  // whole body of the quiz drawer. Hidden on desktop, where the top toggle
+  // remains the mode switch.
+  const modeSection = started ? (
+    <div className="sidebar-mode-section">
+      <p className="sidebar-mode-label" id="drawer-mode-label">
+        Mode
+      </p>
+      <div role="group" aria-labelledby="drawer-mode-label">
+        <button
+          className={`sidebar-mode-row ${viewMode === "reference" ? "active" : ""}`}
+          aria-pressed={viewMode === "reference"}
+          onClick={() => switchModeFromDrawer("reference")}
+        >
+          Reference Guide
+          {viewMode === "reference" ? <span aria-hidden="true"> ✓</span> : null}
+        </button>
+        <button
+          className={`sidebar-mode-row ${viewMode === "quiz" ? "active" : ""}`}
+          aria-pressed={viewMode === "quiz"}
+          onClick={() => switchModeFromDrawer("quiz")}
+        >
+          Flashcard Quiz
+          {viewMode === "quiz" ? <span aria-hidden="true"> ✓</span> : null}
+        </button>
+      </div>
+    </div>
+  ) : null;
+
   return (
     <section
       className={`learn-layout ${showSidebar ? "" : "no-sidebar"}`}
@@ -824,31 +861,47 @@ export default function HomePage() {
           onJump={jumpToCriterion}
           tagFilter={tagFilter}
           onClearTagFilter={clearTagFilter}
+          modeSection={modeSection}
         />
       ) : null}
 
-      {showSidebar && isSidebarOpen ? <button className="sidebar-backdrop" onClick={() => setIsSidebarOpen(false)} aria-label="Close navigation menu" /> : null}
+      {started && viewMode === "quiz" ? (
+        <nav
+          id="mode-drawer"
+          className={`learn-sidebar quiz-drawer ${isSidebarOpen ? "open" : ""}`}
+          aria-label="Menu"
+        >
+          <h3 className="sidebar-title">Menu</h3>
+          {modeSection}
+        </nav>
+      ) : null}
+
+      {started && isSidebarOpen ? <button className="sidebar-backdrop" onClick={() => setIsSidebarOpen(false)} aria-label="Close navigation menu" /> : null}
 
       <div className="learn-main" tabIndex={-1} aria-label="Main study content">
         <div className="learn-top-row">
           <div className="top-left-group">
-            {showSidebar ? (
+            {started ? (
               <button
-                className="sidebar-toggle"
+                className={`sidebar-toggle ${viewMode === "quiz" ? "sidebar-toggle-quiz" : ""}`}
                 onClick={() => setIsSidebarOpen((prev) => !prev)}
                 aria-expanded={isSidebarOpen}
-                aria-controls="pour-sidebar"
+                aria-controls={viewMode === "reference" ? "pour-sidebar" : "mode-drawer"}
                 aria-label={
-                  (isSidebarOpen
-                    ? "Close POUR navigation menu"
-                    : "Open POUR navigation menu") +
-                  (tagFilter
-                    ? ` — filtered by ${tagFilter}, ${cards.length} criteria`
-                    : "")
+                  viewMode === "reference"
+                    ? (isSidebarOpen
+                        ? "Close POUR navigation menu"
+                        : "Open POUR navigation menu") +
+                      (tagFilter
+                        ? ` — filtered by ${tagFilter}, ${cards.length} criteria`
+                        : "")
+                    : isSidebarOpen
+                      ? "Close menu"
+                      : "Open menu"
                 }
               >
                 ☰
-                {tagFilter ? (
+                {viewMode === "reference" && tagFilter ? (
                   <span className="sidebar-toggle-badge" aria-hidden="true">
                     {cards.length}
                   </span>
