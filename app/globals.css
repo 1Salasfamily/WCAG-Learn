@@ -8,6 +8,11 @@
   --focus: #22c55e;
   --active: #2b3b55;
   --link: #90cbff;
+  /* Brand gold (7.2:1 on --bg). Reserved for active/selected states and
+     brand moments — never body text, links, or semantic feedback. */
+  --gold: #e8a13a;
+  --gold-soft: rgba(232, 161, 58, 0.1);
+  --gold-border: rgba(232, 161, 58, 0.6);
 }
 
 * {
@@ -350,7 +355,7 @@ a {
   background: var(--active);
   border-color: rgba(111, 138, 184, 0.65);
   color: var(--text);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.28);
+  box-shadow: inset 3px 0 0 var(--gold), 0 2px 8px rgba(0, 0, 0, 0.28);
 }
 
 .criteria-id {
@@ -433,7 +438,7 @@ a {
 .mode-toggle-button.active {
   color: var(--text);
   background: rgba(56, 78, 116, 0.56);
-  box-shadow: inset 0 0 0 1px rgba(133, 167, 227, 0.38);
+  box-shadow: inset 0 0 0 1px rgba(133, 167, 227, 0.38), inset 0 -2px 0 var(--gold);
 }
 
 .learn-sidebar::-webkit-scrollbar,
@@ -513,10 +518,10 @@ a {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.14em;
-  color: #a9bce3;
-  border: 1px solid rgba(118, 151, 208, 0.55);
+  color: var(--gold);
+  border: 1px solid var(--gold-border);
   border-radius: 999px;
-  background: rgba(33, 46, 67, 0.55);
+  background: var(--gold-soft);
   padding: 0.24rem 0.7rem;
 }
 
@@ -579,7 +584,7 @@ a {
 
 .start-button-primary {
   background: var(--active);
-  border-color: rgba(133, 167, 227, 0.55);
+  border-color: rgba(232, 161, 58, 0.75);
 }
 
 .nav-reset {
@@ -1417,19 +1422,23 @@ a {
 }
 
 .details-tech-chip.active {
-  color: #0f1115;
-  background: var(--link);
-  border-color: var(--link);
+  color: var(--gold);
+  background: var(--gold-soft);
+  border-color: var(--gold);
   font-weight: 700;
+}
+
+.details-tech-chip.active:hover {
+  border-color: var(--gold);
 }
 
 .tag-filter-chip {
   font: inherit;
   font-size: 0.82rem;
   font-weight: 600;
-  color: #d8e4ff;
-  border: 1px solid rgba(144, 203, 255, 0.7);
-  background: var(--active);
+  color: var(--gold);
+  border: 1px solid var(--gold-border);
+  background: var(--gold-soft);
   border-radius: 999px;
   padding: 0.3rem 0.8rem;
   display: inline-flex;
@@ -1460,7 +1469,7 @@ a {
   position: absolute;
   top: -7px;
   right: -7px;
-  background: var(--link);
+  background: var(--gold);
   color: #0f1115;
   font-size: 0.72rem;
   font-weight: 700;
