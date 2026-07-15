@@ -2,6 +2,7 @@
 
 import { POUR } from "./wcag";
 import type { Criterion, Principle } from "./wcag";
+import TagFilterChip from "./TagFilterChip";
 
 type SidebarProps = {
   isOpen: boolean;
@@ -47,16 +48,13 @@ export default function Sidebar({
       {modeSection}
 
       {tagFilter ? (
-        <button
-          className="tag-filter-chip sidebar-filter-chip"
-          onClick={onClearTagFilter}
-          aria-label={`Showing ${totalCount} criteria tagged ${tagFilter}. Clear filter to show all criteria.`}
-        >
-          {tagFilter} · {totalCount}
-          <span className="tag-filter-clear" aria-hidden="true">
-            ✕ Show all
-          </span>
-        </button>
+        <TagFilterChip
+          tag={tagFilter}
+          count={totalCount}
+          onClear={onClearTagFilter}
+          compact
+          className="sidebar-filter-chip"
+        />
       ) : null}
 
       <div className="sidebar-search">

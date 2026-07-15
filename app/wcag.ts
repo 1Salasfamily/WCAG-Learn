@@ -108,6 +108,10 @@ export function shuffle<T>(input: T[]): T[] {
   return arr;
 }
 
+export function hasTag(item: Criterion, tag: string): boolean {
+  return item.tags?.includes(tag) ?? false;
+}
+
 export function getTags(item: Criterion): string[] {
   return item.tags ?? [];
 }

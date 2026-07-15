@@ -7,6 +7,7 @@ import {
   buildQuizRound,
   compareCriteria,
   criterionMatches,
+  hasTag,
   MASTERY_STREAK,
   normalizeSearchQuery,
   OBSOLETE_IDS,
@@ -26,6 +27,7 @@ import type {
   ViewMode
 } from "./wcag";
 import Sidebar from "./Sidebar";
+import TagFilterChip from "./TagFilterChip";
 import ReferenceCard from "./ReferenceCard";
 import Quiz from "./Quiz";
 import ImageOverlay from "./ImageOverlay";
@@ -144,7 +146,7 @@ export default function HomePage() {
   const cards = useMemo(
     () =>
       tagFilter
-        ? ordered.filter((item) => item.tags?.includes(tagFilter))
+        ? ordered.filter((item) => hasTag(item, tagFilter))
         : ordered,
     [ordered, tagFilter]
   );
@@ -185,7 +187,7 @@ export default function HomePage() {
     POUR.forEach((principle) => {
       map[principle] = grouped[principle].filter(
         (item) =>
-          (!tagFilter || item.tags?.includes(tagFilter)) &&
+          (!tagFilter || hasTag(item, tagFilter)) &&
           (!isSearching || criterionMatches(item, searchQuery))
       );
     });
@@ -398,22 +400,29 @@ export default function HomePage() {
     resetStageScroll();
   }
 
+  // Every way out of tag exploration keeps the current card current: the
+  // filter drops and the index remaps into the full deck.
+  function exitTagFilter() {
+    const currentId = current?.id;
+    setTagFilter(null);
+    setActiveIndex(
+      Math.max(
+        0,
+        ordered.findIndex((item) => item.id === currentId)
+      )
+    );
+  }
+
   // Tag pills toggle one filter at a time. The tapped pill is always on the
   // current card, so the card stays current — only its position and the deck
   // count change; focus stays on the pill and the live status announces.
   function toggleTagFilter(tag: string) {
-    const currentId = current?.id;
     if (tagFilter === tag) {
-      setTagFilter(null);
-      setActiveIndex(
-        Math.max(
-          0,
-          ordered.findIndex((item) => item.id === currentId)
-        )
-      );
+      exitTagFilter();
       return;
     }
-    const filtered = ordered.filter((item) => item.tags?.includes(tag));
+    const currentId = current?.id;
+    const filtered = ordered.filter((item) => hasTag(item, tag));
     const idx = filtered.findIndex((item) => item.id === currentId);
     setTagFilter(tag);
     setActiveIndex(Math.max(0, idx));
@@ -426,14 +435,7 @@ export default function HomePage() {
   // jump: focus moves to the criterion card, per the focus principle.
   function clearTagFilter() {
     if (!tagFilter) return;
-    const currentId = current?.id;
-    setTagFilter(null);
-    setActiveIndex(
-      Math.max(
-        0,
-        ordered.findIndex((item) => item.id === currentId)
-      )
-    );
+    exitTagFilter();
     setIsSidebarOpen(false);
     focusCriterionCard();
   }
@@ -483,14 +485,7 @@ export default function HomePage() {
     // Tag exploration is a reference-guide concept; leaving for the quiz ends
     // it. Keep the current card so returning to reference lands on it.
     if (mode === "quiz" && tagFilter) {
-      const currentId = current?.id;
-      setTagFilter(null);
-      setActiveIndex(
-        Math.max(
-          0,
-          ordered.findIndex((item) => item.id === currentId)
-        )
-      );
+      exitTagFilter();
     }
     // Entering the quiz with no round in hand deals one; an in-progress round
     // (or its summary) resumes untouched — quizState/selectedOption included,
@@ -585,14 +580,14 @@ export default function HomePage() {
       const savedTag =
         mode === "reference" &&
         typeof saved.tagFilter === "string" &&
-        ordered.some((item) => item.tags?.includes(saved.tagFilter as string))
+        ordered.some((item) => hasTag(item, saved.tagFilter as string))
           ? saved.tagFilter
           : null;
       setTagFilter(savedTag);
       // Prefer the saved criterion id — it survives tag renames and deck
       // changes; the raw index (older payloads) clamps to the deck.
       const deck = savedTag
-        ? ordered.filter((item) => item.tags?.includes(savedTag))
+        ? ordered.filter((item) => hasTag(item, savedTag))
         : ordered;
       const idIndex =
         typeof saved.activeId === "string"
@@ -841,25 +836,39 @@ export default function HomePage() {
         Mode
       </p>
       <div role="group" aria-labelledby="drawer-mode-label">
-        <button
-          className={`sidebar-mode-row ${viewMode === "reference" ? "active" : ""}`}
-          aria-pressed={viewMode === "reference"}
-          onClick={() => switchModeFromDrawer("reference")}
-        >
-          Reference Guide
-          {viewMode === "reference" ? <span aria-hidden="true"> ✓</span> : null}
-        </button>
-        <button
-          className={`sidebar-mode-row ${viewMode === "quiz" ? "active" : ""}`}
-          aria-pressed={viewMode === "quiz"}
-          onClick={() => switchModeFromDrawer("quiz")}
-        >
-          Flashcard Quiz
-          {viewMode === "quiz" ? <span aria-hidden="true"> ✓</span> : null}
-        </button>
+        {(
+          [
+            ["reference", "Reference Guide"],
+            ["quiz", "Flashcard Quiz"]
+          ] as const
+        ).map(([mode, label]) => (
+          <button
+            key={mode}
+            className={`sidebar-mode-row ${viewMode === mode ? "active" : ""}`}
+            aria-pressed={viewMode === mode}
+            onClick={() => switchModeFromDrawer(mode)}
+          >
+            {label}
+            {viewMode === mode ? <span aria-hidden="true"> ✓</span> : null}
+          </button>
+        ))}
       </div>
     </div>
   ) : null;
+
+  // The menu button's four announcement states, stated flatly instead of
+  // nested inline ternaries.
+  const menuLabel =
+    viewMode === "reference"
+      ? (isSidebarOpen
+          ? "Close POUR navigation menu"
+          : "Open POUR navigation menu") +
+        (tagFilter
+          ? ` — filtered by ${tagFilter}, ${cards.length} criteria`
+          : "")
+      : isSidebarOpen
+        ? "Close menu"
+        : "Open menu";
 
   return (
     <section
@@ -917,18 +926,7 @@ export default function HomePage() {
                 onClick={() => setIsSidebarOpen((prev) => !prev)}
                 aria-expanded={isSidebarOpen}
                 aria-controls={viewMode === "reference" ? "pour-sidebar" : "mode-drawer"}
-                aria-label={
-                  viewMode === "reference"
-                    ? (isSidebarOpen
-                        ? "Close POUR navigation menu"
-                        : "Open POUR navigation menu") +
-                      (tagFilter
-                        ? ` — filtered by ${tagFilter}, ${cards.length} criteria`
-                        : "")
-                    : isSidebarOpen
-                      ? "Close menu"
-                      : "Open menu"
-                }
+                aria-label={menuLabel}
               >
                 ☰
                 {viewMode === "reference" && tagFilter ? (
@@ -1019,16 +1017,11 @@ export default function HomePage() {
                 ) : (
                   <>
                     {tagFilter ? (
-                      <button
-                        className="tag-filter-chip"
-                        onClick={clearTagFilter}
-                        aria-label={`Showing ${cards.length} criteria tagged ${tagFilter}. Clear filter to show all criteria.`}
-                      >
-                        {tagFilter} · {cards.length} criteria
-                        <span className="tag-filter-clear" aria-hidden="true">
-                          ✕ Show all
-                        </span>
-                      </button>
+                      <TagFilterChip
+                        tag={tagFilter}
+                        count={cards.length}
+                        onClear={clearTagFilter}
+                      />
                     ) : null}
                     <ReferenceCard
                       criterion={current}
