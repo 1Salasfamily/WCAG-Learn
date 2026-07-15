@@ -22,10 +22,12 @@ export default function SiteTitle() {
       aria-label="WCAG Learn — go to start page"
       onClick={handleClick}
     >
+      {/* The link's aria-label wins the accessible name; the alt is the
+          visible text fallback if the SVG ever fails to load. */}
       <img
         className="site-logo"
         src="/wcag-learn-lockup-dark.svg"
-        alt=""
+        alt="WCAG Learn"
         width={130}
         height={34}
       />

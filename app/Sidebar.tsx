@@ -84,8 +84,11 @@ export default function Sidebar({
       ) : null}
 
       {POUR.map((principle) => {
-        const open = isSearching ? true : expanded[principle];
-        if (isSearching && visibleGrouped[principle].length === 0) {
+        // Searching and tag filtering both narrow the list: hide principles
+        // with no matches and present the ones that have them expanded.
+        const narrowed = isSearching || tagFilter !== null;
+        const open = narrowed ? true : expanded[principle];
+        if (narrowed && visibleGrouped[principle].length === 0) {
           return null;
         }
         return (

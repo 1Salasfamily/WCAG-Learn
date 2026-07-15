@@ -1577,6 +1577,12 @@ a {
     display: inline-flex;
   }
 
+  /* The quiz drawer only exists ≤768px; its backdrop must not outlive it
+     when the viewport grows into the 769–1024px window. */
+  .sidebar-backdrop.quiz-drawer-backdrop {
+    display: none;
+  }
+
   .study-shell {
     grid-template-columns: 1fr;
   }
@@ -1696,6 +1702,10 @@ a {
 
   .sidebar-toggle.sidebar-toggle-quiz {
     display: inline-flex;
+  }
+
+  .sidebar-backdrop.quiz-drawer-backdrop {
+    display: block;
   }
 
   /* Keep Next/Back at a fixed spot on the glass: the card scrolls beneath a
@@ -1820,7 +1830,8 @@ a {
   .quiz-filter-select,
   .mode-toggle-button,
   .details-tech-chip,
-  .tag-filter-chip {
+  .tag-filter-chip,
+  .sidebar-mode-row {
     min-height: 44px;
   }
 

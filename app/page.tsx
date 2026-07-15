@@ -96,6 +96,9 @@ function filterPool(
 type SavedSession = {
   started: boolean;
   activeIndex: number;
+  // Criterion id of the current card — rename-safe, preferred over the
+  // deck-relative index on restore (older payloads lack it).
+  activeId?: string | null;
   tagFilter?: string | null;
   quiz?: {
     round: Array<{
@@ -345,6 +348,7 @@ export default function HomePage() {
     setActiveIndex(0);
     setViewMode(mode);
     resetTransientUI();
+    resetStageScroll();
     setStarted(true);
     if (mode === "quiz") {
       dealRound(buildQuizRound(quizPool, ordered));
@@ -363,6 +367,7 @@ export default function HomePage() {
     requestAnimationFrame(() => {
       const target =
         document.querySelector<HTMLElement>(".reference-topbar") ??
+        document.querySelector<HTMLElement>(".quiz-card") ??
         document.querySelector<HTMLElement>(".learn-main");
       if (!target) return;
       if (!target.hasAttribute("tabindex")) {
@@ -474,6 +479,7 @@ export default function HomePage() {
     setViewMode(mode);
     setExampleExpanded(false);
     setIsSidebarOpen(false);
+    resetStageScroll();
     // Tag exploration is a reference-guide concept; leaving for the quiz ends
     // it. Keep the current card so returning to reference lands on it.
     if (mode === "quiz" && tagFilter) {
@@ -572,20 +578,33 @@ export default function HomePage() {
       const saved = readJSON<Partial<SavedSession>>(SESSION_KEY);
       if (!saved || saved.started !== true) return;
       setStarted(true);
-      // A saved tag is only honored if it still selects at least one
-      // criterion in the current data; the index clamps to that deck.
+      // A saved tag is only honored in reference mode (entering the quiz
+      // always ends tag exploration, and a debounced save can lag the
+      // synchronous mode key) and only if it still selects at least one
+      // criterion in the current data.
       const savedTag =
+        mode === "reference" &&
         typeof saved.tagFilter === "string" &&
         ordered.some((item) => item.tags?.includes(saved.tagFilter as string))
           ? saved.tagFilter
           : null;
       setTagFilter(savedTag);
-      const deckLength = savedTag
-        ? ordered.filter((item) => item.tags?.includes(savedTag)).length
-        : ordered.length;
+      // Prefer the saved criterion id — it survives tag renames and deck
+      // changes; the raw index (older payloads) clamps to the deck.
+      const deck = savedTag
+        ? ordered.filter((item) => item.tags?.includes(savedTag))
+        : ordered;
+      const idIndex =
+        typeof saved.activeId === "string"
+          ? deck.findIndex((item) => item.id === saved.activeId)
+          : -1;
       const savedActive =
         typeof saved.activeIndex === "number" ? saved.activeIndex : 0;
-      setActiveIndex(Math.min(Math.max(0, savedActive), deckLength - 1));
+      setActiveIndex(
+        idIndex >= 0
+          ? idIndex
+          : Math.min(Math.max(0, savedActive), deck.length - 1)
+      );
 
       const quiz = saved.quiz;
       const principleFilter = PRINCIPLE_FILTER_VALUES.includes(
@@ -665,6 +684,7 @@ export default function HomePage() {
       JSON.stringify({
         started,
         activeIndex,
+        activeId: cards[activeIndex]?.id ?? null,
         tagFilter,
         quiz: {
           round: quizRound.map((q) => ({
@@ -681,6 +701,7 @@ export default function HomePage() {
     [
       started,
       activeIndex,
+      cards,
       tagFilter,
       quizRound,
       quizIndex,
@@ -727,6 +748,7 @@ export default function HomePage() {
       setActiveIndex(0);
       setIsSidebarOpen(false);
       resetTransientUI();
+      resetStageScroll();
       setStarted(false);
     }
 
@@ -773,7 +795,9 @@ export default function HomePage() {
         target.tagName === "TEXTAREA" ||
         target.tagName === "SELECT" ||
         target.isContentEditable);
-    if (isEditable || exampleExpanded || !started) return;
+    // isSidebarOpen: with a drawer open, digits/arrows must not act on the
+    // question or card hidden behind the backdrop.
+    if (isEditable || exampleExpanded || isSidebarOpen || !started) return;
     if (event.altKey || event.ctrlKey || event.metaKey) return;
 
     if (viewMode === "reference") {
@@ -876,7 +900,13 @@ export default function HomePage() {
         </nav>
       ) : null}
 
-      {started && isSidebarOpen ? <button className="sidebar-backdrop" onClick={() => setIsSidebarOpen(false)} aria-label="Close navigation menu" /> : null}
+      {started && isSidebarOpen ? (
+        <button
+          className={`sidebar-backdrop ${viewMode === "quiz" ? "quiz-drawer-backdrop" : ""}`}
+          onClick={() => setIsSidebarOpen(false)}
+          aria-label="Close navigation menu"
+        />
+      ) : null}
 
       <div className="learn-main" tabIndex={-1} aria-label="Main study content">
         <div className="learn-top-row">
