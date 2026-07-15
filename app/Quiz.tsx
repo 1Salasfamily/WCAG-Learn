@@ -14,6 +14,22 @@ import QuizSummary from "./QuizSummary";
 
 const BROWSE_KEYS = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "Home", "End"];
 
+// Shared by the in-stage filter row and the landscape-short drawer copy, so
+// the two spellings of the same control can never drift apart.
+export const PRINCIPLE_FILTER_OPTIONS: Array<{
+  value: PrincipleFilter;
+  label: string;
+}> = [
+  { value: "All", label: "All principles" },
+  ...POUR.map((p) => ({ value: p as PrincipleFilter, label: p }))
+];
+
+export const LEVEL_FILTER_OPTIONS: Array<{ value: LevelFilter; label: string }> = [
+  { value: "All", label: "All levels" },
+  { value: "A", label: "Level A" },
+  { value: "AA", label: "Level AA" }
+];
+
 type FilterSelectProps<T extends string> = {
   label: string;
   value: T;
@@ -26,7 +42,7 @@ type FilterSelectProps<T extends string> = {
 // fires `change` on every arrow keypress; committing those immediately would
 // deal a new quiz round while the user is still browsing the options. Mouse
 // and touch picks commit instantly, as before.
-function FilterSelect<T extends string>({
+export function FilterSelect<T extends string>({
   label,
   value,
   options,
@@ -139,20 +155,13 @@ export default function Quiz({
           label="Principle"
           value={principleFilter}
           onCommit={onPrincipleFilter}
-          options={[
-            { value: "All", label: "All principles" },
-            ...POUR.map((p) => ({ value: p as PrincipleFilter, label: p }))
-          ]}
+          options={PRINCIPLE_FILTER_OPTIONS}
         />
         <FilterSelect<LevelFilter>
           label="Level"
           value={levelFilter}
           onCommit={onLevelFilter}
-          options={[
-            { value: "All", label: "All levels" },
-            { value: "A", label: "Level A" },
-            { value: "AA", label: "Level AA" }
-          ]}
+          options={LEVEL_FILTER_OPTIONS}
         />
       </div>
 

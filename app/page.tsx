@@ -29,8 +29,13 @@ import type {
 import Sidebar from "./Sidebar";
 import TagFilterChip from "./TagFilterChip";
 import ReferenceCard from "./ReferenceCard";
-import Quiz from "./Quiz";
+import Quiz, {
+  FilterSelect,
+  LEVEL_FILTER_OPTIONS,
+  PRINCIPLE_FILTER_OPTIONS
+} from "./Quiz";
 import ImageOverlay from "./ImageOverlay";
+import SiteTitle from "./site-title";
 
 // Saved-session shape for auto-resume. Questions persist as (criterion id,
 // type, first-try result) and are rebuilt on restore — options may reshuffle,
@@ -302,6 +307,15 @@ export default function HomePage() {
 
   function startNewRound() {
     dealRound(buildQuizRound(quizPool, ordered));
+  }
+
+  // Landscape-short phones hide the site header (and its Reset button), so
+  // the quiz drawer offers the same fresh-round action. Dealing a new round
+  // is a discrete jump: the drawer closes and focus presents the question.
+  function startNewRoundFromDrawer() {
+    setIsSidebarOpen(false);
+    startNewRound();
+    focusCriterionCard();
   }
 
   // Practice weakest: long-term weak criteria plus this round's misses. The
@@ -758,6 +772,15 @@ export default function HomePage() {
   }, [started, viewMode]);
 
   useEffect(() => {
+    // Landscape-short CSS hides the site header only while the app is
+    // running (its logo moves into the top row); the start screen and the
+    // static pages keep the full header. The body class is the only way the
+    // layout-owned header can see page state.
+    document.body.classList.toggle("app-started", started);
+    return () => document.body.classList.remove("app-started");
+  }, [started]);
+
+  useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape") {
         setExampleExpanded((wasOpen) => {
@@ -906,6 +929,38 @@ export default function HomePage() {
         >
           <h3 className="sidebar-title">Menu</h3>
           {modeSection}
+          {/* Landscape-short phones only (CSS-gated): the filter row and the
+              header Reset are hidden there to spend height on the card, so
+              their jobs move into this drawer. */}
+          <div className="sidebar-quiz-tools">
+            <p className="sidebar-mode-label" id="drawer-filters-label">
+              Round filters
+            </p>
+            <div
+              className="sidebar-quiz-filters"
+              role="group"
+              aria-labelledby="drawer-filters-label"
+            >
+              <FilterSelect<PrincipleFilter>
+                label="Principle"
+                value={quizPrincipleFilter}
+                onCommit={applyPrincipleFilter}
+                options={PRINCIPLE_FILTER_OPTIONS}
+              />
+              <FilterSelect<LevelFilter>
+                label="Level"
+                value={quizLevelFilter}
+                onCommit={applyLevelFilter}
+                options={LEVEL_FILTER_OPTIONS}
+              />
+            </div>
+            <button
+              className="sidebar-mode-row"
+              onClick={startNewRoundFromDrawer}
+            >
+              New round
+            </button>
+          </div>
         </nav>
       ) : null}
 
@@ -937,10 +992,23 @@ export default function HomePage() {
               </button>
             ) : null}
 
+            {/* Landscape-short only (CSS-gated): the site header hides while
+                the app runs, so the brand/home link joins the top row. */}
+            <span className="top-row-logo">
+              <SiteTitle />
+            </span>
+
             <p className="status-text" aria-live="polite">
               {statusText}
               {started && viewMode === "reference" ? (
                 <span className="status-principle-chip">{current.principle.toUpperCase()}</span>
+              ) : null}
+              {/* Landscape-short only (CSS-gated); the in-card progress row
+                  is hidden there, so this is the sole score indicator. */}
+              {started && viewMode === "quiz" && quizPhase === "question" ? (
+                <span className="quiz-score-chip status-score-chip">
+                  Score: {quizScore}
+                </span>
               ) : null}
             </p>
           </div>
@@ -989,8 +1057,21 @@ export default function HomePage() {
               </div>
             </section>
           ) : (
-            <section className="study-shell" aria-label="Flashcard study interface">
-              <div className="card-stack">
+            <section
+              className={`study-shell ${
+                viewMode === "reference" ? "study-shell-reference" : ""
+              }`}
+              aria-label="Flashcard study interface"
+            >
+              {/* card-stack-quiz drives the landscape-short two-column
+                  question layout; the summary keeps the single column. */}
+              <div
+                className={`card-stack ${
+                  viewMode === "quiz" && quizPhase === "question"
+                    ? "card-stack-quiz"
+                    : ""
+                }`}
+              >
                 {viewMode === "quiz" ? (
                   <Quiz
                     principleFilter={quizPrincipleFilter}

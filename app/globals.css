@@ -429,6 +429,17 @@ a {
   display: none;
 }
 
+/* Landscape-short furniture: the quiz drawer's filters + New round section
+   and the top row's compact logo render always but display only under the
+   landscape-phone media query at the end of this file. */
+.sidebar-quiz-tools {
+  display: none;
+}
+
+.top-row-logo {
+  display: none;
+}
+
 .sidebar-mode-label {
   margin: 0 0 0.4rem;
   font-size: 0.72rem;
@@ -852,6 +863,13 @@ a {
   font-weight: 700;
   letter-spacing: 0.04em;
   padding: 0.18rem 0.55rem;
+}
+
+/* The top-row copy of the score chip shows only on landscape-short phones,
+   where the in-card progress row is hidden. Declared after .quiz-score-chip
+   so the base hide wins outside the media query. */
+.status-score-chip {
+  display: none;
 }
 
 .sc-quiz-text {
@@ -1796,6 +1814,223 @@ a {
 
   .reference-title {
     font-size: 1.05rem;
+  }
+}
+
+/* Landscape phones (WCAG 1.3.4 Orientation): height, not width, is the
+   scarce resource, so the chrome restructures instead of just shrinking.
+   One 48px bar replaces the header + status rows, the guide's arrows pin to
+   the left/right edges where landscape thumbs rest, and the quiz question
+   sits beside its answers so nothing hides below the fold. Capped at
+   1024px width so desktop windows keep the existing short-height rules. */
+@media (max-width: 1024px) and (max-height: 480px) and (orientation: landscape) {
+  /* Merged top bar: while the app runs the site header hides and its logo
+     (home link) joins the status row. Start screen and static pages keep
+     the full header — they never set body.app-started. */
+  body.app-started .site-header {
+    display: none;
+  }
+
+  body.app-started .top-row-logo {
+    display: inline-flex;
+  }
+
+  .top-row-logo .site-logo {
+    height: 22px;
+  }
+
+  .learn-main {
+    padding: 0.4rem 0.55rem;
+  }
+
+  .learn-top-row {
+    flex-direction: row;
+    align-items: center;
+    gap: 0.65rem;
+    margin-bottom: 0.45rem;
+  }
+
+  .status-text {
+    font-size: 0.85rem;
+  }
+
+  .status-principle-chip,
+  .status-score-chip {
+    margin-left: auto;
+  }
+
+  .status-score-chip {
+    display: inline-flex;
+  }
+
+  /* Drawer paradigm at every landscape-phone width: the 769–1024px window
+     keeps its top toggle only in tall viewports. */
+  .mode-toggle {
+    display: none;
+  }
+
+  .sidebar-mode-section {
+    display: block;
+    border-bottom: 1.5px solid var(--border);
+    margin-bottom: 0.9rem;
+    padding-bottom: 0.55rem;
+  }
+
+  .learn-sidebar.quiz-drawer {
+    display: block;
+  }
+
+  .sidebar-toggle.sidebar-toggle-quiz {
+    display: inline-flex;
+  }
+
+  .sidebar-backdrop.quiz-drawer-backdrop {
+    display: block;
+  }
+
+  /* The quiz drawer absorbs the filter row and the hidden header's Reset. */
+  .sidebar-quiz-tools {
+    display: block;
+  }
+
+  .sidebar-quiz-filters {
+    display: grid;
+    gap: 0.45rem;
+    margin-bottom: 0.55rem;
+  }
+
+  .sidebar-quiz-filters .quiz-filter {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  .quiz-filter-row {
+    display: none;
+  }
+
+  .quiz-progress-row {
+    display: none;
+  }
+
+  /* Guide: fixed side rails replace the bottom bar — same fixed-spot-on-the-
+     glass contract, but the height they occupied goes back to the card. */
+  .study-shell-reference {
+    padding-inline: 56px;
+  }
+
+  .study-nav-row {
+    display: contents;
+  }
+
+  .arrow-block {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 20;
+  }
+
+  .arrow-block.left {
+    left: max(6px, env(safe-area-inset-left));
+  }
+
+  .arrow-block.right {
+    right: max(6px, env(safe-area-inset-right));
+  }
+
+  .arrow-button {
+    width: 48px;
+    height: 48px;
+  }
+
+  .flashcard {
+    min-height: 0;
+  }
+
+  .card-front,
+  .card-back {
+    padding: 16px;
+  }
+
+  /* Quiz: question beside answers — everything on screen at once. */
+  .card-stack-quiz {
+    grid-template-columns: minmax(0, 46fr) minmax(0, 54fr);
+    align-items: stretch;
+    gap: 0.7rem;
+  }
+
+  .card-stack-quiz .quiz-wrap {
+    margin-top: 0;
+    align-content: center;
+    justify-items: stretch;
+    gap: 0.5rem;
+    min-width: 0;
+  }
+
+  .quiz-prompt {
+    font-size: 0.98rem;
+    text-align: center;
+  }
+
+  .quiz-options {
+    width: 100%;
+    gap: 0.45rem;
+  }
+
+  .quiz-option {
+    min-height: 44px;
+    padding: 0.4rem 0.7rem;
+    font-size: 0.92rem;
+  }
+
+  .quiz-message,
+  .quiz-correct-burst {
+    text-align: center;
+  }
+
+  .quiz-next-row .start-button {
+    padding: 0.45rem 1.1rem;
+    font-size: 0.95rem;
+  }
+
+  .sc-quiz-id {
+    font-size: 2rem;
+  }
+
+  .sc-quiz-text {
+    font-size: 1.15rem;
+    max-width: 100%;
+  }
+
+  .sc-quiz-quote {
+    font-size: 0.98rem;
+    max-width: 100%;
+  }
+
+  .sc-quiz-kicker {
+    margin-bottom: 0.4rem;
+  }
+
+  /* Slim single-line footer; both links and the © line stay. */
+  .site-footer {
+    gap: 0.1rem 0.6rem;
+    padding: 0.22rem calc(1rem + env(safe-area-inset-right))
+      calc(0.22rem + env(safe-area-inset-bottom)) calc(1rem + env(safe-area-inset-left));
+  }
+
+  .footer-link,
+  .footer-sep,
+  .footer-copyright {
+    font-size: 0.7rem;
+  }
+
+  .start-screen {
+    padding: 1.1rem 1.3rem;
+  }
+
+  .start-screen-title {
+    font-size: 1.6rem;
   }
 }
 
