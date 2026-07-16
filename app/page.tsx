@@ -36,6 +36,7 @@ import Quiz, {
 } from "./Quiz";
 import ImageOverlay from "./ImageOverlay";
 import SiteTitle from "./site-title";
+import { playCorrectSound, playWrongSound } from "./sounds";
 
 // Saved-session shape for auto-resume. Questions persist as (criterion id,
 // type, first-try result) and are rebuilt on restore — options may reshuffle,
@@ -515,6 +516,13 @@ export default function HomePage() {
     setSelectedOption(option);
     const isCorrect = option === currentQuestion.answer;
     setQuizState(isCorrect ? "correct" : "wrong");
+    // Called only from the user's own activation (tap or digit key), so the
+    // audio context may start here; each wrong retry replays its sound.
+    if (isCorrect) {
+      playCorrectSound();
+    } else {
+      playWrongSound();
+    }
     // Long-term mastery records first tries only — retries after a wrong
     // answer don't count toward (or against) the streak.
     if (currentQuestion.firstTryCorrect === null) {
