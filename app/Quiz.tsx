@@ -236,7 +236,9 @@ export default function Quiz({
             </div>
             {state === "correct" ? (
               <>
-                <p className="quiz-correct-burst">Correct!</p>
+                <p className="quiz-feedback correct">
+                  <span aria-hidden="true">✓</span> Correct!
+                </p>
                 <div className="quiz-next-row">
                   <button
                     className="start-button start-button-primary"
@@ -246,12 +248,12 @@ export default function Quiz({
                   </button>
                 </div>
               </>
-            ) : (
-              <p className={`quiz-message ${state === "wrong" ? "wrong" : ""}`}>
-                {state === "wrong"
-                  ? "Not quite — try again."
-                  : "Choose one option."}
+            ) : state === "wrong" ? (
+              <p className="quiz-feedback wrong">
+                <span aria-hidden="true">✗</span> Not quite — try again.
               </p>
+            ) : (
+              <p className="quiz-message">Choose one option.</p>
             )}
           </div>
         </>

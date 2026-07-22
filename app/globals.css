@@ -1080,18 +1080,36 @@ a {
   color: var(--muted);
 }
 
-.quiz-message.wrong {
-  color: #ffb6c2;
+/* Verdict banners: the picked answer's tint spreads to a full-width verdict
+   under the options — unmissable without shouting. Color is never the only
+   signal: glyph and wording differ, and the aria-live announcement text is
+   unchanged. */
+.quiz-feedback {
+  margin: 0;
+  width: min(480px, 100%);
+  border-radius: 0.7rem;
+  padding: 0.55rem 0.9rem;
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  text-align: center;
 }
 
-.quiz-correct-burst {
-  margin: 0;
-  min-height: 1.4rem;
-  font-size: 1.08rem;
-  font-weight: 800;
+.quiz-feedback.correct {
   color: #9df1b5;
-  letter-spacing: 0.03em;
+  background: rgba(20, 82, 48, 0.32);
+  border: 1.5px solid rgba(63, 202, 114, 0.65);
   animation: quizPop 300ms ease-out;
+}
+
+.quiz-feedback.wrong {
+  color: #ffb6c2;
+  background: rgba(95, 28, 42, 0.32);
+  border: 1.5px solid rgba(233, 96, 125, 0.65);
 }
 
 @keyframes quizShake {
@@ -1971,9 +1989,14 @@ a {
     font-size: 0.92rem;
   }
 
-  .quiz-message,
-  .quiz-correct-burst {
+  .quiz-message {
     text-align: center;
+  }
+
+  .quiz-feedback {
+    width: 100%;
+    padding: 0.4rem 0.7rem;
+    font-size: 0.95rem;
   }
 
   .quiz-next-row .start-button {
