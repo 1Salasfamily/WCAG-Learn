@@ -1352,10 +1352,6 @@ a {
   font-size: 0.82rem;
   line-height: 1.36;
   color: var(--text);
-  display: -webkit-box;
-  -webkit-line-clamp: 6;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
 }
 
 .reference-examples {
@@ -1622,10 +1618,6 @@ a {
     padding: 0.55rem 0.9rem;
   }
 
-  .reference-section p {
-    -webkit-line-clamp: 4;
-  }
-
   .reference-section,
   .reference-example {
     padding: 0.42rem 0.6rem;
@@ -1644,10 +1636,6 @@ a {
 @media (min-width: 769px) and (max-height: 720px) {
   .reference-hero .reference-image-trigger {
     width: min(360px, 100%);
-  }
-
-  .reference-section p {
-    -webkit-line-clamp: 3;
   }
 }
 
@@ -1809,7 +1797,6 @@ a {
 
   .reference-section p {
     font-size: 0.93rem;
-    -webkit-line-clamp: unset;
   }
 
   .reference-title {
