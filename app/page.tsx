@@ -345,16 +345,22 @@ export default function HomePage() {
     );
   }
 
+  // Next question / See results unmount the button that was activated, so
+  // focus can't stay on it (it would fall to the body and dump screen-reader
+  // users out of the page). Per the focus principle, an unmounting control
+  // makes this a discrete jump: focus presents the new question or summary.
   function goToNextQuestion() {
     if (quizIndex + 1 >= quizRound.length) {
       setQuizPhase("summary");
       resetStageScroll();
+      focusCriterionCard();
       return;
     }
     setQuizIndex((prev) => prev + 1);
     setQuizState("idle");
     setSelectedOption(null);
     resetStageScroll();
+    focusCriterionCard();
   }
 
   // The two start-screen buttons enter a mode directly. Reference is always
@@ -385,6 +391,7 @@ export default function HomePage() {
       const target =
         document.querySelector<HTMLElement>(".reference-topbar") ??
         document.querySelector<HTMLElement>(".quiz-card") ??
+        document.querySelector<HTMLElement>(".quiz-summary") ??
         document.querySelector<HTMLElement>(".learn-main");
       if (!target) return;
       if (!target.hasAttribute("tabindex")) {
@@ -1099,9 +1106,22 @@ export default function HomePage() {
                     masteryTotal={masteryStats.total}
                     perPrinciple={masteryStats.perPrinciple}
                     weakestCount={practicePool.length}
-                    onPracticeWeakest={startWeakestRound}
-                    onNewRound={startNewRound}
-                    onReviewGuide={() => setMode("reference")}
+                    onPracticeWeakest={() => {
+                      // These three summary actions unmount the summary (and
+                      // the button that was activated), so each is a discrete
+                      // jump: focus presents what replaces it. Header Reset
+                      // and the drawer rows persist and keep their own focus.
+                      startWeakestRound();
+                      focusCriterionCard();
+                    }}
+                    onNewRound={() => {
+                      startNewRound();
+                      focusCriterionCard();
+                    }}
+                    onReviewGuide={() => {
+                      setMode("reference");
+                      focusCriterionCard();
+                    }}
                   />
                 ) : (
                   <>

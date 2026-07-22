@@ -179,7 +179,11 @@ export default function Quiz({
         />
       ) : question ? (
         <>
-          <article className="flashcard quiz-card" aria-live="polite">
+          <article
+            className="flashcard quiz-card"
+            aria-live="polite"
+            aria-label="Quiz question"
+          >
             <div className="card-front">
               <p className="sc-quiz-kicker">{question.kicker}</p>
               <p
