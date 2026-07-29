@@ -27,7 +27,12 @@ export default function QuizSummary({
   onReviewGuide
 }: QuizSummaryProps) {
   return (
-    <section className="quiz-summary" aria-label="Quiz round results">
+    <section
+      className="quiz-summary"
+      id="quiz-results"
+      tabIndex={-1}
+      aria-label="Quiz round results"
+    >
       <p className="quiz-summary-kicker">Round complete</p>
       <p className="quiz-summary-score">
         {score} / {round.length}

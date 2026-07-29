@@ -1013,7 +1013,15 @@ export default function HomePage() {
               <SiteTitle />
             </span>
 
-            <p className="status-text" aria-live="polite">
+            {/* Skip-link landing in the guide (id + tabindex make it a
+                native fragment-navigation target): announces the position
+                and criterion title on arrival. */}
+            <p
+              className="status-text"
+              id="study-status"
+              tabIndex={-1}
+              aria-live="polite"
+            >
               {statusText}
               {started && viewMode === "reference" ? (
                 <span className="status-principle-chip">{current.principle.toUpperCase()}</span>

@@ -181,6 +181,8 @@ export default function Quiz({
         <>
           <article
             className="flashcard quiz-card"
+            id="quiz-question"
+            tabIndex={-1}
             aria-live="polite"
             aria-label="Quiz question"
           >
