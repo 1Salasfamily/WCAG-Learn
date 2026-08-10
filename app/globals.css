@@ -260,46 +260,57 @@ a {
   padding: 0 0.4rem;
 }
 
-/* Options are bordered rows (the app's tappable affordance); the selected
-   row wears the gold active treatment plus a ✓, mirroring the drawer's
-   active mode row. The native radio stays visible so browsers without
-   :has() still show its dot as the baseline signal. */
+/* Type options: a custom ARIA radiogroup of role="radio" buttons — each a
+   real Tab stop in reading order (native same-name radios collapse to one
+   group stop). aria-checked drives the gold active treatment; the whole
+   row takes the green focus ring. */
 .feedback-radio-row {
   display: flex;
   align-items: center;
   gap: 0.6rem;
+  width: 100%;
   min-height: 44px;
+  font: inherit;
   font-size: 0.95rem;
+  color: var(--text);
+  text-align: left;
   cursor: pointer;
   border: 1.5px solid var(--border);
   border-radius: 0.65rem;
   background: rgba(20, 30, 44, 0.5);
   padding: 0.45rem 0.75rem;
   margin: 0.2rem 0;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .feedback-radio-row:hover {
   border-color: rgba(122, 160, 225, 0.6);
 }
 
-/* The radio itself is drawn as a gold ring that fills solid when selected —
-   the native input restyled, so semantics, keyboard, and AT are untouched.
-   The global :focus-visible ring still applies. */
-.feedback-radio-row input {
-  appearance: none;
-  -webkit-appearance: none;
+.feedback-radio-row:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+/* Gold ring; a gold dot fills the middle when selected — ring stays
+   distinct. */
+.feedback-radio-circle {
   width: 20px;
   height: 20px;
-  margin: 0;
   border: 1.5px solid var(--gold);
   border-radius: 50%;
   background: transparent;
   flex-shrink: 0;
-  cursor: pointer;
 }
 
-/* Selected: a gold dot inside the ring — the ring stays distinct. */
-.feedback-radio-row input:checked {
+.feedback-radio-row[aria-checked="true"] {
+  border-color: var(--gold-border);
+  background: var(--gold-soft);
+  font-weight: 700;
+}
+
+.feedback-radio-row[aria-checked="true"] .feedback-radio-circle {
   background: radial-gradient(
     circle closest-side,
     var(--gold) 0 55%,
@@ -314,13 +325,7 @@ a {
   font-weight: 700;
 }
 
-.feedback-radio-row:has(input:checked) {
-  border-color: var(--gold-border);
-  background: var(--gold-soft);
-  font-weight: 700;
-}
-
-.feedback-radio-row:has(input:checked) .feedback-radio-check {
+.feedback-radio-row[aria-checked="true"] .feedback-radio-check {
   visibility: visible;
 }
 

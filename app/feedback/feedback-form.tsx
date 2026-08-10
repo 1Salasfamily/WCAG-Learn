@@ -22,6 +22,7 @@ type Status = "idle" | "sending" | "sent" | "failed";
 export default function FeedbackForm() {
   const [status, setStatus] = useState<Status>("idle");
   const [failDetail, setFailDetail] = useState<string | null>(null);
+  const [selectedType, setSelectedType] = useState(FEEDBACK_TYPES[0]);
   const [messageError, setMessageError] = useState(false);
   const [emailError, setEmailError] = useState(false);
   const messageRef = useRef<HTMLTextAreaElement>(null);
@@ -107,25 +108,50 @@ export default function FeedbackForm() {
       noValidate
       onSubmit={handleSubmit}
     >
+      {/* Custom ARIA radiogroup instead of native radios: Justin's spec is
+          one Tab stop PER option in reading order, and browsers force
+          same-name native radios to a single group stop (explicit tabindex
+          cannot override it). Buttons with role="radio" are each a real Tab
+          stop; Space/Enter select; arrow keys also move selection for users
+          who expect the native pattern. The hidden input below carries the
+          value, so the submitted form is unchanged. */}
       <fieldset className="feedback-fieldset">
-        <legend>What kind of feedback is this?</legend>
-        {FEEDBACK_TYPES.map((type, index) => (
-          <label key={type} className="feedback-radio-row">
-            <input
-              type="radio"
-              name="type"
-              value={type}
-              defaultChecked={index === 0}
-            />
-            {type}
-            {/* Selected tell, mirroring the drawer's active mode row; shown
-                via :has(input:checked) so the radio still carries state. */}
-            <span className="feedback-radio-check" aria-hidden="true">
-              ✓
-            </span>
-          </label>
-        ))}
+        <legend id="feedback-type-legend">What kind of feedback is this?</legend>
+        <div role="radiogroup" aria-labelledby="feedback-type-legend">
+          {FEEDBACK_TYPES.map((type, index) => (
+            <button
+              key={type}
+              type="button"
+              role="radio"
+              aria-checked={selectedType === type}
+              className="feedback-radio-row"
+              onClick={() => setSelectedType(type)}
+              onKeyDown={(event) => {
+                const forward =
+                  event.key === "ArrowDown" || event.key === "ArrowRight";
+                const backward =
+                  event.key === "ArrowUp" || event.key === "ArrowLeft";
+                if (!forward && !backward) return;
+                event.preventDefault();
+                const next =
+                  (index + (forward ? 1 : -1) + FEEDBACK_TYPES.length) %
+                  FEEDBACK_TYPES.length;
+                setSelectedType(FEEDBACK_TYPES[next]);
+                // Focus follows selection, matching native radio arrows.
+                const group = event.currentTarget.parentElement;
+                (group?.children[next] as HTMLElement | undefined)?.focus();
+              }}
+            >
+              <span className="feedback-radio-circle" aria-hidden="true" />
+              {type}
+              <span className="feedback-radio-check" aria-hidden="true">
+                ✓
+              </span>
+            </button>
+          ))}
+        </div>
       </fieldset>
+      <input type="hidden" name="type" value={selectedType} />
 
       <div className="feedback-field">
         <label htmlFor="feedback-message">Your feedback (required)</label>
