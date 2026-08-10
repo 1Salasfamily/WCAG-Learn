@@ -298,8 +298,13 @@ a {
   cursor: pointer;
 }
 
+/* Selected: a gold dot inside the ring — the ring stays distinct. */
 .feedback-radio-row input:checked {
-  background: var(--gold);
+  background: radial-gradient(
+    circle closest-side,
+    var(--gold) 0 55%,
+    transparent 62%
+  );
 }
 
 .feedback-radio-check {
