@@ -42,6 +42,18 @@ const nextConfig = {
   reactStrictMode: true,
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
+  },
+  // The feedback form posts to its own origin and the platform forwards to
+  // Formspree. This keeps the CSP locked to 'self' (connect-src/form-action
+  // never open up) and sidesteps ad blockers that filter formspree.io — the
+  // browser only ever talks to this domain. A routing rule, not server code.
+  async rewrites() {
+    return [
+      {
+        source: "/api/feedback",
+        destination: "https://formspree.io/f/xqpzplaq"
+      }
+    ];
   }
 };
 

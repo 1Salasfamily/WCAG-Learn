@@ -3,10 +3,12 @@
 import { useRef, useState } from "react";
 import Link from "next/link";
 
-// Public-by-design Formspree endpoint (safe to commit). The form also works
-// with JavaScript disabled: the native action/method POST goes to the same
-// endpoint and Formspree shows its hosted thank-you page instead.
-const ENDPOINT = "https://formspree.io/f/xqpzplaq";
+// Same-origin proxy to Formspree (rewrite in next.config.mjs). Posting to
+// our own origin keeps the site's CSP locked to 'self' — a direct
+// formspree.io request would be blocked by our own connect-src — and makes
+// the form immune to ad blockers that filter formspree.io. The no-JS
+// fallback POSTs natively to the same path through the same rewrite.
+const ENDPOINT = "/api/feedback";
 
 const FEEDBACK_TYPES = [
   "General feedback",
