@@ -52,11 +52,17 @@ export default function FeedbackForm() {
         body: data,
         headers: { Accept: "application/json" }
       });
-      if (!response.ok) throw new Error(String(response.status));
+      if (!response.ok) {
+        const detail = await response.text().catch(() => "");
+        throw new Error(`Formspree ${response.status}: ${detail.slice(0, 300)}`);
+      }
       setStatus("sent");
       requestAnimationFrame(() => successRef.current?.focus());
-    } catch {
-      // The form and everything typed into it stay intact for a retry.
+    } catch (error) {
+      // The form and everything typed into it stay intact for a retry. The
+      // reason is logged for diagnosis — a TypeError("Failed to fetch") here
+      // usually means a content blocker stopped the formspree.io request.
+      console.error("Feedback submission failed:", error);
       setStatus("failed");
     }
   }
@@ -97,6 +103,11 @@ export default function FeedbackForm() {
               defaultChecked={index === 0}
             />
             {type}
+            {/* Selected tell, mirroring the drawer's active mode row; shown
+                via :has(input:checked) so the radio still carries state. */}
+            <span className="feedback-radio-check" aria-hidden="true">
+              ✓
+            </span>
           </label>
         ))}
       </fieldset>
@@ -172,7 +183,7 @@ export default function FeedbackForm() {
       </button>
 
       {status === "failed" ? (
-        <p className="feedback-error" role="alert">
+        <p className="feedback-alert" role="alert">
           <span aria-hidden="true">✗</span> Something went wrong sending your
           feedback. Your message is still here — please try again.
         </p>

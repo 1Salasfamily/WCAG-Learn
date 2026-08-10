@@ -260,19 +260,50 @@ a {
   padding: 0 0.4rem;
 }
 
+/* Options are bordered rows (the app's tappable affordance); the selected
+   row wears the gold active treatment plus a ✓, mirroring the drawer's
+   active mode row. The native radio stays visible so browsers without
+   :has() still show its dot as the baseline signal. */
 .feedback-radio-row {
   display: flex;
   align-items: center;
   gap: 0.6rem;
-  min-height: 40px;
+  min-height: 44px;
   font-size: 0.95rem;
   cursor: pointer;
+  border: 1.5px solid var(--border);
+  border-radius: 0.65rem;
+  background: rgba(20, 30, 44, 0.5);
+  padding: 0.45rem 0.75rem;
+  margin: 0.2rem 0;
+}
+
+.feedback-radio-row:hover {
+  border-color: rgba(122, 160, 225, 0.6);
 }
 
 .feedback-radio-row input {
   width: 18px;
   height: 18px;
-  accent-color: #7aa0e1;
+  accent-color: var(--gold);
+  flex-shrink: 0;
+}
+
+.feedback-radio-check {
+  visibility: hidden;
+  margin-left: auto;
+  color: var(--gold);
+  font-weight: 700;
+}
+
+.feedback-radio-row:has(input:checked) {
+  border-color: var(--gold-border);
+  background: var(--gold-soft);
+  font-weight: 700;
+}
+
+.feedback-radio-row:has(input:checked) .feedback-radio-check {
+  visibility: visible;
 }
 
 .feedback-field {
@@ -322,6 +353,23 @@ a {
   display: flex;
   align-items: center;
   gap: 0.45rem;
+}
+
+/* Submit-failure banner — same verdict treatment as the quiz's wrong
+   banner: tinted fill + border, never a quiet grey line. */
+.feedback-alert {
+  margin: 0;
+  max-width: 560px;
+  border: 1.5px solid rgba(233, 96, 125, 0.65);
+  background: rgba(95, 28, 42, 0.32);
+  border-radius: 0.7rem;
+  padding: 0.6rem 0.9rem;
+  color: #ffb6c2;
+  font-size: 0.95rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
 }
 
 .feedback-submit {
