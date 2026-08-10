@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import type { KeyboardEvent as ReactKeyboardEvent } from "react";
 import type { Criterion } from "./wcag";
 
@@ -31,6 +32,31 @@ export default function ImageOverlay({
   imageSrc,
   onClose
 }: ImageOverlayProps) {
+  useEffect(() => {
+    // aria-modal alone does not stop iOS VoiceOver's reading cursor from
+    // swiping into the background, so everything behind the overlay is made
+    // inert (out of the accessibility tree and focus order) while it is
+    // open. aria-hidden rides along for browsers predating inert. Runs
+    // after mount, so the Close button's autoFocus has already landed
+    // inside the overlay before its old container goes inert.
+    const others = Array.from(
+      document.querySelectorAll<HTMLElement>(
+        ".site-header, .site-footer, .skip-link, .learn-main, .learn-sidebar, .sidebar-backdrop"
+      )
+    );
+    others.forEach((el) => {
+      el.inert = true;
+      el.setAttribute("aria-hidden", "true");
+    });
+    return () => {
+      // Restored before the app moves focus back to the image trigger.
+      others.forEach((el) => {
+        el.inert = false;
+        el.removeAttribute("aria-hidden");
+      });
+    };
+  }, []);
+
   return (
     <div
       className="example-overlay"
