@@ -237,6 +237,143 @@ a {
   text-underline-offset: 2px;
 }
 
+/* Feedback page (/feedback) — shares the about-page shell; the form itself
+   practices the Forms & Errors criteria the app teaches. */
+.feedback-form {
+  max-width: 560px;
+  display: grid;
+  gap: 1.25rem;
+}
+
+.feedback-fieldset {
+  border: 1.5px solid var(--border);
+  border-radius: 0.8rem;
+  padding: 0.85rem 1rem 0.7rem;
+  margin: 0;
+  display: grid;
+  gap: 0.15rem;
+}
+
+.feedback-fieldset legend {
+  font-weight: 700;
+  font-size: 0.95rem;
+  padding: 0 0.4rem;
+}
+
+.feedback-radio-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 40px;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.feedback-radio-row input {
+  width: 18px;
+  height: 18px;
+  accent-color: #7aa0e1;
+}
+
+.feedback-field {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.feedback-field > label {
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.feedback-hint {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.feedback-input,
+.feedback-textarea {
+  font: inherit;
+  font-size: 0.95rem;
+  color: var(--text);
+  background: var(--panel);
+  border: 1.5px solid var(--border);
+  border-radius: 0.65rem;
+  padding: 0.6rem 0.75rem;
+  width: 100%;
+}
+
+.feedback-textarea {
+  min-height: 130px;
+  resize: vertical;
+}
+
+/* Red border reinforces the inline error text; it is never the only signal. */
+.feedback-input[aria-invalid="true"],
+.feedback-textarea[aria-invalid="true"] {
+  border-color: rgba(233, 96, 125, 0.9);
+}
+
+.feedback-error {
+  margin: 0;
+  color: #ffb6c2;
+  font-size: 0.88rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.feedback-submit {
+  justify-self: start;
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text);
+  background: transparent;
+  border: 1.5px solid var(--gold);
+  border-radius: 999px;
+  padding: 0.7rem 1.6rem;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.feedback-submit:hover {
+  background: rgba(232, 161, 58, 0.08);
+}
+
+.feedback-submit:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+/* Honeypot: display:none removes it from the tab order and every
+   accessibility tree — invisible to humans and AT alike; only bots fill it. */
+.feedback-gotcha {
+  display: none;
+}
+
+.feedback-success {
+  max-width: 560px;
+  border: 1.5px solid rgba(63, 202, 114, 0.65);
+  background: rgba(20, 82, 48, 0.25);
+  border-radius: 0.9rem;
+  padding: 1.3rem 1.4rem;
+}
+
+.feedback-success h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1.15rem;
+  color: #9df1b5;
+}
+
+.feedback-success p {
+  margin: 0 0 0.9rem;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
 .learn-layout {
   position: relative;
   height: 100%;
@@ -2062,7 +2199,9 @@ a {
   .mode-toggle-button,
   .details-tech-chip,
   .tag-filter-chip,
-  .sidebar-mode-row {
+  .sidebar-mode-row,
+  .feedback-radio-row,
+  .feedback-submit {
     min-height: 44px;
   }
 
