@@ -19,6 +19,7 @@ type Status = "idle" | "sending" | "sent" | "failed";
 
 export default function FeedbackForm() {
   const [status, setStatus] = useState<Status>("idle");
+  const [failDetail, setFailDetail] = useState<string | null>(null);
   const [messageError, setMessageError] = useState(false);
   const [emailError, setEmailError] = useState(false);
   const messageRef = useRef<HTMLTextAreaElement>(null);
@@ -46,6 +47,7 @@ export default function FeedbackForm() {
     }
 
     setStatus("sending");
+    setFailDetail(null);
     try {
       const response = await fetch(ENDPOINT, {
         method: "POST",
@@ -54,15 +56,26 @@ export default function FeedbackForm() {
       });
       if (!response.ok) {
         const detail = await response.text().catch(() => "");
-        throw new Error(`Formspree ${response.status}: ${detail.slice(0, 300)}`);
+        throw new Error(
+          `Formspree rejected the submission (${response.status}): ${detail.slice(0, 200)}`
+        );
       }
       setStatus("sent");
       requestAnimationFrame(() => successRef.current?.focus());
     } catch (error) {
       // The form and everything typed into it stay intact for a retry. The
-      // reason is logged for diagnosis — a TypeError("Failed to fetch") here
-      // usually means a content blocker stopped the formspree.io request.
+      // failure class is surfaced in the banner so a report of "it failed"
+      // carries its own diagnosis: a TypeError means the request never left
+      // the browser (content blocker, or a sandboxed preview); anything
+      // else is Formspree's own answer.
       console.error("Feedback submission failed:", error);
+      setFailDetail(
+        error instanceof TypeError
+          ? "The request to formspree.io never left your browser — usually an ad/privacy blocker, or a sandboxed preview window."
+          : error instanceof Error
+            ? error.message
+            : String(error)
+      );
       setStatus("failed");
     }
   }
@@ -183,10 +196,17 @@ export default function FeedbackForm() {
       </button>
 
       {status === "failed" ? (
-        <p className="feedback-alert" role="alert">
-          <span aria-hidden="true">✗</span> Something went wrong sending your
-          feedback. Your message is still here — please try again.
-        </p>
+        <div className="feedback-alert" role="alert">
+          <p>
+            <span aria-hidden="true">✗</span> Something went wrong sending
+            your feedback. Your message is still here — please try again.
+          </p>
+          {failDetail ? (
+            <p className="feedback-alert-detail">
+              Technical detail: {failDetail}
+            </p>
+          ) : null}
+        </div>
       ) : null}
     </form>
   );

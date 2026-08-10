@@ -385,9 +385,21 @@ a {
   color: #ffb6c2;
   font-size: 0.95rem;
   font-weight: 700;
+  display: grid;
+  gap: 0.3rem;
+}
+
+.feedback-alert p {
+  margin: 0;
   display: flex;
   align-items: center;
   gap: 0.55rem;
+}
+
+/* The self-diagnosis line: which failure class this was, in plain words. */
+.feedback-alert-detail {
+  font-size: 0.84rem;
+  font-weight: 500;
 }
 
 .feedback-submit {
