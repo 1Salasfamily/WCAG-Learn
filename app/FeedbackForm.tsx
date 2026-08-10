@@ -10,19 +10,34 @@ import Link from "next/link";
 // fallback POSTs natively to the same path through the same rewrite.
 const ENDPOINT = "/api/feedback";
 
-const FEEDBACK_TYPES = [
-  "General feedback",
-  "Bug or problem",
-  "Content correction",
-  "Feature idea"
-];
-
 type Status = "idle" | "sending" | "sent" | "failed";
 
-export default function FeedbackForm() {
+// One form, two pages: /feedback and the accessibility statement configure
+// their own copy and type options; the architecture (proxy endpoint,
+// tabbable radiogroup, inline errors, success/failure states) is shared so
+// the two forms can never drift apart.
+type FeedbackFormProps = {
+  legend: string;
+  types: string[];
+  subject: string;
+  messageLabel: string;
+  messageHint: string;
+  messageErrorText: string;
+  successBody: string;
+};
+
+export default function FeedbackForm({
+  legend,
+  types,
+  subject,
+  messageLabel,
+  messageHint,
+  messageErrorText,
+  successBody
+}: FeedbackFormProps) {
   const [status, setStatus] = useState<Status>("idle");
   const [failDetail, setFailDetail] = useState<string | null>(null);
-  const [selectedType, setSelectedType] = useState(FEEDBACK_TYPES[0]);
+  const [selectedType, setSelectedType] = useState(types[0]);
   const [messageError, setMessageError] = useState(false);
   const [emailError, setEmailError] = useState(false);
   const messageRef = useRef<HTMLTextAreaElement>(null);
@@ -89,10 +104,7 @@ export default function FeedbackForm() {
         <h3>
           <span aria-hidden="true">✓</span> Feedback sent — thank you
         </h3>
-        <p>
-          We read every message. If you left your email and asked a question,
-          you&apos;ll hear back.
-        </p>
+        <p>{successBody}</p>
         <Link className="about-back" href="/">
           <span aria-hidden="true">←</span> Back to the study app
         </Link>
@@ -116,9 +128,9 @@ export default function FeedbackForm() {
           who expect the native pattern. The hidden input below carries the
           value, so the submitted form is unchanged. */}
       <fieldset className="feedback-fieldset">
-        <legend id="feedback-type-legend">What kind of feedback is this?</legend>
+        <legend id="feedback-type-legend">{legend}</legend>
         <div role="radiogroup" aria-labelledby="feedback-type-legend">
-          {FEEDBACK_TYPES.map((type, index) => (
+          {types.map((type, index) => (
             <button
               key={type}
               type="button"
@@ -134,9 +146,8 @@ export default function FeedbackForm() {
                 if (!forward && !backward) return;
                 event.preventDefault();
                 const next =
-                  (index + (forward ? 1 : -1) + FEEDBACK_TYPES.length) %
-                  FEEDBACK_TYPES.length;
-                setSelectedType(FEEDBACK_TYPES[next]);
+                  (index + (forward ? 1 : -1) + types.length) % types.length;
+                setSelectedType(types[next]);
                 // Focus follows selection, matching native radio arrows.
                 const group = event.currentTarget.parentElement;
                 (group?.children[next] as HTMLElement | undefined)?.focus();
@@ -154,9 +165,9 @@ export default function FeedbackForm() {
       <input type="hidden" name="type" value={selectedType} />
 
       <div className="feedback-field">
-        <label htmlFor="feedback-message">Your feedback (required)</label>
+        <label htmlFor="feedback-message">{messageLabel}</label>
         <p className="feedback-hint" id="feedback-message-hint">
-          What happened, what you expected, or what you&apos;d like to see.
+          {messageHint}
         </p>
         <textarea
           className="feedback-textarea"
@@ -170,8 +181,7 @@ export default function FeedbackForm() {
         />
         {messageError ? (
           <p className="feedback-error" id="feedback-message-error">
-            <span aria-hidden="true">✗</span> Please enter your feedback before
-            sending.
+            <span aria-hidden="true">✗</span> {messageErrorText}
           </p>
         ) : null}
       </div>
@@ -205,7 +215,7 @@ export default function FeedbackForm() {
       {/* Formspree conventions: _subject titles the notification email;
           _gotcha is the honeypot — display:none removes it from the tab
           order and every accessibility tree, so only bots ever fill it. */}
-      <input type="hidden" name="_subject" value="WCAG Learn feedback" />
+      <input type="hidden" name="_subject" value={subject} />
       <input
         className="feedback-gotcha"
         type="text"

@@ -457,6 +457,11 @@ a {
   line-height: 1.5;
 }
 
+/* "Prefer GitHub?" alternate-channel line under the accessibility form. */
+.feedback-alt-channel {
+  margin-top: 0.9rem;
+}
+
 .learn-layout {
   position: relative;
   height: 100%;

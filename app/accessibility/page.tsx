@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import FeedbackForm from "../FeedbackForm";
 
 export const metadata: Metadata = {
   title: "Accessibility — WCAG Learn",
@@ -53,26 +54,39 @@ export default function AccessibilityPage() {
         </section>
 
         <section className="about-section">
-          <h3>Found something? Let us know</h3>
+          <h3>Hit a barrier? Report it here</h3>
           <p>
             We strive to always improve the usability of this product, so if
-            something trips you up, or you&apos;ve got an idea to make this
-            better, we&apos;d genuinely love to hear it. Reach out with
-            suggestions and help us improve it.
+            something trips you up — with a screen reader, the keyboard,
+            zoom, or anything else — we&apos;d genuinely love to hear it.
+            Reports like these directly shape the app.
           </p>
-          <ul className="about-links">
-            <li>
-              <a
-                href="https://github.com/1Salasfamily/WCAG-Learn/issues"
-                target="_blank"
-                rel="noreferrer"
-              >
-                Share feedback or open an issue on GitHub
-                <span aria-hidden="true"> ↗</span>
-                <span className="visually-hidden"> (opens in a new tab)</span>
-              </a>
-            </li>
-          </ul>
+          <FeedbackForm
+            legend="What kind of barrier did you hit?"
+            types={[
+              "Screen reader issue",
+              "Keyboard navigation issue",
+              "Visual or contrast issue",
+              "Other barrier"
+            ]}
+            subject="WCAG Learn accessibility report"
+            messageLabel="Describe the barrier (required)"
+            messageHint="What you were trying to do, what happened, and the assistive technology or input method you were using."
+            messageErrorText="Please describe the barrier before sending."
+            successBody="We read every report — accessibility barriers go to the top of the list. If you left your email, you'll hear back."
+          />
+          <p className="feedback-hint feedback-alt-channel">
+            Prefer GitHub?{" "}
+            <a
+              href="https://github.com/1Salasfamily/WCAG-Learn/issues"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Open an issue
+              <span aria-hidden="true"> ↗</span>
+              <span className="visually-hidden"> (opens in a new tab)</span>
+            </a>
+          </p>
         </section>
       </article>
     </div>

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import FeedbackForm from "./feedback-form";
+import FeedbackForm from "../FeedbackForm";
 
 export const metadata: Metadata = {
   title: "Send feedback — WCAG Learn",
@@ -24,7 +24,20 @@ export default function FeedbackPage() {
           its features exist because someone wrote in.
         </p>
 
-        <FeedbackForm />
+        <FeedbackForm
+          legend="What kind of feedback is this?"
+          types={[
+            "General feedback",
+            "Bug or problem",
+            "Content correction",
+            "Feature idea"
+          ]}
+          subject="WCAG Learn feedback"
+          messageLabel="Your feedback (required)"
+          messageHint="What happened, what you expected, or what you'd like to see."
+          messageErrorText="Please enter your feedback before sending."
+          successBody="We read every message. If you left your email and asked a question, you'll hear back."
+        />
       </article>
     </div>
   );
