@@ -1369,6 +1369,19 @@ a {
   gap: 0.35rem;
 }
 
+/* iOS Safari composites backdrop-filter unreliably (flicker, banding,
+   stale smears that vary with the content behind it). On touch devices
+   the overlay uses a heavier plain scrim instead — same greyed-out
+   effect, no compositing. The background is inert while open anyway,
+   so the blur is purely cosmetic. */
+@media (pointer: coarse) {
+  .example-overlay {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: rgba(5, 9, 16, 0.93);
+  }
+}
+
 .overlay-close {
   align-self: center;
   z-index: 2;
