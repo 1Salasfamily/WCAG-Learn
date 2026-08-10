@@ -282,11 +282,24 @@ a {
   border-color: rgba(122, 160, 225, 0.6);
 }
 
+/* The radio itself is drawn as a gold ring that fills solid when selected —
+   the native input restyled, so semantics, keyboard, and AT are untouched.
+   The global :focus-visible ring still applies. */
 .feedback-radio-row input {
-  width: 18px;
-  height: 18px;
-  accent-color: var(--gold);
+  appearance: none;
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  border: 1.5px solid var(--gold);
+  border-radius: 50%;
+  background: transparent;
   flex-shrink: 0;
+  cursor: pointer;
+}
+
+.feedback-radio-row input:checked {
+  background: var(--gold);
 }
 
 .feedback-radio-check {
