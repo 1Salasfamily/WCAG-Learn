@@ -24,6 +24,17 @@ type FeedbackFormProps = {
   messageHint: string;
   messageErrorText: string;
   successBody: string;
+  // Optional per-type overrides: when set, choosing an option reshapes the
+  // message field's label/hint/error to elicit the right details for that
+  // job — the options refine the submission instead of just tagging it.
+  perType?: Record<
+    string,
+    {
+      messageLabel?: string;
+      messageHint?: string;
+      messageErrorText?: string;
+    }
+  >;
 };
 
 export default function FeedbackForm({
@@ -33,11 +44,17 @@ export default function FeedbackForm({
   messageLabel,
   messageHint,
   messageErrorText,
-  successBody
+  successBody,
+  perType
 }: FeedbackFormProps) {
   const [status, setStatus] = useState<Status>("idle");
   const [failDetail, setFailDetail] = useState<string | null>(null);
   const [selectedType, setSelectedType] = useState(types[0]);
+  const overrides = perType?.[selectedType];
+  const effectiveMessageLabel = overrides?.messageLabel ?? messageLabel;
+  const effectiveMessageHint = overrides?.messageHint ?? messageHint;
+  const effectiveMessageErrorText =
+    overrides?.messageErrorText ?? messageErrorText;
   const [messageError, setMessageError] = useState(false);
   const [emailError, setEmailError] = useState(false);
   const messageRef = useRef<HTMLTextAreaElement>(null);
@@ -165,9 +182,9 @@ export default function FeedbackForm({
       <input type="hidden" name="type" value={selectedType} />
 
       <div className="feedback-field">
-        <label htmlFor="feedback-message">{messageLabel}</label>
+        <label htmlFor="feedback-message">{effectiveMessageLabel}</label>
         <p className="feedback-hint" id="feedback-message-hint">
-          {messageHint}
+          {effectiveMessageHint}
         </p>
         <textarea
           className="feedback-textarea"
@@ -181,7 +198,7 @@ export default function FeedbackForm({
         />
         {messageError ? (
           <p className="feedback-error" id="feedback-message-error">
-            <span aria-hidden="true">✗</span> {messageErrorText}
+            <span aria-hidden="true">✗</span> {effectiveMessageErrorText}
           </p>
         ) : null}
       </div>

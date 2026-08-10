@@ -62,18 +62,22 @@ export default function AccessibilityPage() {
             Reports like these directly shape the app.
           </p>
           <FeedbackForm
-            legend="What kind of barrier did you hit?"
-            types={[
-              "Screen reader issue",
-              "Keyboard navigation issue",
-              "Visual or contrast issue",
-              "Other barrier"
-            ]}
+            legend="What do you need?"
+            types={["Report an accessibility issue", "Get help using the app"]}
             subject="WCAG Learn accessibility report"
-            messageLabel="Describe the barrier (required)"
+            messageLabel="Describe the issue (required)"
             messageHint="What you were trying to do, what happened, and the assistive technology or input method you were using."
-            messageErrorText="Please describe the barrier before sending."
-            successBody="We read every report — accessibility barriers go to the top of the list. If you left your email, you'll hear back."
+            messageErrorText="Please describe the issue before sending."
+            successBody="We read every report and help request — accessibility issues go to the top of the list. If you left your email, you'll hear back."
+            perType={{
+              "Get help using the app": {
+                messageLabel: "What do you need help with? (required)",
+                messageHint:
+                  "Tell us what you're trying to do and where you're stuck — include the assistive technology or input method you're using if it's relevant.",
+                messageErrorText:
+                  "Please tell us what you need help with before sending."
+              }
+            }}
           />
           <p className="feedback-hint feedback-alt-channel">
             Prefer GitHub?{" "}
