@@ -73,7 +73,7 @@ export default function ImageOverlay({
         <img
           className="example-overlay-image"
           src={imageSrc}
-          alt={`Expanded example visual for ${criterion.id} ${criterion.title}`}
+          alt={`Example for ${criterion.id} ${criterion.title}: an accessible version beside a violation. Close this view to read the pass and fail examples as text on the card.`}
         />
       </div>
       <button className="start-button overlay-close" onClick={onClose} autoFocus>

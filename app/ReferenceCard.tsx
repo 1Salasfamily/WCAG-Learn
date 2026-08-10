@@ -54,14 +54,14 @@ export default function ReferenceCard({
           <button
             className="reference-image-trigger"
             onClick={onExpandImage}
-            aria-label={`Expand example image for ${criterion.id} ${criterion.title}`}
+            aria-label={`Expand example image for ${criterion.id} ${criterion.title}. The image shows an accessible version beside a violation; the pass and fail examples below describe them in text.`}
           >
             <div className="example-image-frame">
               <div className="example-image-shell">
                 <img
                   className="example-image"
                   src={imageSrc}
-                  alt={`Example visual for ${criterion.id} ${criterion.title}`}
+                  alt={`Accessible version and violation, side by side, for ${criterion.id} ${criterion.title}`}
                 />
               </div>
               <span className="reference-expand-hint">Select to expand</span>
