@@ -1756,6 +1756,51 @@ a {
   border-color: var(--gold);
 }
 
+/* Share sits in the criterion top bar but is not a filter, so it takes the
+   neutral border rather than the tag chips' blue, and is pushed to the end
+   of the row. min-width holds the widest label ("Link copied") so the
+   confirmation swap can't reflow the chips beside it. */
+.share-criterion {
+  font: inherit;
+  font-size: 0.78rem;
+  color: var(--muted);
+  border: 1px solid var(--border);
+  background: transparent;
+  border-radius: 999px;
+  padding: 0.16rem 0.6rem;
+  margin-left: auto;
+  min-width: 6.6rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  flex-shrink: 0;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.share-criterion:hover {
+  color: var(--text);
+  border-color: rgba(144, 203, 255, 0.8);
+}
+
+.share-criterion.share-copied,
+.share-criterion.share-copied:hover {
+  color: #8ed9ae;
+  border-color: rgba(96, 190, 137, 0.6);
+}
+
+.share-criterion.share-failed,
+.share-criterion.share-failed:hover {
+  color: #efa3a3;
+  border-color: rgba(214, 110, 110, 0.6);
+}
+
+.share-criterion-icon {
+  flex-shrink: 0;
+}
+
 .tag-filter-chip {
   font: inherit;
   font-size: 0.82rem;
@@ -2299,6 +2344,7 @@ a {
   .quiz-filter-select,
   .mode-toggle-button,
   .details-tech-chip,
+  .share-criterion,
   .tag-filter-chip,
   .sidebar-mode-row,
   .feedback-radio-row,

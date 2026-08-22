@@ -35,6 +35,7 @@ import Quiz, {
   PRINCIPLE_FILTER_OPTIONS
 } from "./Quiz";
 import ImageOverlay from "./ImageOverlay";
+import { CRITERION_PARAM } from "./share-url";
 import SiteTitle from "./site-title";
 import { playCorrectSound, playWrongSound } from "./sounds";
 
@@ -79,6 +80,17 @@ function readJSON<T>(key: string): T | null {
     } catch {
       // Storage unavailable — nothing to clean up.
     }
+    return null;
+  }
+}
+
+// Reads the shared-link criterion id out of the URL. Anything unreadable is
+// treated as no link at all — a mistyped or stale id must degrade to the
+// normal entry, never to an error.
+function readLinkedCriterionId(): string | null {
+  try {
+    return new URLSearchParams(window.location.search).get(CRITERION_PARAM);
+  } catch {
     return null;
   }
 }
@@ -176,6 +188,13 @@ export default function HomePage() {
   // False until the session-restore effect has run; the save effect waits for
   // it so the mount-time save can't overwrite the session being restored.
   const [sessionHydrated, setSessionHydrated] = useState(false);
+
+  // A visit that arrived through a shared link must not overwrite the saved
+  // session — someone who follows a link to one criterion and leaves should
+  // still find their own place waiting. The link's state is never written;
+  // saving resumes the moment the visitor changes something themselves.
+  const savesBlockedRef = useRef(false);
+  const blockedPayloadRef = useRef<string | null>(null);
 
   const searchQuery = normalizeSearchQuery(sidebarQuery);
   const isSearching = searchQuery.length > 0;
@@ -593,6 +612,26 @@ export default function HomePage() {
     // fields are validated individually — a partial or tampered payload
     // degrades to defaults instead of crashing or discarding the round.
     // Runs pre-paint so returning users never see a start-screen flash.
+    //
+    // A shared link wins over all of that: whoever opens it lands on the
+    // criterion it names, in the full deck, whatever their own last session
+    // was. An id that no longer exists degrades to the normal entry.
+    const linkedIndex = (() => {
+      const linkedId = readLinkedCriterionId();
+      return linkedId === null
+        ? -1
+        : ordered.findIndex((item) => item.id === linkedId);
+    })();
+    if (linkedIndex >= 0) {
+      setStarted(true);
+      setViewMode("reference");
+      setTagFilter(null);
+      setActiveIndex(linkedIndex);
+      savesBlockedRef.current = true;
+      setSessionHydrated(true);
+      return;
+    }
+
     try {
       const stored = window.localStorage.getItem("wcag-learn:view-mode");
       const mode: ViewMode =
@@ -739,6 +778,19 @@ export default function HomePage() {
 
   useEffect(() => {
     if (!sessionHydrated) return;
+    if (savesBlockedRef.current) {
+      // The first payload after a shared-link arrival is the link's own
+      // state. Only a later, different one means the visitor is using the
+      // app rather than reading the card they were sent — at which point
+      // this becomes their session and saving resumes. Comparing payloads
+      // (not counting runs) keeps StrictMode's double mount blocked.
+      if (blockedPayloadRef.current === null) {
+        blockedPayloadRef.current = sessionPayload;
+        return;
+      }
+      if (blockedPayloadRef.current === sessionPayload) return;
+      savesBlockedRef.current = false;
+    }
     const id = window.setTimeout(() => {
       safeSetItem(SESSION_KEY, sessionPayload);
     }, 250);
@@ -748,11 +800,37 @@ export default function HomePage() {
   useEffect(() => {
     if (!sessionHydrated) return;
     function flush() {
+      if (savesBlockedRef.current) return;
       safeSetItem(SESSION_KEY, sessionPayloadRef.current);
     }
     window.addEventListener("pagehide", flush);
     return () => window.removeEventListener("pagehide", flush);
   }, [sessionHydrated]);
+
+  // The address bar tracks the current criterion, so copying it straight from
+  // the browser gives the same link the Share button builds — which is how
+  // the request that prompted this arrived. replaceState, not pushState: 56
+  // criteria in the back stack would collide with the app's own Back arrow.
+  // The fragment is carried through untouched; the skip link owns it.
+  useEffect(() => {
+    if (!sessionHydrated) return;
+    const linkedId =
+      started && viewMode === "reference" ? (current?.id ?? null) : null;
+    const url = new URL(window.location.href);
+    if (url.searchParams.get(CRITERION_PARAM) === linkedId) return;
+    if (linkedId) {
+      url.searchParams.set(CRITERION_PARAM, linkedId);
+    } else {
+      // The start screen and the quiz name no criterion, so the bare address
+      // is what a visitor sees — and copies — in those states.
+      url.searchParams.delete(CRITERION_PARAM);
+    }
+    window.history.replaceState(
+      window.history.state,
+      "",
+      `${url.pathname}${url.search}${url.hash}`
+    );
+  }, [sessionHydrated, started, viewMode, current?.id]);
 
   useEffect(() => {
     // Reset only clears the current quiz's progress — a fresh shuffled round

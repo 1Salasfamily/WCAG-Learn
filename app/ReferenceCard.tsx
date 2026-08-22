@@ -2,6 +2,7 @@
 
 import { getTags, NEW_IN_22 } from "./wcag";
 import type { Criterion } from "./wcag";
+import ShareCriterionButton from "./ShareCriterionButton";
 
 type ReferenceCardProps = {
   criterion: Criterion;
@@ -48,6 +49,10 @@ export default function ReferenceCard({
               </button>
             );
           })}
+          {/* Sits with the criterion's identity — the id, title, level, and
+              tags this link points at — and pushed to the row's end so it
+              never reads as another filter chip. */}
+          <ShareCriterionButton criterion={criterion} />
         </section>
         <div className="reference-meta-divider" aria-hidden="true" />
         <div className="reference-hero">
