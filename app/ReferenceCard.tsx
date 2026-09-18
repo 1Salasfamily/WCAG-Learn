@@ -85,7 +85,11 @@ export default function ReferenceCard({
           ))}
         </div>
         {criterion.example ? (
-          <div className="reference-examples" aria-label="Pass and fail examples">
+          <div
+            className="reference-examples"
+            role="group"
+            aria-label="Pass and fail examples"
+          >
             <section className="reference-example example-pass">
               <h3>
                 <span aria-hidden="true">✓</span> Pass example

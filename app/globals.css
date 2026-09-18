@@ -663,6 +663,10 @@ a {
 
 .top-row-logo {
   display: none;
+  /* It's an h1 (the landscape-short page heading); the bar sets its size. */
+  margin: 0;
+  font-size: 1rem;
+  line-height: 0;
 }
 
 .sidebar-mode-label {

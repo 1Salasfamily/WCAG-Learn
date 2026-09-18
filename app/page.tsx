@@ -1065,7 +1065,14 @@ export default function HomePage() {
         />
       ) : null}
 
-      <div className="learn-main" tabIndex={-1} aria-label="Main study content">
+      {/* role="group": ARIA prohibits aria-label on a generic div (axe
+          production scan, 2026-09-18). */}
+      <div
+        className="learn-main"
+        role="group"
+        tabIndex={-1}
+        aria-label="Main study content"
+      >
         <div className="learn-top-row">
           <div className="top-left-group">
             {started ? (
@@ -1087,9 +1094,13 @@ export default function HomePage() {
 
             {/* Landscape-short only (CSS-gated): the site header hides while
                 the app runs, so the brand/home link joins the top row. */}
-            <span className="top-row-logo">
+            {/* h1, not span: landscape-short hides the site header and its
+                h1 with it, which left those views with no level-one heading
+                (axe production scan). This copy is display:none everywhere
+                else, so the page always has exactly one h1 exposed. */}
+            <h1 className="top-row-logo">
               <SiteTitle />
-            </span>
+            </h1>
 
             {/* Skip-link landing in the guide (id + tabindex make it a
                 native fragment-navigation target): announces the position
