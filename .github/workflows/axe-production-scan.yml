@@ -1,0 +1,51 @@
+# Accessibility gate: after every production deploy, run the full-app
+# axe-core scan (scripts/axe-scan.mjs — 16 UI states, three viewports)
+# against the live site. Any violation fails the run, which shows a red X
+# on the commit and emails the committer. Also runnable by hand from the
+# Actions tab (workflow_dispatch).
+#
+# Vercel's GitHub integration emits deployment_status events; we act only
+# on successful Production deployments.
+name: axe production scan
+
+on:
+  deployment_status:
+  workflow_dispatch:
+
+jobs:
+  scan:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.deployment_status.state == 'success' &&
+       contains(github.event.deployment.environment, 'Production'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      # The production alias can lag the deployment event by a moment;
+      # give the CDN a beat before judging the live site.
+      - name: Wait for production alias
+        run: sleep 30
+
+      - name: Run axe scan against production
+        run: npm run scan:prod
+
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: axe-results
+          path: axe-results.json
+          retention-days: 30

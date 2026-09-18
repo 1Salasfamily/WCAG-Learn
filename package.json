@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "scan:prod": "node scripts/axe-scan.mjs",
+    "scan:local": "BASE=http://localhost:3000 node scripts/axe-scan.mjs"
   },
   "dependencies": {
     "@vercel/analytics": "^2.0.1",
@@ -15,11 +17,13 @@
     "react-dom": "18.3.1"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.13.0",
     "@types/node": "20.14.10",
     "@types/react": "18.3.3",
     "@types/react-dom": "18.3.0",
     "eslint": "8.57.0",
     "eslint-config-next": "14.2.5",
+    "playwright": "^1.63.0",
     "typescript": "5.5.3"
   }
 }
