@@ -9,11 +9,12 @@ export const metadata: Metadata = {
 };
 
 const testedWith = [
-  "Automated accessibility tools (axe)",
+  "Automated scans (axe-core) run against the production site, covering 16 interface states — including form error and success states, the expanded-image dialog, and mobile portrait and landscape layouts",
   "Browser zoom",
   "Color contrast",
   "Text spacing",
   "VoiceOver on macOS Tahoe 26.5.1",
+  "VoiceOver on iOS",
   "Keyboard navigation"
 ];
 
@@ -34,7 +35,7 @@ export default function AccessibilityPage() {
         </p>
 
         <section className="about-section">
-          <h3>Where things stand as of June 15, 2026.</h3>
+          <h3>Where things stand as of September 18, 2026.</h3>
           <p>
             The app aims to conform to the <strong>WCAG 2.2 AA</strong> standard.
             It&apos;s also very much a work in progress, we&apos;re always poking
