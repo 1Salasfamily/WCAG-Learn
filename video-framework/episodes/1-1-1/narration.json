@@ -14,20 +14,19 @@
       "id": "s2",
       "kind": "intro",
       "cues": [
-        { "cap": "Welcome to WCAG Learn.", "say": "Welcome to W-CAG Learn." },
-        { "cap": "This is success criterion 1.1.1: Non-text Content.", "say": "This is success criterion one point one point one: Non-text Content." },
-        { "cap": "It's Level A — the foundation every site needs.", "say": "It's Level A — the foundation every site needs." },
-        { "cap": "The rule: everything that isn't text — images, icons, charts, picture buttons —", "say": "The rule: everything that isn't text — images, icons, charts, picture buttons —" },
-        { "cap": "needs a text alternative that does the same job.", "say": "needs a text alternative that does the same job." }
+        { "cap": "Success criterion 1.1.1: Non-text Content.", "say": "Success criterion one point one point one: Non-text Content." },
+        { "cap": "It's Level A, the foundation every site needs.", "say": "It's Level A — the foundation every site needs." },
+        { "cap": "The rule: everything that isn't text needs a text alternative that does the same job.", "say": "The rule: everything that isn't text needs a text alternative that does the same job." },
+        { "cap": "Images, icons, charts, picture buttons. All of it.", "say": "Images, icons, charts, picture buttons. All of it." }
       ]
     },
     {
       "id": "s3",
       "kind": "scenario",
       "cues": [
-        { "cap": "Meet Sam — shopping at Sneaker Street with a screen reader.", "say": "Meet Sam — shopping at Sneaker Street with a screen reader." },
+        { "cap": "Meet Sam, shopping at Sneaker Street with a screen reader.", "say": "Meet Sam — shopping at Sneaker Street with a screen reader." },
         { "cap": "Sam lands on a photo of a red high-top sneaker.", "say": "Sam lands on a photo of a red high-top sneaker." },
-        { "cap": "On the accessible page, the screen reader says:", "say": "On the accessible page, the screen reader says:" },
+        { "cap": "The photo has good alt text, so the screen reader says:", "say": "The photo has good alt text, so the screen reader says:" },
         { "cap": "“Red canvas high-top sneaker with white rubber sole. Image.”", "say": "Red canvas high-top sneaker, with white rubber sole. Image." },
         { "cap": "Sam knows exactly what's for sale.", "say": "Sam knows exactly what's for sale." },
         { "cap": "But the Buy-now button is a picture, and its alt text is “button1”.", "say": "But the buy now button is a picture, and its alt text is button one." },
@@ -54,7 +53,7 @@
         { "cap": "alt=\"Buy now\"", "say": "alt equals, Buy now." },
         { "cap": "Pure decoration? Use an empty alt, so screen readers skip it.", "say": "Pure decoration? Use an empty alt, so screen readers skip it." },
         { "cap": "Then retest with your screen reader.", "say": "Then retest with your screen reader." },
-        { "cap": "When you hear “Buy now, button” — that's a pass.", "say": "When you hear, Buy now, button — that's a pass." }
+        { "cap": "When you hear “Buy now, button”, that's a pass.", "say": "When you hear, Buy now, button — that's a pass." }
       ]
     },
     {

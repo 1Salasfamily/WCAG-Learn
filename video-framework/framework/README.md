@@ -1,10 +1,22 @@
-# WCAG Learn video framework — v1.1.0
+# WCAG Learn video framework — v1.2.0
 
 One video per success criterion: **intro the criterion → scenario → how to
 test → how to fix and retest**, bookended by the WCAG Learn logo. 8th-grade
 reading level, friendly, no filler. All 56 episodes visit the same recurring
 world (**Sneaker Street**, an online shoe store) so they stand alone AND read
 as a collection; the outro counter (`n / 56`) ticks up each episode.
+
+**Design law lives in [DESIGN.md](DESIGN.md)** (the charter: theater stage,
+series dials, motion law, anti-slop rules, and the WCAG 2.2 AA conformance
+requirements every render must meet). Read it before authoring any scene.
+
+## Series architecture
+
+- **`episodes/000-intro`** is the series opener: enthusiastic, full
+  pantomime, the real wcaglearn.com on stage. It carries the welcome so
+  the 56 teaching episodes don't have to.
+- **Teaching episodes** are lean and to the point (the viewer has seen the
+  opener): criterion, scenario, test, fix, out.
 
 ## The contract: framework vs. episodes
 
@@ -69,6 +81,13 @@ Known intentional exceptions to the design detector: the annotation stem
 triangle (border-left technique) and the 3px proscenium stripe.
 
 ## Changelog
+
+- **1.2.0** (2026-09-24) — DESIGN.md charter added (distilled from
+  impeccable, taste-skill, Emil Kowalski, awesome-design at Justin's
+  direction) including binding WCAG 2.2 AA requirements for the videos
+  themselves; series architecture: dedicated opener episode vs. lean
+  teaching episodes; entrance pops floor raised to scale(0.85); episode
+  1-1-1 migrated to the theater stage.
 
 - **1.1.0** (2026-09-24) — theater stage (additive `body.theater` mode):
   navy auditorium, site-card component (light/dark), annotation bubbles

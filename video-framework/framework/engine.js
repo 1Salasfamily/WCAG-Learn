@@ -1,10 +1,10 @@
-// WCAG Learn video framework — ENGINE (framework v1.1.0)
+// WCAG Learn video framework — ENGINE (framework v1.2.0)
 // Deterministic, seekable timeline + the brand scenes every episode shares
 // (logo intro, logo outro, caption bar, episode chip). An episode page
 // defines its teaching scenes (markup + window.__episodeScenes) and the
 // engine handles everything else. Rendering steps frame by frame via
 // __seek, so output quality is independent of machine speed.
-window.FW_VERSION = "1.1.0";
+window.FW_VERSION = "1.2.0";
 
 let ANIMS = [];
 let SCENES = [];
@@ -28,7 +28,7 @@ function anim(target, keyframes, start, dur, easing = EASE) {
 const fadeUp = (t, s, d = 0.55) =>
   anim(t, [{ opacity: 0, transform: "translateY(46px)" }, { opacity: 1, transform: "translateY(0)" }], s, d);
 const pop = (t, s, d = 0.5) =>
-  anim(t, [{ opacity: 0, transform: "scale(0.72)" }, { opacity: 1, transform: "scale(1)" }], s, d);
+  anim(t, [{ opacity: 0, transform: "scale(0.85)" }, { opacity: 1, transform: "scale(1)" }], s, d);
 
 // ---- brand DOM, injected so episode pages never repeat it ----
 function buildBrandDom(meta) {
@@ -50,7 +50,7 @@ function buildBrandDom(meta) {
     "beforeend",
     `<section class="scene" id="s6">
       <div class="outro-wrap">
-        <div class="takeaway" id="fw-take"><span class="n">${meta.number}</span> — ${meta.takeaway}</div>
+        <div class="takeaway" id="fw-take"><span class="n">${meta.number}</span>: ${meta.takeaway}</div>
         <div class="counter" id="fw-count"><span class="done">${meta.counterDone}</span> / ${meta.counterTotal ?? 56} criteria</div>
         <div class="site" id="fw-site">wcaglearn.com</div>
         <div class="outro-logo">

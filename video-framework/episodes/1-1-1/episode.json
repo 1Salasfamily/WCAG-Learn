@@ -1,8 +1,8 @@
 {
-  "framework": "1.0.0",
+  "framework": "1.2.0",
   "number": "1.1.1",
   "title": "Non-text Content",
-  "takeaway": "If it&rsquo;s not text, give it text.",
+  "takeaway": "If it's not text, give it text.",
   "counterDone": 1,
   "counterTotal": 56,
   "outfile": "WCAG-Learn-1-1-1-Non-text-Content",
