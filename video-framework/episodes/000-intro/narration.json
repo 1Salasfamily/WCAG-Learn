@@ -1,0 +1,63 @@
+{
+  "title": "Series opener — DRAFT, awaiting Justin's approval",
+  "outfile": "WCAG-Learn-00-Welcome",
+  "voice": "Samantha",
+  "rate": 168,
+  "scenes": [
+    {
+      "id": "s1",
+      "kind": "logo-intro",
+      "fixed": 2.8,
+      "cues": []
+    },
+    {
+      "id": "s2",
+      "kind": "promise",
+      "cues": [
+        { "cap": "The web should work for everyone. Every hand, every eye, every ear.", "say": "The web should work for everyone. Every hand, every eye, every ear." },
+        { "cap": "Most of it doesn't. Not because people don't care.", "say": "Most of it doesn't. Not because people don't care —" },
+        { "cap": "Because nobody ever showed them how.", "say": "because nobody ever showed them how." },
+        { "cap": "Welcome to WCAG Learn. Let's fix that.", "say": "Welcome to W-CAG Learn. Let's fix that." }
+      ]
+    },
+    {
+      "id": "s3",
+      "kind": "criteria-rain",
+      "cues": [
+        { "cap": "WCAG is the rulebook for an accessible web.", "say": "W-CAG is the rulebook for an accessible web." },
+        { "cap": "Fifty-six success criteria. They can read like a legal document.", "say": "Fifty-six success criteria. They can read like a legal document." },
+        { "cap": "So we turned every single one into plain language.", "say": "So we turned every single one into plain language." }
+      ]
+    },
+    {
+      "id": "s4",
+      "kind": "the-app",
+      "cues": [
+        { "cap": "This is WCAG Learn, the free study app.", "say": "This is W-CAG Learn — the free study app." },
+        { "cap": "A reference guide with real pass and fail examples for every criterion.", "say": "A reference guide, with real pass and fail examples for every criterion." },
+        { "cap": "Flashcards that quiz you until it sticks.", "say": "Flashcards that quiz you until it sticks." },
+        { "cap": "Phone or laptop, portrait or landscape, keyboard or screen reader. It works everywhere you do.", "say": "Phone or laptop, portrait or landscape, keyboard or screen reader — it works everywhere you do." }
+      ]
+    },
+    {
+      "id": "s5",
+      "kind": "the-series",
+      "cues": [
+        { "cap": "And these videos? One criterion at a time.", "say": "And these videos? One criterion at a time." },
+        { "cap": "Learn the rule. Watch it break at our little shoe store.", "say": "Learn the rule. Watch it break at our little shoe store." },
+        { "cap": "Test for it yourself. Then fix it, and prove the fix.", "say": "Test for it yourself. Then fix it — and prove the fix." },
+        { "cap": "A couple of minutes each. No jargon. No filler.", "say": "A couple of minutes each. No jargon. No filler." }
+      ]
+    },
+    {
+      "id": "s6",
+      "kind": "outro",
+      "tail": 2.6,
+      "cues": [
+        { "cap": "Fifty-six criteria. Fifty-six videos. Start anywhere.", "say": "Fifty-six criteria. Fifty-six videos. Start anywhere." },
+        { "cap": "The web gets better one fix at a time. Let's go.", "say": "The web gets better one fix at a time. Let's go." },
+        { "cap": "Free, at wcaglearn.com.", "say": "Free, at W-CAG-learn dot com." }
+      ]
+    }
+  ]
+}

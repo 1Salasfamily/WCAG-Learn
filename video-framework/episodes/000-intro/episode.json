@@ -1,0 +1,10 @@
+{
+  "framework": "1.2.0",
+  "number": "00",
+  "title": "Welcome to WCAG Learn",
+  "takeaway": "The web gets better one fix at a time.",
+  "counterDone": 0,
+  "counterTotal": 56,
+  "outfile": "WCAG-Learn-00-Welcome",
+  "assetsBase": "../../framework/assets/"
+}

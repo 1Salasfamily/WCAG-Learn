@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Opener styleframe — the real app on stage</title>
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../framework/stage.css">
+<style>
+  /* Opener dials 8/8/3: the one production allowed to perform. Real
+     production screenshots, framed as devices, fanned on the theater. */
+  .headline {
+    position: absolute; top: 110px; left: 120px; width: 640px;
+    font-size: 76px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.06;
+  }
+  .headline .gold { color: var(--gold); }
+  .sub {
+    position: absolute; top: 480px; left: 122px; width: 520px;
+    font-size: 36px; line-height: 1.45; color: var(--stage-muted, #a8b2c4);
+  }
+  .devices { position: absolute; right: -40px; top: 60px; width: 1180px; height: 860px; }
+  .dev {
+    position: absolute; border-radius: 18px; overflow: hidden;
+    box-shadow: 0 24px 50px rgba(0,0,0,.5), 0 60px 130px rgba(0,0,0,.55),
+      inset 0 0.75px 0 rgba(255,255,255,.14);
+    background: #0f1420;
+  }
+  .dev img { display: block; width: 100%; }
+  .dev-desktop { width: 880px; right: 120px; top: 40px; transform: rotate(1.6deg); }
+  .dev-phone { width: 260px; left: 20px; top: 300px; transform: rotate(-3deg); border-radius: 30px; box-shadow: 0 24px 50px rgba(0,0,0,.6), 0 60px 130px rgba(0,0,0,.6), inset 0 0 0 6px #000; }
+  .dev-landscape { width: 620px; right: 60px; top: 640px; transform: rotate(-1.8deg); }
+  #capbar-x {
+    position: absolute; left: 50%; bottom: 44px; transform: translateX(-50%);
+    background: rgba(4, 6, 10, 0.88); border-radius: 14px; padding: 18px 34px;
+    font-size: 44px; font-weight: 600; text-align: center; color: #f3f5f9;
+    z-index: 20;
+  }
+</style>
+</head>
+<body class="theater">
+  <div class="headline">Every criterion,<br>in <span class="gold">plain language.</span></div>
+  <div class="sub">The free study app: a reference guide, flashcards, and real examples for all 56 success criteria.</div>
+  <div class="devices">
+    <div class="dev dev-desktop"><img src="assets/site-guide-desktop.png" alt=""></div>
+    <div class="dev dev-phone"><img src="assets/site-guide-phone.png" alt=""></div>
+    <div class="dev dev-landscape"><img src="assets/site-quiz-landscape.png" alt=""></div>
+  </div>
+  <div id="capbar-x">Flip through the guide. Quiz yourself. It works everywhere you do.</div>
+</body>
+</html>
