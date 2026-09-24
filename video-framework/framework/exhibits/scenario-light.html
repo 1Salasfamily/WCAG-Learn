@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Stage v1.1 exhibit — scenario on a light site card</title>
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../stage.css">
+<style>
+  /* Exhibit composition: the reference frame for episode scenario scenes.
+     Grid: context band (top 140) · content zone · caption band (880+).
+     Annotations own stage-left; the site card owns center-right. */
+  .site-card { position: absolute; top: 168px; left: 660px; width: 1170px; }
+  .site-card .page { display: flex; gap: 54px; padding: 44px 56px 50px; }
+  .imgcol { width: 440px; flex: 0 0 auto; }
+  .imgbox {
+    background: linear-gradient(180deg, #f4f6fa, #e9edf3);
+    border-radius: 14px; height: 290px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .altchip {
+    margin-top: 22px; display: inline-block;
+    font-family: "Space Mono", monospace; font-size: 26px;
+    color: #116635; background: #e8f7ee;
+    box-shadow: inset 0 0 0 2px #37b06a;
+    border-radius: 10px; padding: 12px 18px;
+    line-height: 1.35;
+  }
+  .copycol { flex: 1; padding-top: 6px; }
+  .copycol h3 { font-size: 46px; letter-spacing: -0.015em; color: #1c2430; }
+  .copycol .price { font-size: 32px; font-weight: 700; color: #4a5568; margin-top: 8px; }
+  .copycol p { font-size: 29px; color: #55617a; line-height: 1.5; margin-top: 18px; max-width: 30ch; }
+  .buy {
+    margin-top: 30px; display: inline-block;
+    font-size: 31px; font-weight: 800; color: #fff;
+    background: #1c2430; border-radius: 999px; padding: 17px 42px;
+  }
+  .annotation.good { left: 84px; top: 420px; }
+
+  #capbar-x {
+    position: absolute; left: 50%; bottom: 44px; transform: translateX(-50%);
+    max-width: 1560px;
+    background: rgba(4, 6, 10, 0.88); border-radius: 14px; padding: 18px 34px;
+    font-size: 44px; font-weight: 600; text-align: center; color: var(--stage-ink);
+  }
+  #chipmark-x {
+    position: absolute; left: 44px; bottom: 52px;
+    display: flex; align-items: center; gap: 14px;
+    font-size: 26px; color: var(--stage-muted);
+    border: 1.5px solid var(--stage-line);
+    background: rgba(10, 16, 28, 0.8);
+    border-radius: 999px; padding: 10px 24px;
+  }
+  #chipmark-x .n { color: var(--gold); font-family: "Space Mono", monospace; font-weight: 700; }
+</style>
+</head>
+<body class="theater">
+  <div class="context-bar"><span class="dot"></span> Sneaker Street <span class="sub">— ONLINE SHOE STORE</span></div>
+
+  <div class="site-card light">
+    <div class="chrome"><span class="b"></span><span class="b"></span><span class="b"></span><span class="url">sneakerstreet.com</span></div>
+    <div class="page">
+      <div class="imgcol">
+        <div class="imgbox">
+          <svg viewBox="40 118 132 64" width="380" height="184" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <ellipse cx="103" cy="177" rx="66" ry="5" fill="rgba(16,24,40,.12)"/>
+            <path d="M56 164c2-14 10-24 22-26l8 10c12 6 34 8 56 12v10H56z" fill="#e9607d"/>
+            <path d="M56 164c2-14 10-24 22-26l3 3.8c-9 3.2-15 11.2-17.5 22.2H56z" fill="#d14a68"/>
+            <rect x="54" y="168" width="90" height="8" rx="4" fill="#b9c2d0"/>
+            <rect x="54" y="168" width="90" height="4" rx="2" fill="#e9edf3"/>
+            <circle cx="87" cy="148" r="2.6" fill="#fff"/>
+            <circle cx="95" cy="151" r="2.6" fill="#fff"/>
+            <circle cx="103" cy="153.5" r="2.6" fill="#fff"/>
+            <path d="M87 148l4.5-6M95 151l4.5-6M103 153.5l4.5-6" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <span class="altchip">alt="Red canvas high-top<br>sneaker with white rubber sole"</span>
+      </div>
+      <div class="copycol">
+        <h3>Classic. Red. Yours.</h3>
+        <div class="price">$64</div>
+        <p>The original canvas high-top, back in stock in every size. White rubber sole, cotton laces, zero regrets.</p>
+        <span class="buy">Buy now</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="annotation good">
+    <span class="who">SCREEN READER</span>
+    &ldquo;Red canvas high-top sneaker with white rubber sole. Image.&rdquo;
+    <span class="stem"></span>
+  </div>
+
+  <div id="chipmark-x"><span class="n">1.1.1</span> Non-text Content</div>
+  <div id="capbar-x">&ldquo;Red canvas high-top sneaker with white rubber sole. Image.&rdquo;</div>
+</body>
+</html>

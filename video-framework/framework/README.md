@@ -1,4 +1,4 @@
-# WCAG Learn video framework — v1.0.0
+# WCAG Learn video framework — v1.1.0
 
 One video per success criterion: **intro the criterion → scenario → how to
 test → how to fix and retest**, bookended by the WCAG Learn logo. 8th-grade
@@ -56,8 +56,23 @@ output quality never depends on machine load.
   teaching scenes: the engine treats scenes[1..n-2] generically).
 - Voice swap (own recording / better TTS) happens in `build.mjs` step 1 only.
 
+## Stage v1.1 — "the theater"
+
+Episodes opt in with `<body class="theater">`: a brand-navy auditorium
+(neither of the app's UI themes) where the websites being taught appear as
+`.site-card.light` / `.site-card.dark` artifacts carrying their own theme.
+`.annotation` bubbles (screen-reader speech etc.) live stage-left with a
+stem pointing at their evidence — never on top of it. `.ratio-badge` serves
+the contrast episodes. Reference compositions: `exhibits/scenario-light.html`
+and `exhibits/dual-theme.html` (light + dark cards on one stage).
+Known intentional exceptions to the design detector: the annotation stem
+triangle (border-left technique) and the 3px proscenium stripe.
+
 ## Changelog
 
+- **1.1.0** (2026-09-24) — theater stage (additive `body.theater` mode):
+  navy auditorium, site-card component (light/dark), annotation bubbles
+  with stems, ratio badges, exhibits/. Episode 1-1-1 still pins 1.0.0 and
+  renders unchanged until deliberately migrated.
 - **1.0.0** (2026-09-24) — initial framework, extracted from the episode
-  1.1.1 pilot. Stage identity = current app dark theme verbatim (revisit:
-  stage tokens are intentionally separate from app UI themes).
+  1.1.1 pilot. Stage identity = current app dark theme verbatim.

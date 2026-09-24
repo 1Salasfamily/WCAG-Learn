@@ -125,3 +125,99 @@ body {
 .codecard .tag { color: #8ab4f8; }
 .codecard .attr { color: #7ddba4; }
 .codecard .val { color: var(--gold); }
+
+/* ============================================================
+   STAGE v1.1 — "the theater" (additive; episodes opt in with
+   <body class="theater">). The stage is the brand's navy
+   auditorium; the sites being taught appear as SITE CARDS that
+   carry their own theme (light or dark), so the videos belong
+   to neither of the app's UI modes. Grid: context band (top
+   140px) · content zone · caption band (bottom 200px).
+   ============================================================ */
+body.theater {
+  --stage-ink: #f3f5f9;
+  --stage-muted: #a8b2c4;
+  --stage-line: rgba(232, 161, 58, 0.6);
+  background:
+    radial-gradient(1700px 800px at 20% -10%, #17263f 0%, transparent 60%),
+    radial-gradient(1400px 760px at 98% 115%, #101b30 0%, transparent 55%),
+    linear-gradient(180deg, #0b1322, #0a0e18);
+}
+body.theater::before {
+  /* proscenium: one gold thread at the top of the house */
+  content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, transparent 22%, #e8a13a 50%, transparent 78%);
+  opacity: 0.65;
+}
+body.theater::after {
+  /* stage floor: settles the caption band without boxing it */
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 220px;
+  background: linear-gradient(180deg, transparent, rgba(5, 8, 14, 0.55));
+  pointer-events: none;
+}
+
+/* ---- context band ---- */
+.theater .context-bar {
+  position: absolute; top: 54px; left: 50%; transform: translateX(-50%);
+  display: flex; align-items: center; gap: 20px;
+  font-size: 40px; font-weight: 800; letter-spacing: -0.01em;
+}
+.theater .context-bar .dot { width: 14px; height: 14px; border-radius: 50%; background: var(--gold); }
+.theater .context-bar .sub { font-size: 28px; font-weight: 600; color: var(--stage-muted); letter-spacing: 0.06em; }
+
+/* ---- site card: the depicted website, in its own theme ---- */
+.site-card {
+  border-radius: 22px; overflow: hidden;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45), 0 42px 110px rgba(0, 0, 0, 0.55);
+}
+.site-card .chrome { display: flex; align-items: center; gap: 14px; padding: 18px 24px; }
+.site-card .chrome .b { width: 18px; height: 18px; border-radius: 50%; }
+.site-card .chrome .url {
+  margin-left: 16px; font-size: 26px; font-weight: 600;
+  border-radius: 999px; padding: 8px 26px;
+}
+.site-card.light .chrome { background: #e9edf3; }
+.site-card.light .chrome .b { background: #c7cedb; }
+.site-card.light .chrome .url { background: #f8fafc; color: #3c4658; }
+.site-card.light .page { background: #ffffff; color: #1c2430; }
+.site-card.dark .chrome { background: #171d29; }
+.site-card.dark .chrome .b { background: #333d50; }
+.site-card.dark .chrome .url { background: #10151f; color: #b8c0cf; }
+.site-card.dark .page { background: #0f1420; color: #f3f5f9; }
+
+/* ---- annotation: stage furniture that speaks over a card ----
+   Annotations live stage-left (or a reserved column), never on
+   top of the evidence they cite. The stem points at the cause. */
+.annotation {
+  position: absolute; z-index: 5;
+  max-width: 560px;
+  font-size: 38px; font-weight: 700; line-height: 1.32;
+  border-radius: 20px; padding: 26px 32px;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.5);
+}
+.annotation .who {
+  display: block; font-size: 25px; font-weight: 700;
+  letter-spacing: 0.1em; margin-bottom: 10px;
+}
+.annotation.good { background: rgba(11, 46, 26, 0.97); color: var(--green); }
+.annotation.good .who { color: #7ddba4; }
+.annotation.bad { background: rgba(64, 16, 27, 0.97); color: var(--red); }
+.annotation.bad .who { color: #f2a0b1; }
+.annotation .stem {
+  position: absolute; top: 50%; right: -18px; transform: translateY(-50%);
+  width: 0; height: 0;
+  border-top: 16px solid transparent; border-bottom: 16px solid transparent;
+  border-left: 20px solid rgba(11, 46, 26, 0.97);
+}
+.annotation.bad .stem { border-left-color: rgba(64, 16, 27, 0.97); }
+
+/* ---- contrast badge (for color/contrast episodes) ---- */
+.ratio-badge {
+  display: inline-flex; align-items: center; gap: 12px;
+  font-family: "Space Mono", monospace; font-size: 30px; font-weight: 700;
+  border-radius: 12px; padding: 12px 22px;
+}
+.ratio-badge.pass { color: #116635; background: #e8f7ee; box-shadow: inset 0 0 0 2px #37b06a; }
+.ratio-badge.fail { color: #8f1d33; background: #fdecef; box-shadow: inset 0 0 0 2px #e9607d; }
+.site-card.dark .ratio-badge.pass { color: #9df1b5; background: rgba(20, 82, 48, 0.4); }
+.site-card.dark .ratio-badge.fail { color: #ffb6c2; background: rgba(95, 28, 42, 0.4); }

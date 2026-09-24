@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Stage v1.1 exhibit — one stage, both themes (1.4.3 key frame)</title>
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../stage.css">
+<style>
+  /* The capability the theater stage exists for: light and dark site
+     cards on the same stage — a frame no single-theme video could show.
+     Reference key frame for the contrast episodes (1.4.3 / 1.4.11). */
+  .pair { position: absolute; top: 265px; left: 50%; transform: translateX(-50%); display: flex; gap: 56px; }
+  .site-card { width: 850px; }
+  .site-card .page { padding: 46px 54px 50px; }
+  .site-card h3 { font-size: 40px; letter-spacing: -0.012em; }
+  .site-card.light h3 { color: #1c2430; }
+  .site-card.dark h3 { color: #f3f5f9; }
+  .desc { font-size: 29px; line-height: 1.55; margin-top: 16px; max-width: 42ch; }
+  .site-card.light .desc { color: #9aa3b2; }   /* the mistake being taught */
+  .site-card.dark .desc { color: #cfd6e4; }
+  .ratio-badge { margin-top: 30px; }
+
+  #capbar-x {
+    position: absolute; left: 50%; bottom: 44px; transform: translateX(-50%);
+    max-width: 1560px;
+    background: rgba(4, 6, 10, 0.88); border-radius: 14px; padding: 18px 34px;
+    font-size: 44px; font-weight: 600; text-align: center; color: var(--stage-ink);
+  }
+  #chipmark-x {
+    position: absolute; left: 44px; bottom: 52px;
+    display: flex; align-items: center; gap: 14px;
+    font-size: 26px; color: var(--stage-muted);
+    border: 1.5px solid var(--stage-line);
+    background: rgba(10, 16, 28, 0.8);
+    border-radius: 999px; padding: 10px 24px;
+  }
+  #chipmark-x .n { color: var(--gold); font-family: "Space Mono", monospace; font-weight: 700; }
+</style>
+</head>
+<body class="theater">
+  <div class="context-bar"><span class="dot"></span> Sneaker Street <span class="sub">— PRODUCT PAGE, BOTH THEMES</span></div>
+
+  <div class="pair">
+    <div class="site-card light">
+      <div class="chrome"><span class="b"></span><span class="b"></span><span class="b"></span><span class="url">sneakerstreet.com</span></div>
+      <div class="page">
+        <h3>Care instructions</h3>
+        <p class="desc">Machine-wash cold with the laces removed. Air-dry only — heat warps the rubber sole and fades the canvas.</p>
+        <span class="ratio-badge fail">2.6:1 ✗ fails</span>
+      </div>
+    </div>
+    <div class="site-card dark">
+      <div class="chrome"><span class="b"></span><span class="b"></span><span class="b"></span><span class="url">sneakerstreet.com</span></div>
+      <div class="page">
+        <h3>Care instructions</h3>
+        <p class="desc">Machine-wash cold with the laces removed. Air-dry only — heat warps the rubber sole and fades the canvas.</p>
+        <span class="ratio-badge pass">9.3:1 ✓ passes</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="chipmark-x"><span class="n">1.4.3</span> Contrast (Minimum)</div>
+  <div id="capbar-x">Same words, same store — but light gray on white shuts readers out.</div>
+</body>
+</html>

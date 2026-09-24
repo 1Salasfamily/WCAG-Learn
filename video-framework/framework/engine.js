@@ -1,10 +1,10 @@
-// WCAG Learn video framework — ENGINE (framework v1.0.0)
+// WCAG Learn video framework — ENGINE (framework v1.1.0)
 // Deterministic, seekable timeline + the brand scenes every episode shares
 // (logo intro, logo outro, caption bar, episode chip). An episode page
 // defines its teaching scenes (markup + window.__episodeScenes) and the
 // engine handles everything else. Rendering steps frame by frame via
 // __seek, so output quality is independent of machine speed.
-window.FW_VERSION = "1.0.0";
+window.FW_VERSION = "1.1.0";
 
 let ANIMS = [];
 let SCENES = [];
