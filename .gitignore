@@ -11,3 +11,11 @@ yarn-error.log*
 pnpm-debug.log*
 tsconfig.tsbuildinfo
 axe-results.json
+
+# video framework: sources are tracked; regenerable/heavy artifacts are not
+video-framework/**/node_modules/
+video-framework/**/audio/
+video-framework/**/frames/
+video-framework/**/output/
+video-framework/**/schedule.json
+video-framework/framework/package-lock.json

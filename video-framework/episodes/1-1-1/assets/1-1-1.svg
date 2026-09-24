@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-hidden="true">
+<rect width="640" height="360" rx="14" fill="#10151e"/>
+<g font-family="Verdana, sans-serif">
+<text x="22" y="36" font-size="17" font-weight="bold" fill="#f3f5f9">1.1.1 Non-text Content</text>
+<rect x="22" y="56" width="292" height="284" rx="10" fill="#1b2230" stroke="#3a4354" stroke-width="2"/>
+<circle cx="48" cy="84" r="13" fill="#3fca72"/>
+<path d="M42 84l4 4 8-8" stroke="#10151e" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="70" y="89" font-size="13" fill="#3fca72">Accessible</text>
+<rect x="326" y="56" width="292" height="284" rx="10" fill="#1b2230" stroke="#3a4354" stroke-width="2"/>
+<circle cx="352" cy="84" r="13" fill="#e9607d"/>
+<path d="M347 79l10 10M357 79l-10 10" stroke="#10151e" stroke-width="3" stroke-linecap="round"/>
+<text x="374" y="89" font-size="13" fill="#e9607d">Violation</text>
+<rect x="44" y="100" width="116" height="88" rx="6" fill="#151a22" stroke="#3a4354" stroke-width="2"/>
+<path d="M56 164c2-14 10-24 22-26l8 10c12 6 34 8 56 12v10H56z" fill="#e9607d"/>
+<rect x="56" y="170" width="86" height="6" rx="3" fill="#b8c0cf"/>
+<rect x="44" y="200" width="190" height="26" rx="4" fill="#151a22" stroke="#3fca72" stroke-width="2"/>
+<text x="54" y="218" font-size="13" fill="#3fca72">alt=&quot;Red sneaker&quot;</text>
+<polygon points="44,266 52,266 62,257 62,281 52,272 44,272" fill="#7aa0e1"/>
+<path d="M66 263c3 3 3 9 0 12" stroke="#7aa0e1" stroke-width="2" fill="none"/>
+<rect x="80" y="246" width="170" height="44" rx="8" fill="#151a22" stroke="#7aa0e1" stroke-width="2"/>
+<polygon points="82,264 70,270 82,276" fill="#7aa0e1"/>
+<text x="96" y="273" font-size="13" fill="#90cbff">&#8220;Red sneaker&#8221;</text>
+<rect x="348" y="100" width="116" height="88" rx="6" fill="#151a22" stroke="#3a4354" stroke-width="2"/>
+<circle cx="372" cy="122" r="8" fill="#3a4354"/>
+<polygon points="360,176 384,140 400,160 410,148 432,176" fill="#3a4354"/>
+<rect x="348" y="200" width="170" height="26" rx="4" fill="#151a22" stroke="#e9607d" stroke-width="2"/>
+<text x="358" y="218" font-size="13" fill="#e9607d">alt=&quot;button1&quot;</text>
+<polygon points="348,266 356,266 366,257 366,281 356,272 348,272" fill="#b8c0cf"/>
+<rect x="384" y="246" width="130" height="44" rx="8" fill="#151a22" stroke="#e9607d" stroke-width="2"/>
+<polygon points="386,264 374,270 386,276" fill="#e9607d"/>
+<text x="400" y="273" font-size="13" fill="#e9607d">button1 ?</text>
+</g>
+</svg>

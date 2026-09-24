@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>WCAG Learn — episode 1.1.1 stage</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../framework/stage.css">
+<style>
+  /* ------- episode-specific styles (framework kit covers the rest) ------- */
+  .intro-wrap { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 36px; padding-bottom: 120px; }
+  .rule-card {
+    margin-top: 26px; max-width: 1280px; text-align: center;
+    font-size: 46px; line-height: 1.45; color: var(--muted);
+    border: 2px solid var(--border); border-radius: 24px;
+    background: rgba(21, 26, 34, 0.8); padding: 38px 56px;
+  }
+  .rule-card strong { color: var(--text); }
+
+  .store-bar {
+    position: absolute; top: 56px; left: 50%; transform: translateX(-50%);
+    display: flex; align-items: center; gap: 20px;
+    font-size: 40px; font-weight: 800; letter-spacing: -0.01em;
+  }
+  .store-bar .dot { width: 14px; height: 14px; border-radius: 50%; background: var(--gold); }
+  .store-bar .sub { font-size: 28px; font-weight: 600; color: var(--muted); letter-spacing: 0.06em; }
+  .exwrap {
+    position: absolute; top: 150px; left: 50%; transform: translateX(-50%);
+    width: 1280px; height: 720px; border-radius: 24px; overflow: hidden;
+    border: 2px solid var(--border); background: #10151d;
+    box-shadow: 0 30px 80px rgba(0,0,0,.5);
+  }
+  .exwrap img { width: 1280px; display: block; transform-origin: 50% 50%; }
+  #sr-good { left: 130px; bottom: 210px; }
+  #sr-bad { right: 130px; bottom: 210px; }
+
+  .test-wrap { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 40px; padding-bottom: 130px; }
+  .ways { display: flex; gap: 40px; }
+  .way {
+    width: 640px; border-radius: 24px; border: 2px solid var(--border);
+    background: rgba(21, 26, 34, 0.85); padding: 42px 46px;
+    opacity: 0;
+  }
+  .way .k { font-family: "Space Mono", monospace; color: var(--gold); font-size: 34px; font-weight: 700; letter-spacing: 0.08em; }
+  .way h3 { font-size: 46px; font-weight: 800; margin: 14px 0 12px; letter-spacing: -0.01em; }
+  .way p { font-size: 34px; line-height: 1.4; color: var(--muted); }
+  .way code { font-family: "Space Mono", monospace; font-size: 31px; color: #d8e4ff; background: rgba(0,0,0,.35); border-radius: 8px; padding: 2px 10px; }
+  .fails { display: flex; gap: 26px; }
+
+  .fix-wrap { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 44px; padding-bottom: 130px; }
+  #typed { display: inline-block; overflow: hidden; white-space: nowrap; vertical-align: bottom; width: 0; }
+  .deco-note { font-size: 36px; color: var(--muted); opacity: 0; }
+  .deco-note code { font-family: "Space Mono", monospace; color: #d8e4ff; background: rgba(0,0,0,.35); border-radius: 8px; padding: 2px 12px; }
+  .passrow { display: flex; align-items: center; gap: 30px; opacity: 0; }
+  .sr-pass {
+    font-size: 40px; font-weight: 700; color: var(--green);
+    background: var(--green-bg); border-radius: 20px; padding: 22px 34px;
+  }
+</style>
+</head>
+<body>
+
+<!-- s2: introduce the criterion -->
+<section class="scene" id="s2">
+  <div class="intro-wrap">
+    <div class="sc-num" id="s2num">1.1.1</div>
+    <div class="sc-title" id="s2title">Non-text Content</div>
+    <div class="sc-chip" id="s2chip"><span class="lvl">Level A</span> &nbsp;·&nbsp; PERCEIVABLE</div>
+    <div class="rule-card" id="s2rule">If it isn&rsquo;t text — images, icons, charts, picture buttons — it needs a <strong>text alternative</strong> that does the same job.</div>
+  </div>
+</section>
+
+<!-- s3: scenario at Sneaker Street -->
+<section class="scene" id="s3">
+  <div class="store-bar" id="s3store"><span class="dot"></span> Sneaker Street <span class="sub">— ONLINE SHOE STORE</span></div>
+  <div class="exwrap"><img id="s3img" src="assets/1-1-1.svg" alt=""></div>
+  <div class="srbubble good" id="sr-good"><span class="who">SCREEN READER</span>&ldquo;Red canvas high-top sneaker with white rubber sole. Image.&rdquo;</div>
+  <div class="srbubble bad" id="sr-bad"><span class="who">SCREEN READER</span>&ldquo;button one&rdquo; &nbsp;…?</div>
+</section>
+
+<!-- s4: how to test -->
+<section class="scene" id="s4">
+  <div class="test-wrap">
+    <div class="head-xl" id="s4head">How to test it</div>
+    <div class="ways">
+      <div class="way" id="way1">
+        <span class="k">WAY 1</span>
+        <h3>Listen</h3>
+        <p>Turn on a screen reader — like VoiceOver — and move through the page. Does every image announce something useful?</p>
+      </div>
+      <div class="way" id="way2">
+        <span class="k">WAY 2</span>
+        <h3>Inspect</h3>
+        <p>Open dev tools on the image and check <code>alt="…"</code>. What does it really say?</p>
+      </div>
+    </div>
+    <div class="fails">
+      <div class="failchip" id="f1">✗ &nbsp;missing alt</div>
+      <div class="failchip" id="f2">✗ &nbsp;a file name</div>
+      <div class="failchip" id="f3">✗ &nbsp;&ldquo;button1&rdquo;</div>
+    </div>
+  </div>
+</section>
+
+<!-- s5: fix + retest -->
+<section class="scene" id="s5">
+  <div class="fix-wrap">
+    <div class="head-xl" id="s5head">The fix: one attribute</div>
+    <div class="codecard" id="s5code"><span class="tag">&lt;img</span> src="buy-now.png" <span id="typed"><span class="attr">alt</span>=<span class="val">"Buy now"</span></span><span class="tag">&gt;</span></div>
+    <div class="deco-note" id="s5deco">Decoration only? <code>alt=""</code> — screen readers skip it.</div>
+    <div class="passrow" id="s5pass">
+      <div class="sr-pass">&ldquo;Buy now, button&rdquo;</div>
+      <div class="verdict"><span>✓</span> PASS</div>
+    </div>
+  </div>
+</section>
+
+<script src="../../framework/engine.js"></script>
+<script>
+// Episode 1.1.1 scene wiring. Receives the framework context from __init.
+window.__episodeScenes = ({ S, cue, el, anim, fadeUp, pop }) => {
+  // s2 — introduce
+  pop(el("s2num"), cue("s2", 1).start, 0.55);
+  fadeUp(el("s2title"), cue("s2", 1).start + 0.25, 0.6);
+  fadeUp(el("s2chip"), cue("s2", 2).start, 0.5);
+  fadeUp(el("s2rule"), cue("s2", 3).start, 0.6);
+
+  // s3 — scenario: camera pans the app's example art
+  fadeUp(el("s3store"), cue("s3", 0).start, 0.5);
+  const img = el("s3img");
+  const t = S.s3.start, end = S.s3.end;
+  const leftAt = cue("s3", 1).start, rightAt = cue("s3", 5).start;
+  const total = end - t;
+  const off = (x) => Math.min(Math.max((x - t) / total, 0), 1);
+  anim(img, [
+    { transform: "scale(1) translate(0,0)", offset: 0 },
+    { transform: "scale(1) translate(0,0)", offset: off(leftAt) },
+    { transform: "scale(1.75) translate(21%, -4%)", offset: off(leftAt + 0.8) },
+    { transform: "scale(1.75) translate(21%, -4%)", offset: off(rightAt) },
+    { transform: "scale(1.75) translate(-21%, -4%)", offset: off(rightAt + 0.8) },
+    { transform: "scale(1.75) translate(-21%, -4%)", offset: 1 }
+  ], t, total, "linear");
+  pop(el("sr-good"), cue("s3", 3).start, 0.45);
+  anim(el("sr-good"), [{ opacity: 1 }, { opacity: 0 }], cue("s3", 5).start - 0.3, 0.3, "ease-in");
+  pop(el("sr-bad"), cue("s3", 6).start, 0.45);
+
+  // s4 — test
+  fadeUp(el("s4head"), cue("s4", 0).start, 0.5);
+  fadeUp(el("way1"), cue("s4", 0).start + 0.35, 0.55);
+  fadeUp(el("way2"), cue("s4", 2).start, 0.55);
+  pop(el("f1"), cue("s4", 3).start, 0.4);
+  pop(el("f2"), cue("s4", 3).start + 0.35, 0.4);
+  pop(el("f3"), cue("s4", 3).start + 0.7, 0.4);
+
+  // s5 — fix + retest
+  fadeUp(el("s5head"), cue("s5", 0).start, 0.5);
+  fadeUp(el("s5code"), cue("s5", 0).start + 0.4, 0.55);
+  anim(el("typed"), [{ width: "0ch" }, { width: "13ch" }],
+    cue("s5", 1).start, Math.max(cue("s5", 1).end - cue("s5", 1).start - 0.2, 0.8),
+    "steps(13, end)");
+  fadeUp(el("s5deco"), cue("s5", 2).start, 0.5);
+  pop(el("s5pass"), cue("s5", 4).start + 0.2, 0.5);
+};
+</script>
+</body>
+</html>

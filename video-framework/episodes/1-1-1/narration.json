@@ -1,0 +1,71 @@
+{
+  "title": "1.1.1 Non-text Content",
+  "outfile": "WCAG-Learn-1-1-1-Non-text-Content",
+  "voice": "Samantha",
+  "rate": 165,
+  "scenes": [
+    {
+      "id": "s1",
+      "kind": "logo-intro",
+      "fixed": 2.8,
+      "cues": []
+    },
+    {
+      "id": "s2",
+      "kind": "intro",
+      "cues": [
+        { "cap": "Welcome to WCAG Learn.", "say": "Welcome to W-CAG Learn." },
+        { "cap": "This is success criterion 1.1.1: Non-text Content.", "say": "This is success criterion one point one point one: Non-text Content." },
+        { "cap": "It's Level A — the foundation every site needs.", "say": "It's Level A — the foundation every site needs." },
+        { "cap": "The rule: everything that isn't text — images, icons, charts, picture buttons —", "say": "The rule: everything that isn't text — images, icons, charts, picture buttons —" },
+        { "cap": "needs a text alternative that does the same job.", "say": "needs a text alternative that does the same job." }
+      ]
+    },
+    {
+      "id": "s3",
+      "kind": "scenario",
+      "cues": [
+        { "cap": "Meet Sam — shopping at Sneaker Street with a screen reader.", "say": "Meet Sam — shopping at Sneaker Street with a screen reader." },
+        { "cap": "Sam lands on a photo of a red high-top sneaker.", "say": "Sam lands on a photo of a red high-top sneaker." },
+        { "cap": "On the accessible page, the screen reader says:", "say": "On the accessible page, the screen reader says:" },
+        { "cap": "“Red canvas high-top sneaker with white rubber sole. Image.”", "say": "Red canvas high-top sneaker, with white rubber sole. Image." },
+        { "cap": "Sam knows exactly what's for sale.", "say": "Sam knows exactly what's for sale." },
+        { "cap": "But the Buy-now button is a picture, and its alt text is “button1”.", "say": "But the buy now button is a picture, and its alt text is button one." },
+        { "cap": "The screen reader just says: “button one.”", "say": "The screen reader just says: button one." },
+        { "cap": "Sam has no idea what pressing it will do.", "say": "Sam has no idea what pressing it will do." }
+      ]
+    },
+    {
+      "id": "s4",
+      "kind": "test",
+      "cues": [
+        { "cap": "Time to test. Way one: turn on a screen reader, like VoiceOver.", "say": "Time to test. Way one: turn on a screen reader, like VoiceOver." },
+        { "cap": "Move through the page. Does every image announce something useful?", "say": "Move through the page. Does every image announce something useful?" },
+        { "cap": "Way two: inspect the image and check its alt attribute.", "say": "Way two: inspect the image, and check its alt attribute." },
+        { "cap": "Missing? A file name? A label like “button1”?", "say": "Missing? A file name? A label like button one?" },
+        { "cap": "That's a fail.", "say": "That's a fail." }
+      ]
+    },
+    {
+      "id": "s5",
+      "kind": "fix",
+      "cues": [
+        { "cap": "The fix is one attribute. Say what the image is for:", "say": "The fix is one attribute. Say what the image is for:" },
+        { "cap": "alt=\"Buy now\"", "say": "alt equals, Buy now." },
+        { "cap": "Pure decoration? Use an empty alt, so screen readers skip it.", "say": "Pure decoration? Use an empty alt, so screen readers skip it." },
+        { "cap": "Then retest with your screen reader.", "say": "Then retest with your screen reader." },
+        { "cap": "When you hear “Buy now, button” — that's a pass.", "say": "When you hear, Buy now, button — that's a pass." }
+      ]
+    },
+    {
+      "id": "s6",
+      "kind": "outro",
+      "tail": 2.4,
+      "cues": [
+        { "cap": "That's 1.1.1: if it's not text, give it text.", "say": "That's one point one point one: if it's not text, give it text." },
+        { "cap": "One down, fifty-five to go.", "say": "One down, fifty-five to go." },
+        { "cap": "Study all 56, free, at wcaglearn.com.", "say": "Study all fifty-six, free, at W-CAG-learn dot com." }
+      ]
+    }
+  ]
+}
