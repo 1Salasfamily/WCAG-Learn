@@ -15,7 +15,7 @@ export const THEME_KEY = "wcag-learn:theme:v1";
 // Matches --bg in each theme; drives the browser's own chrome colour.
 export const THEME_COLORS: Record<Theme, string> = {
   dark: "#0f1115",
-  light: "#f4f6f9"
+  light: "#eceff5"
 };
 
 export function readPref(): ThemePref {

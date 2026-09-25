@@ -44,7 +44,7 @@ export const viewport: Viewport = {
   // The browser chrome follows the theme the page is actually showing.
   themeColor: [
     { media: "(prefers-color-scheme: dark)", color: "#0f1115" },
-    { media: "(prefers-color-scheme: light)", color: "#f4f6f9" }
+    { media: "(prefers-color-scheme: light)", color: "#eceff5" }
   ],
   width: "device-width",
   initialScale: 1,
