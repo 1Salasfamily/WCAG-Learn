@@ -1,4 +1,5 @@
 :root {
+  color-scheme: dark;
   --bg: #0f1115;
   --panel: #151a22;
   --panel-soft: #1b2230;
@@ -8,6 +9,9 @@
   --focus: #22c55e;
   --active: #2b3b55;
   --link: #90cbff;
+  /* Text on an --active fill. Equals --text in dark; light mode fills the
+     primary button with a deep blue and needs light text on it. */
+  --on-active: #f3f5f9;
   /* Brand gold (7.2:1 on --bg). Reserved for active/selected states and
      brand moments — never body text, links, or semantic feedback. */
   --gold: #e8a13a;
@@ -111,6 +115,123 @@
   --skip-bg: #fff;
   --skip-text: #111;
 }
+
+/* ---- Phase 2: the light theme. Follows the operating system (Option A).
+   Every value below was measured against the surface it actually sits on;
+   the lowest text pair clears 7:1 with margin. Gold's slot takes #133f86,
+   hue 217 like the dark --active, saturation 75. Shadows tint toward the
+   ground and drop to a fraction of their dark weight. ---- */
+@media (prefers-color-scheme: light) {
+  :root {
+    color-scheme: light;
+    --bg: #f4f6f9;
+    --panel: #ffffff;
+    --panel-soft: #eef1f6;
+    --text: #11151c;
+    --muted: #46505c;
+    --border: #d3dae4;
+    --focus: #157f3c;
+    --active: #133f86;
+    --on-active: #f3f5f9;
+    --link: #095298;
+    --gold: #133f86;
+    --gold-soft: rgba(19, 63, 134, 0.06);
+    --gold-border: rgba(19, 63, 134, 0.65);
+    /* Scrollbar */
+    --scrollbar-thumb: rgba(70, 80, 92, 0.45);
+    --scrollbar-track: rgba(17, 21, 28, 0.08);
+    --scrollbar-track-webkit: rgba(17, 21, 28, 0.06);
+    --scrollbar-thumb-hover: rgba(70, 80, 92, 0.7);
+    /* Chips and pills */
+    --chip-text: #2c3d5c;
+    --chip-border: rgba(104, 127, 168, 0.5);
+    --chip-bg: rgba(219, 230, 247, 0.7);
+    --chip-border-hover: rgba(9, 82, 152, 0.7);
+    --chip-divider: rgba(104, 127, 168, 0.6);
+    --principle-chip-border: rgba(44, 61, 92, 0.45);
+    --principle-chip-bg: rgba(219, 230, 247, 0.7);
+    /* Labels and small text */
+    --label-text: #404f6c;
+    --level-a-text: #115c34;
+    --level-aa-text: #2c3d5c;
+    --level-aaa-text: #6a450b;
+    --hint-text: #2c3d5c;
+    --placeholder-text: #46505c;
+    /* Pass */
+    --pass-text: #115c34;
+    --pass-text-bright: #0f5030;
+    --pass-border: rgba(17, 92, 52, 0.35);
+    --pass-border-soft: rgba(17, 92, 52, 0.3);
+    --pass-border-strong: rgba(17, 92, 52, 0.45);
+    --mastery-fill: rgba(17, 92, 52, 0.75);
+    --pass-verdict-border: rgba(17, 92, 52, 0.5);
+    --pass-option-border: rgba(17, 92, 52, 0.65);
+    --pass-option-glow: rgba(17, 92, 52, 0.25);
+    --pass-bg: rgba(17, 92, 52, 0.07);
+    --pass-bg-soft: rgba(17, 92, 52, 0.05);
+    --pass-verdict-bg-soft: rgba(17, 92, 52, 0.06);
+    --pass-verdict-bg: rgba(17, 92, 52, 0.08);
+    --pass-option-bg: rgba(17, 92, 52, 0.08);
+    --pass-option-shadow: rgba(17, 92, 52, 0.15);
+    /* Fail */
+    --fail-text: #9a211a;
+    --fail-text-bright: #8a1d17;
+    --fail-border: rgba(154, 33, 26, 0.35);
+    --fail-border-soft: rgba(154, 33, 26, 0.3);
+    --fail-border-strong: rgba(154, 33, 26, 0.45);
+    --fail-verdict-border: rgba(154, 33, 26, 0.5);
+    --fail-option-border: rgba(154, 33, 26, 0.65);
+    --fail-input-border: rgba(154, 33, 26, 0.8);
+    --fail-bg: rgba(154, 33, 26, 0.06);
+    --fail-bg-soft: rgba(154, 33, 26, 0.045);
+    --fail-verdict-bg: rgba(154, 33, 26, 0.07);
+    --fail-option-bg: rgba(154, 33, 26, 0.08);
+    /* Surfaces */
+    --sidebar-bg-top: #ffffff;
+    --sidebar-bg-bottom: #f4f6f9;
+    --input-bg: #ffffff;
+    --row-bg: rgba(17, 21, 28, 0.03);
+    --row-border: rgba(17, 21, 28, 0.12);
+    --toggle-bg: #ffffff;
+    --mode-toggle-bg: #ffffff;
+    --mode-toggle-active-bg: rgba(19, 63, 134, 0.12);
+    --mode-toggle-active-glow: rgba(19, 63, 134, 0.25);
+    --option-bg: #ffffff;
+    --radio-row-bg: #ffffff;
+    --about-section-bg: #ffffff;
+    --section-bg: #eef1f6;
+    --section-border: rgba(17, 21, 28, 0.12);
+    --key-bg: rgba(17, 21, 28, 0.06);
+    --hint-border: rgba(17, 21, 28, 0.2);
+    --footer-bg: rgba(244, 246, 249, 0.85);
+    --overlay-bg: rgba(244, 246, 249, 0.85);
+    --overlay-bg-solid: rgba(244, 246, 249, 0.96);
+    --backdrop-bg: rgba(17, 21, 28, 0.35);
+    --image-frame-border: #c3ccd8;
+    --divider-start: rgba(19, 63, 134, 0.35);
+    --divider-mid: rgba(19, 63, 134, 0.06);
+    --divider-end: rgba(19, 63, 134, 0);
+    /* Hover accents */
+    --accent-hover-border: rgba(19, 63, 134, 0.6);
+    --accent-hover-border-soft: rgba(19, 63, 134, 0.45);
+    --accent-hover-glow: rgba(19, 63, 134, 0.2);
+    --accent-hover-glow-soft: rgba(19, 63, 134, 0.15);
+    --row-active-border: rgba(19, 63, 134, 0.65);
+    --gold-hover-bg: rgba(19, 63, 134, 0.08);
+    /* Shadows: a fraction of the dark weight, tinted toward the ground */
+    --shadow-card: rgba(17, 21, 28, 0.1);
+    --shadow-hover: rgba(17, 21, 28, 0.12);
+    --shadow-row: rgba(17, 21, 28, 0.06);
+    --shadow-option-hover: rgba(17, 21, 28, 0.1);
+    --shadow-image-hover: rgba(17, 21, 28, 0.14);
+    --shadow-image: rgba(17, 21, 28, 0.12);
+    --shadow-sidebar: rgba(17, 21, 28, 0.16);
+    /* Skip link inverts */
+    --skip-bg: #11151c;
+    --skip-text: #f3f5f9;
+  }
+}
+
 
 * {
   box-sizing: border-box;
@@ -675,6 +796,7 @@ a {
 
 .criteria-row.active {
   background: var(--active);
+  color: var(--on-active);
   border-color: var(--row-active-border);
   color: var(--text);
   box-shadow: inset 3px 0 0 var(--gold), 0 2px 8px var(--shadow-card);
@@ -795,6 +917,7 @@ a {
 .sidebar-mode-row.active {
   color: var(--text);
   background: var(--active);
+  color: var(--on-active);
   border-color: var(--row-active-border);
   box-shadow: inset 3px 0 0 var(--gold);
 }
@@ -969,6 +1092,7 @@ a {
 
 .start-button-primary {
   background: var(--active);
+  color: var(--on-active);
   border-color: color-mix(in srgb, var(--gold) 75%, transparent);
 }
 
