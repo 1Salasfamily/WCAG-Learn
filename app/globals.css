@@ -121,13 +121,14 @@
   --skip-text: #111;
 }
 
-/* ---- Phase 2: the light theme. Follows the operating system (Option A).
+/* ---- Phase 2: the light theme. Applied when <html data-theme="light">,
+   which the no-flash script and the header toggle set from the saved
+   preference or the operating system.
    Every value below was measured against the surface it actually sits on;
    the lowest text pair clears 7:1 with margin. Gold's slot takes #133f86,
    hue 217 like the dark --active, saturation 75. Shadows tint toward the
    ground and drop to a fraction of their dark weight. ---- */
-@media (prefers-color-scheme: light) {
-  :root {
+:root[data-theme="light"] {
     color-scheme: light;
     --bg: #f4f6f9;
     --panel: #ffffff;
@@ -237,7 +238,6 @@
     /* Skip link inverts */
     --skip-bg: #11151c;
     --skip-text: #f3f5f9;
-  }
 }
 
 
@@ -2559,6 +2559,85 @@ a {
 }
 
 
+/* ---- Inlined drawings ---------------------------------------------------
+   The criterion illustrations and the lockup are inline SVG so they can
+   follow data-theme. The wrapper takes the exact classes the <img> had, so
+   it fills the same 16:9 shell; the drawing's own viewBox contains it. The
+   recolour map is the fourteen colours the set uses: canvas, panels and
+   strokes invert, text greys darken to the page's AAA values, the semantic
+   green and red stay semantic. 1.4.11's two demonstration borders, #767676
+   and #dfe3e8, are the lesson itself and are deliberately not mapped. ---- */
+.illustration > svg,
+.site-lockup > svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.site-lockup > svg {
+  width: auto;
+  height: 34px;
+}
+
+:root[data-theme="light"] .illustration [fill="#10151e"] { fill: #ffffff; }
+:root[data-theme="light"] .illustration [stroke="#10151e"] { stroke: #ffffff; }
+:root[data-theme="light"] .illustration [fill="#1b2230"] { fill: #f2f5f9; }
+:root[data-theme="light"] .illustration [stroke="#1b2230"] { stroke: #f2f5f9; }
+:root[data-theme="light"] .illustration [fill="#151a22"] { fill: #eef1f6; }
+:root[data-theme="light"] .illustration [stroke="#151a22"] { stroke: #eef1f6; }
+:root[data-theme="light"] .illustration [fill="#3a4354"] { fill: #c3ccd8; }
+:root[data-theme="light"] .illustration [stroke="#3a4354"] { stroke: #c3ccd8; }
+:root[data-theme="light"] .illustration [fill="#f3f5f9"] { fill: #11151c; }
+:root[data-theme="light"] .illustration [stroke="#f3f5f9"] { stroke: #11151c; }
+:root[data-theme="light"] .illustration [fill="#b8c0cf"] { fill: #46505c; }
+:root[data-theme="light"] .illustration [stroke="#b8c0cf"] { stroke: #46505c; }
+:root[data-theme="light"] .illustration [fill="#aab2bf"] { fill: #5c6675; }
+:root[data-theme="light"] .illustration [stroke="#aab2bf"] { stroke: #5c6675; }
+:root[data-theme="light"] .illustration [fill="#2b2b2b"] { fill: #11151c; }
+:root[data-theme="light"] .illustration [stroke="#2b2b2b"] { stroke: #11151c; }
+:root[data-theme="light"] .illustration [fill="#3fca72"] { fill: #115c34; }
+:root[data-theme="light"] .illustration [stroke="#3fca72"] { stroke: #115c34; }
+:root[data-theme="light"] .illustration [fill="#e9607d"] { fill: #9a211a; }
+:root[data-theme="light"] .illustration [stroke="#e9607d"] { stroke: #9a211a; }
+:root[data-theme="light"] .illustration [fill="#7aa0e1"] { fill: #2f5fa8; }
+:root[data-theme="light"] .illustration [stroke="#7aa0e1"] { stroke: #2f5fa8; }
+:root[data-theme="light"] .illustration [fill="#ffba60"] { fill: #6a450b; }
+:root[data-theme="light"] .illustration [stroke="#ffba60"] { stroke: #6a450b; }
+:root[data-theme="light"] .illustration [fill="#90cbff"] { fill: #095298; }
+:root[data-theme="light"] .illustration [stroke="#90cbff"] { stroke: #095298; }
+
+:root[data-theme="light"] .site-lockup [fill="#ffffff"] { fill: #11151c; }
+:root[data-theme="light"] .site-lockup [stroke="#ffffff"] { stroke: #11151c; }
+
+/* Appearance toggle in the header: the study-mode segmented control's look. */
+.theme-toggle {
+  display: inline-flex;
+  padding: 0.22rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--mode-toggle-bg);
+}
+
+.theme-toggle-button {
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  border-radius: 999px;
+  padding: 0.52rem 0.92rem;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.theme-toggle-button.active {
+  color: var(--text);
+  background: var(--mode-toggle-active-bg);
+  box-shadow: 0 0 0 1px var(--mode-toggle-active-glow);
+}
+
 /* ==== Phase 6: the Apple finish ==========================================
    A skin on the buttons, the menu button, the left rail and the criterion
    cards. Same elements, same layout, same function; no drawer, no gesture.
@@ -2571,6 +2650,7 @@ a {
 .feedback-submit,
 .sidebar-toggle,
 .mode-toggle-button,
+.theme-toggle-button,
 .share-criterion,
 .tag-filter-chip,
 .details-tech-chip {
@@ -2622,6 +2702,7 @@ a {
 .start-button:active,
 .feedback-submit:active,
 .mode-toggle-button:active,
+.theme-toggle-button:active,
 .share-criterion:active,
 .tag-filter-chip:active,
 .details-tech-chip:active {
@@ -2668,6 +2749,7 @@ a {
 @media (pointer: coarse) {
   .quiz-filter-select,
   .mode-toggle-button,
+  .theme-toggle-button,
   .details-tech-chip,
   .share-criterion,
   .tag-filter-chip,

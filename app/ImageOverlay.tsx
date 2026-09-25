@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import type { KeyboardEvent as ReactKeyboardEvent } from "react";
 import type { Criterion } from "./wcag";
+import Illustration from "./Illustration";
 
 type ImageOverlayProps = {
   criterion: Criterion;
@@ -70,10 +71,10 @@ export default function ImageOverlay({
         className="example-overlay-image-wrap"
         onClick={(event) => event.stopPropagation()}
       >
-        <img
+        <Illustration
+          id={criterion.id}
           className="example-overlay-image"
-          src={imageSrc}
-          alt={`Example for ${criterion.id} ${criterion.title}: an accessible version beside a violation. Close this view to read the pass and fail examples as text on the card.`}
+          label={`Example for ${criterion.id} ${criterion.title}: an accessible version beside a violation. Close this view to read the pass and fail examples as text on the card.`}
         />
       </div>
       <button className="start-button overlay-close" onClick={onClose} autoFocus>

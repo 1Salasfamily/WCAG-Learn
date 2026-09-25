@@ -19,6 +19,8 @@ const mono = Space_Mono({
 import ResetButton from "./reset-button";
 import SiteTitle from "./site-title";
 import SkipLink from "./skip-link";
+import ThemeToggle from "./theme-toggle";
+import { NO_FLASH_SCRIPT } from "./theme";
 
 export const metadata: Metadata = {
   title: "WCAG Learn",
@@ -55,8 +57,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${sans.variable} ${mono.variable}`}>
+    <html
+      lang="en"
+      className={`${sans.variable} ${mono.variable}`}
+      // The no-flash script sets data-theme before React hydrates; that
+      // attribute is expected to differ from the server render.
+      suppressHydrationWarning
+    >
       <body>
+        {/* Runs before anything paints: resolves the saved or system
+            theme onto <html> so there is never a flash of the wrong one. */}
+        <script dangerouslySetInnerHTML={{ __html: NO_FLASH_SCRIPT }} />
         <SkipLink />
         <header className="site-header">
           <h1 className="site-title">
@@ -64,6 +75,9 @@ export default function RootLayout({
           </h1>
           <nav className="site-nav" aria-label="Primary">
             <ul className="nav-list">
+              <li>
+                <ThemeToggle />
+              </li>
               <li>
                 <ResetButton />
               </li>

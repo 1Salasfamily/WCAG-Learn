@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { LOCKUP } from "./lockup.generated";
 
 export default function SiteTitle() {
   const pathname = usePathname();
@@ -22,14 +23,13 @@ export default function SiteTitle() {
       aria-label="WCAG Learn — go to start page"
       onClick={handleClick}
     >
-      {/* The link's aria-label wins the accessible name; the alt is the
-          visible text fallback if the SVG ever fails to load. */}
-      <img
-        className="site-logo"
-        src="/wcag-learn-lockup-dark.svg"
-        alt="WCAG Learn"
-        width={130}
-        height={34}
+      {/* Inlined rather than an <img> so the wordmark can recolour with the
+          theme; the link's aria-label carries the accessible name, so the
+          drawing itself is hidden from the tree. */}
+      <span
+        className="site-logo site-lockup"
+        aria-hidden="true"
+        dangerouslySetInnerHTML={{ __html: LOCKUP }}
       />
     </Link>
   );

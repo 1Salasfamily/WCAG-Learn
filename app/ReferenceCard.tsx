@@ -3,6 +3,7 @@
 import { getTags, NEW_IN_22 } from "./wcag";
 import type { Criterion } from "./wcag";
 import ShareCriterionButton from "./ShareCriterionButton";
+import Illustration from "./Illustration";
 
 type ReferenceCardProps = {
   criterion: Criterion;
@@ -63,10 +64,10 @@ export default function ReferenceCard({
           >
             <div className="example-image-frame">
               <div className="example-image-shell">
-                <img
+                <Illustration
+                  id={criterion.id}
                   className="example-image"
-                  src={imageSrc}
-                  alt={`Accessible version and violation, side by side, for ${criterion.id} ${criterion.title}`}
+                  label={`Accessible version and violation, side by side, for ${criterion.id} ${criterion.title}`}
                 />
               </div>
               <span className="reference-expand-hint">Select to expand</span>
