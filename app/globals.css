@@ -353,16 +353,44 @@ a {
   overflow: hidden;
 }
 
+/* Three columns so the links stay centred while the appearance control
+   sits bottom right; below 760px the control drops to its own line. */
 .site-footer {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
   gap: 0.4rem 0.85rem;
   border-top: 1.5px solid var(--border);
   padding: 0.55rem calc(1rem + env(safe-area-inset-right))
     calc(0.55rem + env(safe-area-inset-bottom)) calc(1rem + env(safe-area-inset-left));
   background: var(--footer-bg);
+}
+
+.footer-links {
+  grid-column: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: inherit;
+}
+
+.footer-appearance {
+  grid-column: 3;
+  justify-self: end;
+}
+
+@media (max-width: 760px) {
+  .site-footer {
+    grid-template-columns: 1fr;
+  }
+  .footer-links,
+  .footer-appearance {
+    grid-column: 1;
+  }
+  .footer-appearance {
+    justify-self: end;
+  }
 }
 
 .footer-link {
@@ -2211,6 +2239,17 @@ a {
   .footer-copyright {
     font-size: 0.72rem;
   }
+  /* Slimmer select on phones; the label stays visible since the control
+     has its own line here. */
+  .footer-appearance .quiz-filter-select {
+    min-height: 30px;
+    padding: 0.2rem 1.6rem 0.2rem 0.6rem;
+    font-size: 0.72rem;
+  }
+  .footer-appearance .quiz-select-shell::after {
+    right: 0.6rem;
+    font-size: 0.7rem;
+  }
 
   .learn-main {
     padding: 0.5rem;
@@ -2548,6 +2587,25 @@ a {
   .footer-copyright {
     font-size: 0.7rem;
   }
+  /* One thin line: the appearance select shrinks with the links and its
+     label stays for screen readers only. */
+  .footer-appearance .quiz-filter-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+  }
+  .footer-appearance .quiz-filter-select {
+    min-height: 30px;
+    padding: 0.2rem 1.6rem 0.2rem 0.6rem;
+    font-size: 0.72rem;
+  }
+  .footer-appearance .quiz-select-shell::after {
+    right: 0.6rem;
+    font-size: 0.7rem;
+  }
 
   .start-screen {
     padding: 1.1rem 1.3rem;
@@ -2609,34 +2667,6 @@ a {
 :root[data-theme="light"] .site-lockup [fill="#ffffff"] { fill: #11151c; }
 :root[data-theme="light"] .site-lockup [stroke="#ffffff"] { stroke: #11151c; }
 
-/* Appearance toggle in the header: the study-mode segmented control's look. */
-.theme-toggle {
-  display: inline-flex;
-  padding: 0.22rem;
-  border-radius: 999px;
-  border: 1px solid var(--border);
-  background: var(--mode-toggle-bg);
-}
-
-.theme-toggle-button {
-  border: 0;
-  background: transparent;
-  color: var(--muted);
-  border-radius: 999px;
-  padding: 0.52rem 0.92rem;
-  font: inherit;
-  font-size: 0.9rem;
-  font-weight: 600;
-  cursor: pointer;
-  touch-action: manipulation;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.theme-toggle-button.active {
-  color: var(--text);
-  background: var(--mode-toggle-active-bg);
-  box-shadow: 0 0 0 1px var(--mode-toggle-active-glow);
-}
 
 /* ==== Phase 6: the Apple finish ==========================================
    A skin on the buttons, the menu button, the left rail and the criterion
@@ -2650,7 +2680,6 @@ a {
 .feedback-submit,
 .sidebar-toggle,
 .mode-toggle-button,
-.theme-toggle-button,
 .share-criterion,
 .tag-filter-chip,
 .details-tech-chip {
@@ -2702,7 +2731,6 @@ a {
 .start-button:active,
 .feedback-submit:active,
 .mode-toggle-button:active,
-.theme-toggle-button:active,
 .share-criterion:active,
 .tag-filter-chip:active,
 .details-tech-chip:active {
@@ -2749,7 +2777,6 @@ a {
 @media (pointer: coarse) {
   .quiz-filter-select,
   .mode-toggle-button,
-  .theme-toggle-button,
   .details-tech-chip,
   .share-criterion,
   .tag-filter-chip,

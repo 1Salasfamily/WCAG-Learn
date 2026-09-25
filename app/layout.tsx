@@ -19,7 +19,7 @@ const mono = Space_Mono({
 import ResetButton from "./reset-button";
 import SiteTitle from "./site-title";
 import SkipLink from "./skip-link";
-import ThemeToggle from "./theme-toggle";
+import ThemeSelect from "./theme-select";
 import { NO_FLASH_SCRIPT } from "./theme";
 
 export const metadata: Metadata = {
@@ -76,9 +76,6 @@ export default function RootLayout({
           <nav className="site-nav" aria-label="Primary">
             <ul className="nav-list">
               <li>
-                <ThemeToggle />
-              </li>
-              <li>
                 <ResetButton />
               </li>
             </ul>
@@ -88,6 +85,7 @@ export default function RootLayout({
           {children}
         </main>
         <footer className="site-footer">
+          <span className="footer-links">
           <Link className="footer-link" href="/about">
             Learn more &amp; sources
           </Link>
@@ -110,6 +108,8 @@ export default function RootLayout({
             © {new Date().getFullYear()} Justin Salas · WCAG Learn. All rights
             reserved.
           </span>
+          </span>
+          <ThemeSelect />
         </footer>
         <Analytics />
       </body>
