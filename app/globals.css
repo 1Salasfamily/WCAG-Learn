@@ -171,7 +171,7 @@
     --hint-text: #2c3d5c;
     --placeholder-text: #46505c;
     /* Pass */
-    --pass-text: #0f512e;
+    --pass-text: #0e4e2c;
     --pass-text-bright: #0f5030;
     --pass-border: rgba(17, 92, 52, 0.52);
     --pass-border-soft: rgba(17, 92, 52, 0.3);
@@ -180,7 +180,7 @@
     --pass-verdict-border: rgba(17, 92, 52, 0.5);
     --pass-option-border: rgba(17, 92, 52, 0.65);
     --pass-option-glow: rgba(17, 92, 52, 0.25);
-    --pass-bg: rgba(17, 92, 52, 0.07);
+    --pass-bg: rgba(17, 92, 52, 0.14);
     --pass-bg-soft: rgba(17, 92, 52, 0.05);
     --pass-verdict-bg-soft: rgba(17, 92, 52, 0.06);
     --pass-verdict-bg: rgba(17, 92, 52, 0.08);
@@ -195,7 +195,7 @@
     --fail-verdict-border: rgba(154, 33, 26, 0.5);
     --fail-option-border: rgba(154, 33, 26, 0.65);
     --fail-input-border: rgba(154, 33, 26, 0.8);
-    --fail-bg: rgba(154, 33, 26, 0.06);
+    --fail-bg: rgba(154, 33, 26, 0.11);
     --fail-bg-soft: rgba(154, 33, 26, 0.045);
     --fail-verdict-bg: rgba(154, 33, 26, 0.07);
     --fail-option-bg: rgba(154, 33, 26, 0.08);
@@ -212,7 +212,7 @@
     --option-bg: #ffffff;
     --radio-row-bg: #ffffff;
     --about-section-bg: #ffffff;
-    --section-bg: #eef1f6;
+    --section-bg: #f8f9fb;
     --section-border: rgba(17, 21, 28, 0.16);
     --key-bg: rgba(17, 21, 28, 0.06);
     --hint-border: rgba(17, 21, 28, 0.2);
