@@ -41,8 +41,6 @@
   --chip-bg: rgba(37, 49, 70, 0.5);
   --chip-border-hover: rgba(144, 203, 255, 0.8);
   --chip-divider: rgba(104, 127, 168, 0.7);
-  --principle-chip-border: rgba(118, 151, 208, 0.55);
-  --principle-chip-bg: rgba(33, 46, 67, 0.55);
   /* Labels and small text */
   --label-text: #a9bce3;
   --level-a-text: #ccf7d8;
@@ -161,8 +159,6 @@
     --chip-bg: rgba(219, 230, 247, 0.7);
     --chip-border-hover: rgba(9, 82, 152, 0.7);
     --chip-divider: rgba(104, 127, 168, 0.6);
-    --principle-chip-border: rgba(44, 61, 92, 0.45);
-    --principle-chip-bg: rgba(219, 230, 247, 0.7);
     /* Labels and small text */
     --label-text: #404f6c;
     --level-a-text: #115c34;
@@ -1024,14 +1020,11 @@ a {
 .status-principle-chip {
   display: inline-flex;
   align-items: center;
-  border: 1px solid var(--principle-chip-border);
-  border-radius: 999px;
-  background: var(--principle-chip-bg);
   color: var(--chip-text);
   font-size: 0.8rem;
   font-weight: 700;
   letter-spacing: 0.06em;
-  padding: 0.2rem 0.52rem;
+  padding: 0.2rem 0.15rem;
 }
 
 .main-stage {
@@ -1065,10 +1058,7 @@ a {
   text-transform: uppercase;
   letter-spacing: 0.14em;
   color: var(--gold);
-  border: 1px solid var(--gold-border);
-  border-radius: 999px;
-  background: var(--gold-soft);
-  padding: 0.24rem 0.7rem;
+  padding: 0;
 }
 
 .start-screen-title {
@@ -1092,17 +1082,23 @@ a {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 0.45rem;
+  gap: 0.35rem 0.7rem;
 }
 
 .start-screen-stat {
   font-size: 0.84rem;
   font-weight: 600;
   color: var(--chip-text);
-  border: 1px solid var(--chip-border);
-  background: var(--chip-bg);
-  border-radius: 999px;
-  padding: 0.26rem 0.66rem;
+  padding: 0.2rem 0.15rem;
+}
+
+/* Flat labels need a divider once the pill is gone; the footer's middle
+   dot, with empty alt text so screen readers keep hearing a plain list. */
+.start-screen-stat + .start-screen-stat::before {
+  content: "·" / "";
+  margin-right: 0.7rem;
+  color: var(--muted);
+  font-weight: 400;
 }
 
 .start-row {
@@ -1369,14 +1365,11 @@ a {
 .quiz-score-chip {
   display: inline-flex;
   align-items: center;
-  border: 1px solid var(--pass-border);
-  border-radius: 999px;
-  background: var(--pass-bg);
   color: var(--pass-text);
   font-size: 0.8rem;
   font-weight: 700;
   letter-spacing: 0.04em;
-  padding: 0.18rem 0.55rem;
+  padding: 0.18rem 0.15rem;
 }
 
 /* The top-row copy of the score chip shows only on landscape-short phones,
@@ -1985,9 +1978,12 @@ a {
   transform: translateY(-1px);
 }
 
-/* Affordance rule on the criterion card: bordered pill = tappable, flat
-   label = metadata. The id, level, and "New in 2.2" read as labels; only the
-   tag filter buttons keep the pill ring. */
+/* Affordance rule, app-wide: bordered pill = tappable, flat label =
+   metadata. On the card the id, level, and "New in 2.2" read as labels and
+   only the tag filter buttons keep the pill ring; elsewhere the start-screen
+   eyebrow and stats, the principle label and the Score readout are flat for
+   the same reason. "Select to expand" keeps its pill: it is the visible
+   label of the image's button. */
 .details-id-badge {
   margin: 0;
   font-family: var(--font-mono), ui-monospace, monospace;
