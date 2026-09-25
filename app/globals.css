@@ -15,6 +15,9 @@
   --row-active-bar: var(--gold);
   /* Apple finish: the 1px light edge on a surface, and the shadow tint */
   --hi: rgba(255, 255, 255, 0.06);
+  /* Light mode's equivalent of the top highlight: white-on-white is
+     invisible, so a raised surface there reads by a faint bottom edge. */
+  --edge: transparent;
   --lo: rgba(0, 0, 0, 0.35);
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   /* Brand gold (7.2:1 on --bg). Reserved for active/selected states and
@@ -141,6 +144,7 @@
     --on-active: #f3f5f9;
     --row-active-bar: #f3f5f9;
     --hi: rgba(255, 255, 255, 0.7);
+    --edge: rgba(17, 21, 28, 0.09);
     --lo: rgba(17, 21, 28, 0.1);
     --link: #095298;
     --gold: #133f86;
@@ -169,7 +173,7 @@
     /* Pass */
     --pass-text: #0f512e;
     --pass-text-bright: #0f5030;
-    --pass-border: rgba(17, 92, 52, 0.35);
+    --pass-border: rgba(17, 92, 52, 0.52);
     --pass-border-soft: rgba(17, 92, 52, 0.3);
     --pass-border-strong: rgba(17, 92, 52, 0.45);
     --mastery-fill: rgba(17, 92, 52, 0.75);
@@ -185,7 +189,7 @@
     /* Fail */
     --fail-text: #871d17;
     --fail-text-bright: #8a1d17;
-    --fail-border: rgba(154, 33, 26, 0.35);
+    --fail-border: rgba(154, 33, 26, 0.39);
     --fail-border-soft: rgba(154, 33, 26, 0.3);
     --fail-border-strong: rgba(154, 33, 26, 0.45);
     --fail-verdict-border: rgba(154, 33, 26, 0.5);
@@ -209,7 +213,7 @@
     --radio-row-bg: #ffffff;
     --about-section-bg: #ffffff;
     --section-bg: #eef1f6;
-    --section-border: rgba(17, 21, 28, 0.12);
+    --section-border: rgba(17, 21, 28, 0.16);
     --key-bg: rgba(17, 21, 28, 0.06);
     --hint-border: rgba(17, 21, 28, 0.2);
     --footer-bg: rgba(244, 246, 249, 0.85);
@@ -2709,20 +2713,20 @@ a {
 .share-criterion,
 .tag-filter-chip,
 .details-tech-chip {
-  box-shadow: inset 0 1px 0 var(--hi), 0 1px 2px var(--lo);
+  box-shadow: inset 0 1px 0 var(--hi), inset 0 -1px 0 var(--edge), 0 1px 2px var(--lo);
   transition: transform 160ms var(--ease-out), box-shadow 160ms var(--ease-out),
     border-color 160ms var(--ease-out), background-color 160ms var(--ease-out);
 }
 
 .start-button-primary {
   border-color: transparent;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 1px 2px var(--lo),
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), inset 0 -1px 0 var(--edge), 0 1px 2px var(--lo),
     0 6px 16px color-mix(in srgb, var(--active) 30%, transparent);
 }
 
 .arrow-button {
   background: var(--panel);
-  box-shadow: inset 0 1px 0 var(--hi), 0 1px 2px var(--lo), 0 4px 12px var(--lo);
+  box-shadow: inset 0 1px 0 var(--hi), inset 0 -1px 0 var(--edge), 0 1px 2px var(--lo), 0 4px 12px var(--lo);
   transition: transform 160ms var(--ease-out), box-shadow 160ms var(--ease-out),
     border-color 160ms var(--ease-out), background-color 160ms var(--ease-out);
 }
@@ -2733,11 +2737,11 @@ a {
 
 .flashcard {
   border-radius: 18px;
-  box-shadow: inset 0 1px 0 var(--hi), 0 1px 2px var(--lo), 0 12px 32px var(--lo);
+  box-shadow: inset 0 1px 0 var(--hi), inset 0 -1px 0 var(--edge), 0 1px 2px var(--lo), 0 12px 32px var(--lo);
 }
 
 .learn-sidebar {
-  box-shadow: inset 0 1px 0 var(--hi), 0 1px 2px var(--lo);
+  box-shadow: inset 0 1px 0 var(--hi), inset 0 -1px 0 var(--edge), 0 1px 2px var(--lo);
 }
 
 .criteria-row,
@@ -2783,7 +2787,7 @@ a {
   .details-tech-chip:hover,
   .share-criterion:hover {
     transform: none;
-    box-shadow: inset 0 1px 0 var(--hi), 0 1px 2px var(--lo);
+    box-shadow: inset 0 1px 0 var(--hi), inset 0 -1px 0 var(--edge), 0 1px 2px var(--lo);
   }
 }
 
