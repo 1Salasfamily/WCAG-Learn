@@ -12,6 +12,11 @@
   /* Text on an --active fill. Equals --text in dark; light mode fills the
      primary button with a deep blue and needs light text on it. */
   --on-active: #f3f5f9;
+  --row-active-bar: var(--gold);
+  /* Apple finish: the 1px light edge on a surface, and the shadow tint */
+  --hi: rgba(255, 255, 255, 0.06);
+  --lo: rgba(0, 0, 0, 0.35);
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   /* Brand gold (7.2:1 on --bg). Reserved for active/selected states and
      brand moments — never body text, links, or semantic feedback. */
   --gold: #e8a13a;
@@ -133,6 +138,9 @@
     --focus: #157f3c;
     --active: #133f86;
     --on-active: #f3f5f9;
+    --row-active-bar: #f3f5f9;
+    --hi: rgba(255, 255, 255, 0.7);
+    --lo: rgba(17, 21, 28, 0.1);
     --link: #095298;
     --gold: #133f86;
     --gold-soft: rgba(19, 63, 134, 0.06);
@@ -798,8 +806,7 @@ a {
   background: var(--active);
   color: var(--on-active);
   border-color: var(--row-active-border);
-  color: var(--text);
-  box-shadow: inset 3px 0 0 var(--gold), 0 2px 8px var(--shadow-card);
+  box-shadow: inset 3px 0 0 var(--row-active-bar), 0 2px 8px var(--shadow-card);
 }
 
 .criteria-id {
@@ -915,11 +922,10 @@ a {
 }
 
 .sidebar-mode-row.active {
-  color: var(--text);
   background: var(--active);
   color: var(--on-active);
   border-color: var(--row-active-border);
-  box-shadow: inset 3px 0 0 var(--gold);
+  box-shadow: inset 3px 0 0 var(--row-active-bar);
 }
 
 .mode-toggle {
@@ -2549,6 +2555,100 @@ a {
 
   .start-screen-title {
     font-size: 1.6rem;
+  }
+}
+
+
+/* ==== Phase 6: the Apple finish ==========================================
+   A skin on the buttons, the menu button, the left rail and the criterion
+   cards. Same elements, same layout, same function; no drawer, no gesture.
+   A surface is a 1px light edge plus a layered shadow tinted toward the
+   ground (no backdrop blur: iOS composites it unreliably). Every pressable
+   thing answers on pointer-down with scale(.97) over 160ms on a strong
+   ease-out, which also gives the app the press states it never had.
+   Declared last so it wins by order over the rules above. ============= */
+.start-button,
+.feedback-submit,
+.sidebar-toggle,
+.mode-toggle-button,
+.share-criterion,
+.tag-filter-chip,
+.details-tech-chip {
+  box-shadow: inset 0 1px 0 var(--hi), 0 1px 2px var(--lo);
+  transition: transform 160ms var(--ease-out), box-shadow 160ms var(--ease-out),
+    border-color 160ms var(--ease-out), background-color 160ms var(--ease-out);
+}
+
+.start-button-primary {
+  border-color: transparent;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 1px 2px var(--lo),
+    0 6px 16px color-mix(in srgb, var(--active) 30%, transparent);
+}
+
+.arrow-button {
+  background: var(--panel);
+  box-shadow: inset 0 1px 0 var(--hi), 0 1px 2px var(--lo), 0 4px 12px var(--lo);
+  transition: transform 160ms var(--ease-out), box-shadow 160ms var(--ease-out),
+    border-color 160ms var(--ease-out), background-color 160ms var(--ease-out);
+}
+
+.sidebar-toggle {
+  border-radius: 12px;
+}
+
+.flashcard {
+  border-radius: 18px;
+  box-shadow: inset 0 1px 0 var(--hi), 0 1px 2px var(--lo), 0 12px 32px var(--lo);
+}
+
+.learn-sidebar {
+  box-shadow: inset 0 1px 0 var(--hi), 0 1px 2px var(--lo);
+}
+
+.criteria-row,
+.sidebar-mode-row,
+.group-toggle {
+  border-radius: 10px;
+  transition: transform 140ms var(--ease-out), background-color 140ms var(--ease-out),
+    border-color 140ms var(--ease-out), box-shadow 140ms var(--ease-out);
+}
+
+.quiz-option {
+  transition: transform 140ms var(--ease-out), background-color 140ms var(--ease-out),
+    border-color 140ms var(--ease-out), box-shadow 140ms var(--ease-out);
+}
+
+/* Feedback on the press itself, never only on release. */
+.start-button:active,
+.feedback-submit:active,
+.mode-toggle-button:active,
+.share-criterion:active,
+.tag-filter-chip:active,
+.details-tech-chip:active {
+  transform: scale(0.97);
+}
+
+.arrow-button:active,
+.sidebar-toggle:active {
+  transform: scale(0.94);
+}
+
+.criteria-row:active,
+.sidebar-mode-row:active,
+.group-toggle:active,
+.quiz-option:active {
+  transform: scale(0.985);
+}
+
+/* Hover lifts only where a pointer can hover; on touch a tap must not
+   leave a control stuck in its hover state. */
+@media (hover: none) {
+  .start-button:hover,
+  .arrow-button:hover,
+  .details-tech-chip:hover,
+  .share-criterion:hover {
+    transform: none;
+    box-shadow: inset 0 1px 0 var(--hi), 0 1px 2px var(--lo);
   }
 }
 
