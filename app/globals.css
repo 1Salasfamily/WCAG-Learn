@@ -11,7 +11,7 @@
   /* Brand gold (7.2:1 on --bg). Reserved for active/selected states and
      brand moments — never body text, links, or semantic feedback. */
   --gold: #e8a13a;
-  --gold-soft: rgba(232, 161, 58, 0.1);
+  --gold-soft: rgba(232, 161, 58, 0.06);
   --gold-border: rgba(232, 161, 58, 0.6);
 
   /* ---- Phase 1: every colour literal in the stylesheet, promoted to a
