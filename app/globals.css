@@ -1017,16 +1017,6 @@ a {
   flex: 1 1 420px;
 }
 
-.status-principle-chip {
-  display: inline-flex;
-  align-items: center;
-  color: var(--chip-text);
-  font-size: 0.8rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  padding: 0.2rem 0.15rem;
-}
-
 .main-stage {
   min-height: 0;
   display: grid;
@@ -1981,7 +1971,7 @@ a {
 /* Affordance rule, app-wide: bordered pill = tappable, flat label =
    metadata. On the card the id, level, and "New in 2.2" read as labels and
    only the tag filter buttons keep the pill ring; elsewhere the start-screen
-   eyebrow and stats, the principle label and the Score readout are flat for
+   eyebrow and stats, the principle label on the card and the Score readout are flat for
    the same reason. "Select to expand" keeps its pill: it is the visible
    label of the image's button. */
 .details-id-badge {
@@ -1993,6 +1983,24 @@ a {
   padding: 0.2rem 0.15rem;
   letter-spacing: 0.02em;
   flex-shrink: 0;
+}
+
+.details-principle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--gold);
+  padding: 0.18rem 0.15rem;
+}
+
+.details-sep {
+  color: var(--muted);
+  font-weight: 400;
+  letter-spacing: 0;
 }
 
 .details-level {
@@ -2438,7 +2446,6 @@ a {
     font-size: 0.85rem;
   }
 
-  .status-principle-chip,
   .status-score-chip {
     margin-left: auto;
   }

@@ -33,6 +33,15 @@ export default function ReferenceCard({
           >
             Level {criterion.level}
           </span>
+          {/* The principle is a property of the criterion, like its level, so
+              it sits beside it: "Level AA · Perceivable". Written in title
+              case and uppercased in CSS, so screen readers say the word. */}
+          <span className="details-principle">
+            <span className="details-sep" aria-hidden="true">
+              ·
+            </span>
+            {criterion.principle}
+          </span>
           {NEW_IN_22.has(criterion.id) ? (
             <span className="details-new-chip">New in 2.2</span>
           ) : null}

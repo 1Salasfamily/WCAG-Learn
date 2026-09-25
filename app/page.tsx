@@ -1112,9 +1112,6 @@ export default function HomePage() {
               aria-live="polite"
             >
               {statusText}
-              {started && viewMode === "reference" ? (
-                <span className="status-principle-chip">{current.principle.toUpperCase()}</span>
-              ) : null}
               {/* Landscape-short only (CSS-gated); the in-card progress row
                   is hidden there, so this is the sole score indicator. */}
               {started && viewMode === "quiz" && quizPhase === "question" ? (
