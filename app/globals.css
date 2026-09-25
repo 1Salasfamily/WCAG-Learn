@@ -135,7 +135,9 @@
     --text: #11151c;
     --muted: #404954;
     --border: #d3dae4;
-    --focus: #157f3c;
+    /* Focus ring: a vivid blue set apart from every other blue here (ΔE 53
+       from the nearest), 4.57:1 or better on every light surface. */
+    --focus: #0a5cff;
     --active: #133f86;
     --on-active: #f3f5f9;
     --row-active-bar: #f3f5f9;
@@ -267,6 +269,20 @@ a {
 :focus-visible {
   outline: 3px solid var(--focus);
   outline-offset: 2px;
+}
+
+/* Landing spots take no ring. These are non-interactive containers that
+   focus is moved to on purpose after a big jump (the card, the quiz
+   question, the round summary, the status line, the main area) so screen
+   readers announce what replaced the old view. The ring exists to show
+   which control is about to be activated, and there is none here; showing
+   it made the browser draw a box around the card's top row the moment any
+   key was pressed after a mouse jump. 2.4.7 covers operable components and
+   these are not; every real control keeps its ring. GOV.UK's skip-link
+   target is handled the same way. Every tabindex="-1" in the app is one of
+   these, or the hidden anti-spam field nobody focuses. */
+[tabindex="-1"]:focus {
+  outline: none;
 }
 
 .visually-hidden {
