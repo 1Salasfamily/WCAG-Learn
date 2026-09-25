@@ -1237,9 +1237,17 @@ a {
   min-width: 0;
 }
 
-.quiz-option:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 0 0 1px var(--accent-hover-glow-soft), 0 8px 18px var(--shadow-option-hover);
+/* Hover borrows the side rail's cue, the border turning accent blue, at the
+   stronger border weight so it clears 3:1 against the option in both
+   themes. Only on a real pointer, so a tap on a phone cannot leave it
+   stuck, and never on an answered or disabled option, so it cannot mask
+   the green or red the moment an answer lands. */
+@media (hover: hover) and (pointer: fine) {
+  .quiz-option:not(:disabled):not(.correct):not(.wrong):hover {
+    transform: translateY(-1px);
+    border-color: var(--accent-hover-border);
+    box-shadow: 0 0 0 1px var(--accent-hover-glow), 0 8px 18px var(--shadow-option-hover);
+  }
 }
 
 .quiz-option.correct {
