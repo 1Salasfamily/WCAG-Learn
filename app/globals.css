@@ -43,8 +43,6 @@
   --chip-divider: rgba(104, 127, 168, 0.7);
   /* Labels and small text */
   --label-text: #a9bce3;
-  --level-a-text: #ccf7d8;
-  --level-aa-text: #dbe7ff;
   --level-aaa-text: #ffe7c4;
   --hint-text: #c1d4f6;
   --placeholder-text: #93a0b5;
@@ -161,8 +159,6 @@
     --chip-divider: rgba(104, 127, 168, 0.6);
     /* Labels and small text */
     --label-text: #404f6c;
-    --level-a-text: #115c34;
-    --level-aa-text: #2c3d5c;
     --level-aaa-text: #6a450b;
     --hint-text: #2c3d5c;
     --placeholder-text: #46505c;
@@ -1994,22 +1990,14 @@ a {
   padding: 0.18rem 0.15rem;
 }
 
+/* The level is secondary metadata in neutral grey, the same for A, AA and
+   AAA; the words carry the level. That leaves the principle beside it as
+   the one coloured word after the title. */
 .details-level {
   font-size: 0.8rem;
   font-weight: 700;
+  color: var(--muted);
   padding: 0.18rem 0.15rem;
-}
-
-.details-level-a {
-  color: var(--level-a-text);
-}
-
-.details-level-aa {
-  color: var(--level-aa-text);
-}
-
-.details-level-aaa {
-  color: var(--level-aaa-text);
 }
 
 .details-tech-chip {

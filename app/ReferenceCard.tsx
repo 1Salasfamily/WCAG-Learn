@@ -28,11 +28,7 @@ export default function ReferenceCard({
         <section className="reference-topbar" aria-label="Criterion summary details">
           <span className="details-id-badge">{criterion.id}</span>
           <p className="reference-title">{criterion.title}</p>
-          <span
-            className={`details-level details-level-${criterion.level.toLowerCase()}`}
-          >
-            Level {criterion.level}
-          </span>
+          <span className="details-level">Level {criterion.level}</span>
           {/* The principle is a property of the criterion, like its level, so
               it sits beside it. Colour and capitals set it apart; no divider.
               Title case in the source, uppercased in CSS, so screen readers
