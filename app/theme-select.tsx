@@ -10,7 +10,7 @@ import {
   type ThemePref
 } from "./theme";
 
-// Appearance control, bottom right of the global footer. A native select:
+// Theme control, bottom right of the global footer. A native select:
 // keyboard, VoiceOver and color-scheme all come free, and the quiz filters
 // already style one, so it reuses their classes rather than duplicating
 // the rules. The footer stays visible on landscape phones while the
@@ -50,7 +50,7 @@ export default function ThemeSelect() {
 
   return (
     <label className="quiz-filter footer-appearance">
-      <span className="quiz-filter-label">Appearance</span>
+      <span className="quiz-filter-label">Theme</span>
       <span className="quiz-select-shell">
         <select
           className="quiz-filter-select"
