@@ -232,10 +232,26 @@ export default function Quiz({
                     onClick={() => onPick(option)}
                     disabled={state === "correct" && !isCorrect}
                   >
-                    <kbd className="quiz-key" aria-hidden="true">
-                      {optionIndex + 1}
-                    </kbd>
+                    {/* Once answered, the number key's chip becomes the
+                        verdict, so right and wrong never rest on colour
+                        alone. Same chip, same size: nothing reflows. */}
+                    {stateClass ? (
+                      <span className="quiz-key quiz-verdict" aria-hidden="true">
+                        {stateClass === "correct" ? "✓" : "✕"}
+                      </span>
+                    ) : (
+                      <kbd className="quiz-key" aria-hidden="true">
+                        {optionIndex + 1}
+                      </kbd>
+                    )}
                     <span className="quiz-option-text">{option}</span>
+                    {/* After the visible text, so the accessible name still
+                        starts with the label a voice-control user would say. */}
+                    {stateClass ? (
+                      <span className="visually-hidden">
+                        {stateClass === "correct" ? ", correct answer" : ", incorrect"}
+                      </span>
+                    ) : null}
                   </button>
                 );
               })}

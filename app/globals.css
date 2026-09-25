@@ -1237,6 +1237,24 @@ a {
   min-width: 0;
 }
 
+/* The verdict mark takes the number key's chip. Outline and mark share the
+   state colour; the fill stays the option's own, which the mark clears at
+   7:1 or better in both themes. */
+.quiz-option.correct .quiz-verdict,
+.quiz-option.wrong .quiz-verdict {
+  background: transparent;
+  border-color: currentColor;
+  font-weight: 800;
+}
+
+.quiz-option.correct .quiz-verdict {
+  color: var(--pass-text);
+}
+
+.quiz-option.wrong .quiz-verdict {
+  color: var(--fail-text);
+}
+
 /* Hover borrows the side rail's cue, the border turning accent blue, at the
    stronger border weight so it clears 3:1 against the option in both
    themes. Only on a real pointer, so a tap on a phone cannot leave it
