@@ -167,7 +167,7 @@
     --hint-text: #2c3d5c;
     --placeholder-text: #46505c;
     /* Pass */
-    --pass-text: #115c34;
+    --pass-text: #0f512e;
     --pass-text-bright: #0f5030;
     --pass-border: rgba(17, 92, 52, 0.35);
     --pass-border-soft: rgba(17, 92, 52, 0.3);
@@ -183,7 +183,7 @@
     --pass-option-bg: rgba(17, 92, 52, 0.08);
     --pass-option-shadow: rgba(17, 92, 52, 0.15);
     /* Fail */
-    --fail-text: #9a211a;
+    --fail-text: #871d17;
     --fail-text-bright: #8a1d17;
     --fail-border: rgba(154, 33, 26, 0.35);
     --fail-border-soft: rgba(154, 33, 26, 0.3);
