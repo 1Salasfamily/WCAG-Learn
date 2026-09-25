@@ -1,4 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-hidden="true">
+<style>@media (prefers-color-scheme: light){[fill="#10151e"]{fill:#ffffff}[fill="#151a22"]{fill:#eef1f6}[fill="#1b2230"]{fill:#f2f5f9}[fill="#3a4354"]{fill:#c3ccd8}[stroke="#3a4354"]{stroke:#c3ccd8}[fill="#3fca72"]{fill:#115c34}[fill="#b8c0cf"]{fill:#46505c}[fill="#e9607d"]{fill:#9a211a}[fill="#f3f5f9"]{fill:#11151c}}</style>
 <rect width="640" height="360" rx="14" fill="#10151e"/>
 <text x="22" y="36" font-family="Verdana, sans-serif" font-size="17" font-weight="bold" fill="#f3f5f9">1.4.5 Images of Text</text>
 <rect x="22" y="58" width="290" height="282" rx="10" fill="#1b2230" stroke="#3a4354" stroke-width="2"/>
