@@ -89,21 +89,12 @@ export default function RootLayout({
           <Link className="footer-link" href="/about">
             Learn more &amp; sources
           </Link>
-          <span className="footer-sep" aria-hidden="true">
-            ·
-          </span>
           <Link className="footer-link" href="/accessibility">
             Accessibility
           </Link>
-          <span className="footer-sep" aria-hidden="true">
-            ·
-          </span>
           <Link className="footer-link" href="/feedback">
             Feedback
           </Link>
-          <span className="footer-sep" aria-hidden="true">
-            ·
-          </span>
           <span className="footer-copyright">
             © {new Date().getFullYear()} Justin Salas · WCAG Learn. All rights
             reserved.

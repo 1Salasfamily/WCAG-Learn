@@ -384,7 +384,8 @@ a {
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-  gap: inherit;
+  /* No dot dividers; a wider column gap separates the items instead. */
+  gap: 0.4rem 1.5rem;
 }
 
 .footer-appearance {
@@ -412,11 +413,6 @@ a {
   text-decoration: underline;
   text-underline-offset: 2px;
   border-radius: 0.3rem;
-}
-
-.footer-sep {
-  color: var(--muted);
-  font-size: 0.85rem;
 }
 
 .footer-copyright {
@@ -2268,8 +2264,11 @@ a {
       calc(0.3rem + env(safe-area-inset-bottom)) calc(1rem + env(safe-area-inset-left));
   }
 
+  .footer-links {
+    gap: 0.15rem 1.1rem;
+  }
+
   .footer-link,
-  .footer-sep,
   .footer-copyright {
     font-size: 0.72rem;
   }
@@ -2615,8 +2614,11 @@ a {
       calc(0.22rem + env(safe-area-inset-bottom)) calc(1rem + env(safe-area-inset-left));
   }
 
+  .footer-links {
+    gap: 0.1rem 1rem;
+  }
+
   .footer-link,
-  .footer-sep,
   .footer-copyright {
     font-size: 0.7rem;
   }
