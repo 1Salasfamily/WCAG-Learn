@@ -7,7 +7,6 @@ import Illustration from "./Illustration";
 
 type ImageOverlayProps = {
   criterion: Criterion;
-  imageSrc: string;
   onClose: () => void;
 };
 
@@ -30,7 +29,6 @@ function trapFocus(event: ReactKeyboardEvent<HTMLDivElement>) {
 
 export default function ImageOverlay({
   criterion,
-  imageSrc,
   onClose
 }: ImageOverlayProps) {
   useEffect(() => {

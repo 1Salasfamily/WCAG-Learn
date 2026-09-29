@@ -2,10 +2,14 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useId } from "react";
 import { LOCKUP } from "./lockup.generated";
 
 export default function SiteTitle() {
   const pathname = usePathname();
+  // The lockup renders in the header and in the study top row; each copy
+  // suffixes its generated ids (lockup-t) so they stay unique on the page.
+  const lockup = LOCKUP.split("lockup-").join(`lockup-${useId().replace(/:/g, "")}-`);
 
   function handleClick() {
     // From /about or /accessibility the Link navigates to "/" and the study
@@ -29,7 +33,7 @@ export default function SiteTitle() {
       <span
         className="site-logo site-lockup"
         aria-hidden="true"
-        dangerouslySetInnerHTML={{ __html: LOCKUP }}
+        dangerouslySetInnerHTML={{ __html: lockup }}
       />
     </Link>
   );

@@ -1,14 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import {
-  applyTheme,
-  readPref,
-  resolveTheme,
-  savePref,
-  systemTheme,
-  type ThemePref
-} from "./theme";
+import { usePathname } from "next/navigation";
+import { applyPref, readPref, savePref, THEME_KEY, type ThemePref } from "./theme";
 
 // Theme control, bottom right of the global footer. A native select:
 // keyboard, VoiceOver and color-scheme all come free, and the quiz filters
@@ -27,16 +21,38 @@ export default function ThemeSelect() {
   // <html>, so nothing visible changes here except the selected option.
   const [pref, setPref] = useState<ThemePref>("system");
 
+  // Correct to the stored preference on mount, and re-apply it in case
+  // Next re-rendered the theme-color metas during hydration. Another tab
+  // changing the choice fires "storage" here, so every open tab stays in
+  // step.
   useEffect(() => {
-    setPref(readPref());
+    function sync() {
+      const stored = readPref();
+      setPref(stored);
+      applyPref(stored);
+    }
+    sync();
+    function onStorage(event: StorageEvent) {
+      if (event.key === THEME_KEY || event.key === null) sync();
+    }
+    window.addEventListener("storage", onStorage);
+    return () => window.removeEventListener("storage", onStorage);
   }, []);
+
+  // Next re-renders the theme-color metas from the viewport config on each
+  // client-side navigation, resetting them to one colour per media query.
+  // With an explicit choice that is wrong, so put the choice back.
+  const pathname = usePathname();
+  useEffect(() => {
+    applyPref(readPref());
+  }, [pathname]);
 
   // Following the OS means re-following it when it changes mid-session.
   useEffect(() => {
     if (pref !== "system") return;
     const query = window.matchMedia("(prefers-color-scheme: light)");
     function onChange() {
-      applyTheme(systemTheme());
+      applyPref("system");
     }
     query.addEventListener("change", onChange);
     return () => query.removeEventListener("change", onChange);
@@ -45,7 +61,7 @@ export default function ThemeSelect() {
   function choose(next: ThemePref) {
     setPref(next);
     savePref(next);
-    applyTheme(resolveTheme(next));
+    applyPref(next);
   }
 
   return (

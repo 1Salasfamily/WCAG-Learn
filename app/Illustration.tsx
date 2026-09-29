@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useId, useState } from "react";
 
 // The criterion illustration, inlined into the DOM.
 //
@@ -22,10 +22,18 @@ let pending: Promise<IllustrationMap> | null = null;
 function loadAll(): Promise<IllustrationMap> {
   if (cache) return Promise.resolve(cache);
   if (!pending) {
-    pending = import("./illustrations.generated").then((mod) => {
-      cache = mod.ILLUSTRATIONS;
-      return cache;
-    });
+    pending = import("./illustrations.generated").then(
+      (mod) => {
+        cache = mod.ILLUSTRATIONS;
+        return cache;
+      },
+      (error) => {
+        // A failed chunk (flaky network, or a deploy replaced it) must not
+        // stick for the session: clear it so the next card tries again.
+        pending = null;
+        throw error;
+      }
+    );
   }
   return pending;
 }
@@ -37,15 +45,30 @@ type IllustrationProps = {
 };
 
 export default function Illustration({ id, label, className }: IllustrationProps) {
-  const [svg, setSvg] = useState<string | null>(() =>
-    cache ? (cache[id] ?? null) : null
-  );
+  // Once the module is cached, the drawing is read during render, so a
+  // change of id never paints the previous criterion's drawing first. The
+  // state only exists to re-render when the first load lands.
+  const [loaded, setLoaded] = useState<IllustrationMap | null>(cache);
+  const map = cache ?? loaded;
+  // The generator prefixes each drawing's internal ids (i2-4-3-g); the
+  // card and the enlarged view can show the same drawing at once, so each
+  // instance adds its own suffix and url(#…) resolves inside its own copy.
+  const instance = useId().replace(/:/g, "");
+  const scope = `i${id.replace(/\./g, "-")}-`;
+  const raw = map ? (map[id] ?? null) : null;
+  const svg = raw && raw.includes(scope) ? raw.split(scope).join(`${scope}${instance}-`) : raw;
 
   useEffect(() => {
+    if (cache) return;
     let live = true;
-    loadAll().then((map) => {
-      if (live) setSvg(map[id] ?? null);
-    });
+    loadAll().then(
+      (all) => {
+        if (live) setLoaded(all);
+      },
+      () => {
+        // Leave the empty 16:9 shell; the next card retries the load.
+      }
+    );
     return () => {
       live = false;
     };

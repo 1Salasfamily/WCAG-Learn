@@ -1,6 +1,6 @@
 // Full-app axe-core scan. Drives the app into every distinct UI state
-// (three viewports: desktop, mobile portrait, phone landscape) and runs
-// axe against each; exits non-zero if any state has a violation, so CI
+// (three viewports: desktop, mobile portrait, phone landscape), in both the
+// dark and the light colour scheme, and runs axe against each; exits non-zero if any state has a violation, so CI
 // fails the deploy check. The /feedback success state is produced by
 // intercepting the network route — no submission is ever sent.
 //
@@ -29,13 +29,13 @@ const startQuiz = async (page) => {
 };
 
 const answerCorrectly = async (page) => {
-  for (let i = 0; i < 6; i++) {
+  // Try each option in order. The app marks only the latest wrong pick, so
+  // ".wrong" can't tell us which options were already tried; the index can.
+  const count = await page.locator(".quiz-option").count();
+  for (let i = 0; i < count; i++) {
     if ((await page.locator(".quiz-option.correct").count()) > 0) break;
-    const fresh = page.locator(
-      ".quiz-option:not([disabled]):not(.wrong):not(.correct)"
-    );
-    if ((await fresh.count()) === 0) break;
-    const pick = await fresh.nth(0).elementHandle();
+    const pick = await page.locator(".quiz-option").nth(i).elementHandle();
+    if (await pick.isDisabled()) continue;
     await pick.click();
     // Wait for the app to mark THIS pick (correct or wrong) before moving
     // on — clicking again mid-render re-selects and scrambles the round.
@@ -209,39 +209,45 @@ const browser = await chromium.launch();
 const results = [];
 let failed = 0;
 
-for (const state of states) {
-  const ctx = await browser.newContext({ viewport: state.vp });
-  const page = await ctx.newPage();
-  try {
-    await state.setup(page);
-    await page.waitForTimeout(300);
-    const axe = await new AxeBuilder({ page }).analyze();
-    if (axe.violations.length > 0) failed++;
-    results.push({
-      state: state.name,
-      viewport: `${state.vp.width}x${state.vp.height}`,
-      violations: axe.violations.map((v) => ({
-        id: v.id,
-        impact: v.impact,
-        help: v.help,
-        nodes: v.nodes.map((n) => n.target.join(" ")).slice(0, 5)
-      })),
-      incomplete: axe.incomplete.map((v) => ({
-        id: v.id,
-        nodes: v.nodes.map((n) => n.target.join(" ")).slice(0, 3)
-      }))
-    });
-    console.log(
-      `${axe.violations.length ? "FAIL" : "OK  "} ${state.name} — ${axe.violations.length} violations, ${axe.incomplete.length} incomplete`
-    );
-  } catch (e) {
-    // A state that can't be reached is a failure too — it means the scan
-    // silently stopped covering part of the app.
-    failed++;
-    results.push({ state: state.name, error: String(e).slice(0, 300) });
-    console.log(`ERR  ${state.name} — ${String(e).slice(0, 160)}`);
+// The theme defaults to Auto, which follows prefers-color-scheme, and
+// Playwright emulates "light" unless told otherwise. Emulate each scheme
+// explicitly so neither theme can drop out of the gate.
+for (const scheme of ["dark", "light"]) {
+  for (const state of states) {
+    const name = `${state.name} [${scheme}]`;
+    const ctx = await browser.newContext({ viewport: state.vp, colorScheme: scheme });
+    const page = await ctx.newPage();
+    try {
+      await state.setup(page);
+      await page.waitForTimeout(300);
+      const axe = await new AxeBuilder({ page }).analyze();
+      if (axe.violations.length > 0) failed++;
+      results.push({
+        state: name,
+        viewport: `${state.vp.width}x${state.vp.height}`,
+        violations: axe.violations.map((v) => ({
+          id: v.id,
+          impact: v.impact,
+          help: v.help,
+          nodes: v.nodes.map((n) => n.target.join(" ")).slice(0, 5)
+        })),
+        incomplete: axe.incomplete.map((v) => ({
+          id: v.id,
+          nodes: v.nodes.map((n) => n.target.join(" ")).slice(0, 3)
+        }))
+      });
+      console.log(
+        `${axe.violations.length ? "FAIL" : "OK  "} ${name} — ${axe.violations.length} violations, ${axe.incomplete.length} incomplete`
+      );
+    } catch (e) {
+      // A state that can't be reached is a failure too — it means the scan
+      // silently stopped covering part of the app.
+      failed++;
+      results.push({ state: name, error: String(e).slice(0, 300) });
+      console.log(`ERR  ${name} — ${String(e).slice(0, 160)}`);
+    }
+    await ctx.close();
   }
-  await ctx.close();
 }
 await browser.close();
 

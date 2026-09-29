@@ -46,20 +46,30 @@ export function resolveTheme(pref: ThemePref): Theme {
   return pref === "system" ? systemTheme() : pref;
 }
 
-export function applyTheme(theme: Theme) {
+// Puts a preference on the page: the resolved theme on <html>, and the
+// browser-chrome colour. With an explicit choice both theme-color metas
+// carry that theme's colour; on Auto each meta goes back to the colour for
+// its own media query, so the browser follows the OS by itself.
+export function applyPref(pref: ThemePref) {
+  const theme = resolveTheme(pref);
   const root = document.documentElement;
   root.setAttribute("data-theme", theme);
   // Native controls, scrollbars and form fields follow.
   root.style.colorScheme = theme;
-  // Next renders one theme-color meta per scheme; when the choice is
-  // explicit, both must say the same thing or the chrome disagrees.
   document
     .querySelectorAll<HTMLMetaElement>('meta[name="theme-color"]')
-    .forEach((meta) => meta.setAttribute("content", THEME_COLORS[theme]));
+    .forEach((meta) => {
+      const own: Theme = meta.media.includes("light") ? "light" : "dark";
+      meta.setAttribute("content", THEME_COLORS[pref === "system" ? own : theme]);
+    });
 }
 
-// The same logic as the exported functions, as one self-contained
-// statement for the no-flash script. Kept here so the two cannot drift.
-export const NO_FLASH_SCRIPT = `(function(){try{var k=${JSON.stringify(
+// readPref + applyPref as one self-contained statement for the no-flash
+// script, built from the same constants. Only the storage read sits in the
+// try: if storage is blocked the preference is Auto and the OS still
+// decides, rather than the page falling back to the dark :root tokens.
+export const NO_FLASH_SCRIPT = `(function(){var v=null;try{v=localStorage.getItem(${JSON.stringify(
   THEME_KEY
-)},v=localStorage.getItem(k),t=v==="light"||v==="dark"?v:(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");var r=document.documentElement;r.setAttribute("data-theme",t);r.style.colorScheme=t;}catch(e){}})();`;
+)})}catch(e){}var p=v==="light"||v==="dark"?v:"system",t=p!=="system"?p:(window.matchMedia&&matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"),c=${JSON.stringify(
+  THEME_COLORS
+)},r=document.documentElement;r.setAttribute("data-theme",t);r.style.colorScheme=t;var m=document.querySelectorAll('meta[name="theme-color"]');for(var i=0;i<m.length;i++){m[i].setAttribute("content",c[p==="system"?(m[i].media.indexOf("light")>-1?"light":"dark"):t])}})();`;

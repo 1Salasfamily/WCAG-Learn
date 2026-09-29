@@ -278,9 +278,6 @@ export default function HomePage() {
   });
 
   const current = cards[activeIndex];
-  const currentImageSrc = current
-    ? `/images/${current.id.split(".").join("-")}.svg`
-    : "";
   const detailParagraphs = current?.shortExplanation.split("\n\n") ?? [];
   const detailSections = [
     { heading: "What this means", text: detailParagraphs[0] ?? "" },
@@ -1228,7 +1225,6 @@ export default function HomePage() {
                     ) : null}
                     <ReferenceCard
                       criterion={current}
-                      imageSrc={currentImageSrc}
                       sections={detailSections}
                       onExpandImage={toggleExampleExpanded}
                       activeTag={tagFilter}
@@ -1261,7 +1257,6 @@ export default function HomePage() {
       {exampleExpanded ? (
         <ImageOverlay
           criterion={current}
-          imageSrc={currentImageSrc}
           onClose={closeExampleExpanded}
         />
       ) : null}

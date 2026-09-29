@@ -7,7 +7,6 @@ import Illustration from "./Illustration";
 
 type ReferenceCardProps = {
   criterion: Criterion;
-  imageSrc: string;
   sections: { heading: string; text: string }[];
   onExpandImage: () => void;
   activeTag: string | null;
@@ -16,7 +15,6 @@ type ReferenceCardProps = {
 
 export default function ReferenceCard({
   criterion,
-  imageSrc,
   sections,
   onExpandImage,
   activeTag,
