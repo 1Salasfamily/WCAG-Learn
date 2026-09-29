@@ -1116,7 +1116,7 @@ export default function HomePage() {
                   is hidden there, so this is the sole score indicator. */}
               {started && viewMode === "quiz" && quizPhase === "question" ? (
                 <span className="quiz-score-chip status-score-chip">
-                  Score: {quizScore}
+                  Score: <span className="quiz-count">{quizScore}</span>
                 </span>
               ) : null}
             </p>

@@ -205,9 +205,12 @@ export default function Quiz({
           <div className="quiz-wrap" aria-live="polite">
             <div className="quiz-progress-row">
               <p className="quiz-progress">
-                Question {index + 1} of {round.length}
+                Question <span className="quiz-count">{index + 1}</span> of{" "}
+                <span className="quiz-count">{round.length}</span>
               </p>
-              <span className="quiz-score-chip">Score: {score}</span>
+              <span className="quiz-score-chip">
+                Score: <span className="quiz-count">{score}</span>
+              </span>
             </div>
             <p className="quiz-prompt">{question.prompt}</p>
             <div
