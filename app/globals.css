@@ -1086,23 +1086,16 @@ a {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 0.35rem 0.7rem;
+  gap: 0.35rem 1.4rem;
 }
 
+/* Flat accent labels (blue in light, gold in dark). No divider between
+   them; the wider column gap does the separating. */
 .start-screen-stat {
   font-size: 0.84rem;
   font-weight: 600;
-  color: var(--chip-text);
+  color: var(--gold);
   padding: 0.2rem 0.15rem;
-}
-
-/* Flat labels need a divider once the pill is gone; the footer's middle
-   dot, with empty alt text so screen readers keep hearing a plain list. */
-.start-screen-stat + .start-screen-stat::before {
-  content: "·" / "";
-  margin-right: 0.7rem;
-  color: var(--muted);
-  font-weight: 400;
 }
 
 .start-row {
