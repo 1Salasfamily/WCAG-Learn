@@ -1206,6 +1206,14 @@ a {
   }
 }
 
+/* The option keyboard focus is on gets the ring plus a fill, so it reads
+   as highlighted in the list, not only outlined. The ring is inset to stay
+   inside the panel's padding. */
+.theme-menu-item:focus-visible {
+  background: var(--gold-hover-bg);
+  outline-offset: -3px;
+}
+
 .theme-menu-check {
   margin-left: auto;
 }
