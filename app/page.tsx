@@ -37,6 +37,7 @@ import Quiz, {
 import ImageOverlay from "./ImageOverlay";
 import { CRITERION_PARAM } from "./share-url";
 import SiteTitle from "./site-title";
+import ThemeMenu from "./theme-menu";
 import { playCorrectSound, playWrongSound } from "./sounds";
 
 // Saved-session shape for auto-resume. Questions persist as (criterion id,
@@ -1137,6 +1138,11 @@ export default function HomePage() {
             </button>
           </div>
           ) : null}
+
+          {/* Landscape-short only (CSS-gated), like the logo above: the
+              header and its theme button hide there, so the control joins
+              the top row. */}
+          <ThemeMenu className="top-row-theme" />
         </div>
 
         <div className="main-stage" ref={mainStageRef}>

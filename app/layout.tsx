@@ -19,7 +19,7 @@ const mono = Space_Mono({
 import ResetButton from "./reset-button";
 import SiteTitle from "./site-title";
 import SkipLink from "./skip-link";
-import ThemeSelect from "./theme-select";
+import ThemeMenu from "./theme-menu";
 import { NO_FLASH_SCRIPT } from "./theme";
 
 export const metadata: Metadata = {
@@ -78,6 +78,9 @@ export default function RootLayout({
               <li>
                 <ResetButton />
               </li>
+              <li>
+                <ThemeMenu primary />
+              </li>
             </ul>
           </nav>
         </header>
@@ -100,7 +103,6 @@ export default function RootLayout({
             reserved.
           </span>
           </span>
-          <ThemeSelect />
         </footer>
         <Analytics />
       </body>

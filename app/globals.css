@@ -313,6 +313,11 @@ a {
 }
 
 .site-header {
+  /* Above the page content (below the drawer, 30/40), so the logo link's
+     and the header buttons' 44px tap areas, which reach a little past the
+     header's bottom edge on phones, stay on top. */
+  position: relative;
+  z-index: 3;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -350,7 +355,8 @@ a {
 
 .nav-list {
   display: flex;
-  gap: 1rem;
+  align-items: center;
+  gap: 0.6rem;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -365,11 +371,9 @@ a {
   overflow: hidden;
 }
 
-/* Three columns so the links stay centred while the appearance control
-   sits bottom right; below 760px the control drops to its own line. */
 .site-footer {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  display: flex;
+  justify-content: center;
   align-items: center;
   gap: 0.4rem 0.85rem;
   border-top: 1.5px solid var(--border);
@@ -379,31 +383,12 @@ a {
 }
 
 .footer-links {
-  grid-column: 2;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
   /* No dot dividers; a wider column gap separates the items instead. */
   gap: 0.4rem 1.5rem;
-}
-
-.footer-appearance {
-  grid-column: 3;
-  justify-self: end;
-}
-
-@media (max-width: 760px) {
-  .site-footer {
-    grid-template-columns: 1fr;
-  }
-  .footer-links,
-  .footer-appearance {
-    grid-column: 1;
-  }
-  .footer-appearance {
-    justify-self: end;
-  }
 }
 
 .footer-link {
@@ -1125,6 +1110,108 @@ a {
 
 .nav-reset {
   margin: 0;
+}
+
+/* Header controls (Reset, theme) are drawn at the logo's height so the
+   header is the same height on every screen: 34px, 28px on phones. The
+   ::before pads each one's tap area to 44px, border included, into the
+   header's own padding. Two classes, to outrank the phone rule that
+   stretches .start-button to full width. */
+.site-header,
+.learn-top-row {
+  --control: 34px;
+}
+
+.start-button.nav-reset,
+.start-button.theme-button {
+  position: relative;
+  height: var(--control);
+  min-height: var(--control);
+}
+
+.start-button.nav-reset {
+  width: auto;
+  padding: 0 0.95rem;
+  font-size: 0.88rem;
+}
+
+.start-button.theme-button {
+  width: var(--control);
+  padding: 0;
+  display: inline-grid;
+  place-items: center;
+}
+
+.start-button.nav-reset::before,
+.start-button.theme-button::before {
+  content: "";
+  position: absolute;
+  inset: calc((var(--control) - 44px) / 2 - 1.5px);
+}
+
+.theme-button svg {
+  display: block;
+}
+
+.theme-menu-wrap {
+  position: relative;
+  display: inline-flex;
+}
+
+/* Landscape-short only; shown by the media query at the end of the file. */
+.top-row-theme {
+  display: none;
+}
+
+.theme-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 300;
+  min-width: 176px;
+  padding: 6px;
+  display: grid;
+  gap: 2px;
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  background: var(--panel);
+  box-shadow: 0 12px 28px var(--shadow-card);
+}
+
+.theme-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  min-height: 44px;
+  padding: 0 0.75rem;
+  border: 0;
+  border-radius: 9px;
+  background: none;
+  color: var(--text);
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+}
+
+.theme-menu-item[aria-checked="true"] {
+  background: var(--gold-soft);
+  color: var(--gold);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .theme-menu-item:hover {
+    background: var(--gold-hover-bg);
+  }
+}
+
+.theme-menu-check {
+  margin-left: auto;
+}
+
+.theme-menu-item[aria-checked="false"] .theme-menu-check {
+  visibility: hidden;
 }
 
 .study-shell {
@@ -2234,6 +2321,7 @@ a {
      footer hand their slack to the card content, which otherwise squeezes
      into ~30% of the screen. Touch targets keep their coarse-pointer sizes. */
   .site-header {
+    --control: 28px;
     padding: calc(0.35rem + env(safe-area-inset-top)) calc(1rem + env(safe-area-inset-right))
       0.35rem calc(1rem + env(safe-area-inset-left));
   }
@@ -2272,18 +2360,6 @@ a {
   .footer-copyright {
     font-size: 0.72rem;
   }
-  /* Slimmer select on phones; the label stays visible since the control
-     has its own line here. */
-  .footer-appearance .quiz-filter-select {
-    min-height: 30px;
-    padding: 0.2rem 1.6rem 0.2rem 0.6rem;
-    font-size: 0.72rem;
-  }
-  .footer-appearance .quiz-select-shell::after {
-    right: 0.6rem;
-    font-size: 0.7rem;
-  }
-
   .learn-main {
     padding: 0.5rem;
   }
@@ -2424,6 +2500,11 @@ a {
 
   body.app-started .top-row-logo {
     display: inline-flex;
+  }
+
+  body.app-started .top-row-theme {
+    display: inline-flex;
+    margin-left: auto;
   }
 
   .top-row-logo .site-logo {
@@ -2622,26 +2703,6 @@ a {
   .footer-copyright {
     font-size: 0.7rem;
   }
-  /* One thin line: the appearance select shrinks with the links and its
-     label stays for screen readers only. */
-  .footer-appearance .quiz-filter-label {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-  }
-  .footer-appearance .quiz-filter-select {
-    min-height: 30px;
-    padding: 0.2rem 1.6rem 0.2rem 0.6rem;
-    font-size: 0.72rem;
-  }
-  .footer-appearance .quiz-select-shell::after {
-    right: 0.6rem;
-    font-size: 0.7rem;
-  }
-
   .start-screen {
     padding: 1.1rem 1.3rem;
   }
