@@ -6,11 +6,13 @@ import { usePathname } from "next/navigation";
 import { applyPref, readPref, savePref, THEME_KEY, type ThemePref } from "./theme";
 
 // Theme control: a round button in the site header, drawn at the logo's
-// height, that opens a three-item menu. A menu the page draws rather than a
-// native <select>, so the keys behave the same in every browser (the macOS
-// popup ignores Space): Space or Enter opens it and picks, arrows move,
-// Escape closes, Tab closes and moves on. The icon alone shows the choice;
-// the accessible name carries it in words ("Theme: Auto").
+// height, that shows or hides three option buttons (the disclosure pattern,
+// not an ARIA menu). Page-drawn rather than a native <select>, so the keys
+// are the same in every browser (the macOS popup ignores Space and Tab):
+// Space or Enter opens it, Tab and Shift+Tab walk the options, Space or
+// Enter picks, arrows also move, Escape closes, and tabbing out of the
+// options closes it. The icon alone shows the choice; the accessible name
+// carries it in words ("Theme: Auto"), and the chosen option is pressed.
 //
 // Two copies render: one in the header, and one in the study top row for
 // landscape phones, where the header hides (CSS shows one at a time). They
@@ -112,7 +114,9 @@ export default function ThemeMenu({ primary = false, className }: ThemeMenuProps
   }, [primary, pref]);
 
   const [open, setOpen] = useState(false);
-  const [focusIndex, setFocusIndex] = useState(0);
+  // null: opened by click, Space or Enter; focus stays on the button and Tab
+  // walks into the options. A number: opened or moved by an arrow key.
+  const [focusIndex, setFocusIndex] = useState<number | null>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const itemRefs = useRef<Array<HTMLButtonElement | null>>([]);
@@ -120,7 +124,7 @@ export default function ThemeMenu({ primary = false, className }: ThemeMenuProps
   const current = OPTIONS.find((option) => option.pref === pref) ?? OPTIONS[0];
 
   useEffect(() => {
-    if (open) itemRefs.current[focusIndex]?.focus();
+    if (open && focusIndex !== null) itemRefs.current[focusIndex]?.focus();
   }, [open, focusIndex]);
 
   // A press anywhere outside closes it, without moving focus.
@@ -133,7 +137,7 @@ export default function ThemeMenu({ primary = false, className }: ThemeMenuProps
     return () => document.removeEventListener("pointerdown", onPointerDown);
   }, [open]);
 
-  function openAt(index: number) {
+  function openAt(index: number | null) {
     setFocusIndex(index);
     setOpen(true);
   }
@@ -151,7 +155,10 @@ export default function ThemeMenu({ primary = false, className }: ThemeMenuProps
   }
 
   function onButtonKeyDown(event: ReactKeyboardEvent<HTMLButtonElement>) {
-    if (event.key === "ArrowDown") {
+    if (event.key === "Escape" && open) {
+      event.preventDefault();
+      setOpen(false);
+    } else if (event.key === "ArrowDown") {
       event.preventDefault();
       openAt(0);
     } else if (event.key === "ArrowUp") {
@@ -174,12 +181,10 @@ export default function ThemeMenu({ primary = false, className }: ThemeMenuProps
     } else if (event.key === "Escape") {
       event.preventDefault();
       closeToButton();
-    } else if (event.key === "Tab") {
-      // Close and hand focus back to the button first, so the browser's own
-      // Tab (or Shift+Tab) carries on from there to the next control.
-      closeToButton();
     }
-    // Space and Enter reach the item's own click.
+    // Tab and Shift+Tab are the browser's own: they walk the options, and
+    // leaving the group closes it (onBlur below). Space and Enter reach the
+    // item's own click.
   }
 
   return (
@@ -196,17 +201,16 @@ export default function ThemeMenu({ primary = false, className }: ThemeMenuProps
         ref={buttonRef}
         type="button"
         className="start-button theme-button"
-        aria-haspopup="menu"
         aria-expanded={open}
         aria-controls={open ? menuId : undefined}
         aria-label={`Theme: ${current.label}`}
-        onClick={() => (open ? setOpen(false) : openAt(OPTIONS.indexOf(current)))}
+        onClick={() => (open ? setOpen(false) : openAt(null))}
         onKeyDown={onButtonKeyDown}
       >
         <ThemeIcon pref={pref} />
       </button>
       {open ? (
-        <div id={menuId} role="menu" aria-label="Theme" className="theme-menu">
+        <div id={menuId} role="group" aria-label="Theme" className="theme-menu">
           {OPTIONS.map((option, index) => (
             <button
               key={option.pref}
@@ -214,12 +218,11 @@ export default function ThemeMenu({ primary = false, className }: ThemeMenuProps
                 itemRefs.current[index] = el;
               }}
               type="button"
-              role="menuitemradio"
-              aria-checked={option.pref === pref}
-              tabIndex={-1}
+              aria-pressed={option.pref === pref}
               className="theme-menu-item"
               onClick={() => choose(option.pref)}
               onKeyDown={(event) => onItemKeyDown(event, index)}
+              onFocus={() => setFocusIndex(index)}
             >
               <ThemeIcon pref={option.pref} />
               <span>{option.label}</span>

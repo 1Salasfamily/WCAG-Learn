@@ -1195,7 +1195,7 @@ a {
   cursor: pointer;
 }
 
-.theme-menu-item[aria-checked="true"] {
+.theme-menu-item[aria-pressed="true"] {
   background: var(--gold-soft);
   color: var(--gold);
 }
@@ -1210,7 +1210,7 @@ a {
   margin-left: auto;
 }
 
-.theme-menu-item[aria-checked="false"] .theme-menu-check {
+.theme-menu-item[aria-pressed="false"] .theme-menu-check {
   visibility: hidden;
 }
 
