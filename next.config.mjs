@@ -20,7 +20,11 @@ const contentSecurityPolicy = [
   "base-uri 'self'",
   "form-action 'self'",
   "frame-ancestors 'none'",
-  "upgrade-insecure-requests"
+  // Production only: on a phone reaching the dev server over plain http
+  // (192.168.x.x:3000), this directive upgrades every asset URL to https,
+  // which nothing answers, and the page arrives unstyled. localhost is
+  // exempt from the upgrade, which is why the Mac never shows it.
+  ...(isDev ? [] : ["upgrade-insecure-requests"])
 ].join("; ");
 
 const securityHeaders = [
@@ -32,10 +36,15 @@ const securityHeaders = [
     key: "Permissions-Policy",
     value: "camera=(), microphone=(), geolocation=(), browsing-topics=()"
   },
-  {
-    key: "Strict-Transport-Security",
-    value: "max-age=63072000; includeSubDomains"
-  }
+  // HSTS is production-only for the same reason: the dev server is http.
+  ...(isDev
+    ? []
+    : [
+        {
+          key: "Strict-Transport-Security",
+          value: "max-age=63072000; includeSubDomains"
+        }
+      ])
 ];
 
 const nextConfig = {
