@@ -15,6 +15,7 @@ const SETTLE_MS = 1800;
 // intro can settle exactly onto it, and takes the overlay down at the end or
 // on the first key press or click.
 export default function Splash() {
+  const rootRef = useRef<HTMLDivElement>(null);
   const lockupRef = useRef<SVGSVGElement>(null);
 
   useEffect(() => {
@@ -53,18 +54,20 @@ export default function Splash() {
       cleanup();
     };
     // Any key press or click stops the motion: the overlay goes straight to
-    // a short dissolve and the page beneath is already live.
+    // a short dissolve. The overlay itself takes the pointer (see the CSS),
+    // so the tap that stops it never reaches a button beneath.
     const skip = () => {
       if (done) return;
       root.setAttribute("data-splash", "skip");
       window.setTimeout(finish, 220);
     };
+    const overlay = rootRef.current;
     const cleanup = () => {
       window.removeEventListener("keydown", skip);
-      window.removeEventListener("pointerdown", skip);
+      overlay?.removeEventListener("pointerdown", skip);
     };
     window.addEventListener("keydown", skip);
-    window.addEventListener("pointerdown", skip);
+    overlay?.addEventListener("pointerdown", skip);
 
     endTimer = window.setTimeout(finish, HOLD_MS + SETTLE_MS);
     return () => {
@@ -74,7 +77,7 @@ export default function Splash() {
   }, []);
 
   return (
-    <div className="splash" aria-hidden="true">
+    <div ref={rootRef} className="splash" aria-hidden="true">
       <svg
         ref={lockupRef}
         className="splash-lockup"

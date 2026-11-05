@@ -2910,8 +2910,10 @@ a {
   inset: 0;
   z-index: 100;
   place-items: center;
-  /* The page beneath is live from the start; a click lands on it. */
-  pointer-events: none;
+  /* While it is on screen it takes the tap or click itself: that stops the
+     motion and nothing beneath is activated. Justin kept starting a mode
+     or opening a footer link by accident when taps passed through. */
+  pointer-events: auto;
   background: var(--bg);
   /* Matches the header lockup's own ink in each theme. */
   --splash-ink: #ffffff;
