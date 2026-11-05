@@ -2895,3 +2895,216 @@ a {
     padding: 0.6rem 0.4rem;
   }
 }
+
+/* ==== Logo intro ==========================================================
+   Plays once per browser session on a full load of the start page: the
+   lockup pops in piece by piece from above, holds, then settles onto the
+   header's own lockup while the dark layer dissolves. The inline script in
+   layout.tsx decides pre-paint whether it runs (<html data-splash="play">),
+   and Splash (splash.tsx) measures the header and takes it down. Any key
+   or click switches it to "skip": the pieces come to rest and it dissolves.
+   Reduced motion never shows it. */
+.splash {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  place-items: center;
+  /* The page beneath is live from the start; a click lands on it. */
+  pointer-events: none;
+  background: var(--bg);
+  /* Matches the header lockup's own ink in each theme. */
+  --splash-ink: #ffffff;
+}
+
+:root[data-theme="light"] .splash {
+  --splash-ink: #11151c;
+}
+
+html[data-splash] .splash {
+  display: grid;
+}
+
+.splash-lockup {
+  --h: min(104px, 17vw);
+  display: block;
+  height: var(--h);
+  width: auto;
+  overflow: visible;
+  transform-origin: 0 0;
+}
+
+.splash-frame {
+  fill: none;
+  stroke: var(--gold);
+  stroke-width: 3;
+}
+
+.splash-w,
+.splash-accent {
+  fill: none;
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.splash-w {
+  stroke: var(--splash-ink);
+}
+
+.splash-accent {
+  stroke: var(--gold);
+  stroke-dasharray: 50;
+  stroke-dashoffset: 50;
+}
+
+.splash-ring {
+  fill: none;
+  stroke: var(--gold);
+  stroke-width: 2;
+  opacity: 0;
+  transform-origin: 38px 38px;
+}
+
+.splash-letter path {
+  fill: var(--splash-ink);
+}
+
+.splash-mark,
+.splash-wg,
+.splash-letter {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  opacity: 0;
+}
+
+/* The timeline (ms): mark 0–480, ring 300–780, W 220–640, accent 640–860,
+   letters 460 + 38 each, bob 1120–1540, hold to 1950, settle 1950–3350,
+   dissolve 1950–3750. HOLD_MS / SETTLE_MS in splash.tsx match. */
+html[data-splash="play"] .splash-mark {
+  animation: splash-pop 520ms linear both;
+}
+
+html[data-splash="play"] .splash-ring {
+  animation: splash-ring 480ms cubic-bezier(0.2, 0.6, 0.3, 1) 300ms both;
+}
+
+html[data-splash="play"] .splash-wg {
+  animation: splash-pop 460ms linear 220ms both;
+}
+
+html[data-splash="play"] .splash-accent {
+  animation: splash-draw 220ms cubic-bezier(0.4, 0, 0.2, 1) 640ms both;
+}
+
+html[data-splash="play"] .splash-letter {
+  animation: splash-pop 400ms linear both;
+  animation-delay: calc(460ms + var(--i) * 38ms);
+}
+
+html[data-splash="play"] .splash-lockup {
+  animation:
+    splash-bob 420ms cubic-bezier(0.3, 0, 0.2, 1) 1120ms both,
+    splash-settle 1400ms cubic-bezier(0.6, 0, 0.2, 1) 1950ms both;
+}
+
+html[data-splash="play"] .splash {
+  animation:
+    splash-fade 1800ms cubic-bezier(0.45, 0.05, 0.55, 0.95) 1950ms both,
+    /* Safety net: even if the script never takes it down, it goes away. */
+    splash-hide 0s linear 6000ms both;
+}
+
+/* Skipped: every piece at rest, one short dissolve. */
+html[data-splash="skip"] .splash-mark,
+html[data-splash="skip"] .splash-wg,
+html[data-splash="skip"] .splash-letter {
+  opacity: 1;
+}
+
+html[data-splash="skip"] .splash-accent {
+  stroke-dashoffset: 0;
+}
+
+html[data-splash="skip"] .splash {
+  animation: splash-fade 200ms ease-out both;
+}
+
+@keyframes splash-pop {
+  /* The long drop (SVG user units, far enough to start above the viewport
+     even at phone size) arrives by 62%; the pop is a scale overshoot and a
+     few units of dip after that, so nothing shoots past its resting place. */
+  0% {
+    opacity: 0;
+    transform: translateY(-1000px) scale(0.6);
+    animation-timing-function: cubic-bezier(0.4, 0, 0.6, 1);
+  }
+  25% {
+    opacity: 1;
+  }
+  62% {
+    opacity: 1;
+    transform: translateY(0) scale(1.14);
+    animation-timing-function: cubic-bezier(0.3, 0, 0.3, 1);
+  }
+  82% {
+    transform: translateY(4px) scale(0.95);
+    animation-timing-function: cubic-bezier(0.3, 0, 0.3, 1);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes splash-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes splash-ring {
+  0% {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.6);
+  }
+}
+
+@keyframes splash-bob {
+  0% {
+    transform: none;
+  }
+  40% {
+    transform: translateY(calc(var(--h) * 0.07));
+  }
+  100% {
+    transform: none;
+  }
+}
+
+@keyframes splash-settle {
+  0%,
+  40% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--splash-tx), var(--splash-ty)) scale(var(--splash-s));
+  }
+}
+
+@keyframes splash-fade {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes splash-hide {
+  to {
+    visibility: hidden;
+  }
+}

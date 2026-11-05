@@ -19,6 +19,8 @@ const mono = Space_Mono({
 import ResetButton from "./reset-button";
 import SiteTitle from "./site-title";
 import SkipLink from "./skip-link";
+import Splash from "./splash";
+import { SPLASH_SCRIPT } from "./splash-script";
 import ThemeMenu from "./theme-menu";
 import { NO_FLASH_SCRIPT } from "./theme";
 
@@ -68,7 +70,10 @@ export default function RootLayout({
         {/* Runs before anything paints: resolves the saved or system
             theme onto <html> so there is never a flash of the wrong one. */}
         <script dangerouslySetInnerHTML={{ __html: NO_FLASH_SCRIPT }} />
+        {/* Decides, also pre-paint, whether the logo intro plays this session. */}
+        <script dangerouslySetInnerHTML={{ __html: SPLASH_SCRIPT }} />
         <SkipLink />
+        <Splash />
         <header className="site-header">
           <h1 className="site-title">
             <SiteTitle />
